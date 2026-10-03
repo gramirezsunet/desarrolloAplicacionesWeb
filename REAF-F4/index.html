@@ -59,6 +59,13 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.85; transform: scale(1.02); }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 3s infinite ease-in-out;
+        }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-navy-950 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300 font-sans antialiased selection:bg-emerald-500 selection:text-white">
@@ -85,9 +92,22 @@
             <div class="flex items-center space-x-2 sm:space-x-4">
                 <!-- Nav Links (Desktop) -->
                 <nav class="hidden lg:flex items-center space-x-1 text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300">
-                    <button onclick="switchView('groups')" id="nav-groups" class="px-3 py-2 rounded-xl text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 transition">Grupos & Modelos</button>
-                    <button onclick="switchView('matrix')" id="nav-matrix" class="px-3 py-2 rounded-xl hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition">Matriz Comparativa</button>
-                    <button onclick="switchView('checklist')" id="nav-checklist" class="px-3 py-2 rounded-xl hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition">Checklist Transversal</button>
+                    <button onclick="switchView('instructions')" id="nav-instructions" class="px-3 py-2 rounded-xl text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 transition flex items-center space-x-1.5">
+                        <i data-lucide="megaphone" class="w-4 h-4"></i>
+                        <span>Instrucciones Oficiales</span>
+                    </button>
+                    <button onclick="switchView('groups')" id="nav-groups" class="px-3 py-2 rounded-xl hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition flex items-center space-x-1.5">
+                        <i data-lucide="layers" class="w-4 h-4"></i>
+                        <span>Grupos & Modelos</span>
+                    </button>
+                    <button onclick="switchView('matrix')" id="nav-matrix" class="px-3 py-2 rounded-xl hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition flex items-center space-x-1.5">
+                        <i data-lucide="table" class="w-4 h-4"></i>
+                        <span>Matriz Comparativa</span>
+                    </button>
+                    <button onclick="switchView('checklist')" id="nav-checklist" class="px-3 py-2 rounded-xl hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition flex items-center space-x-1.5">
+                        <i data-lucide="check-square" class="w-4 h-4"></i>
+                        <span>Checklist Transversal</span>
+                    </button>
                 </nav>
 
                 <div class="h-6 w-px bg-slate-200 dark:bg-slate-800 hidden lg:block"></div>
@@ -107,10 +127,11 @@
         </div>
 
         <!-- Mobile Navigation Sub-Bar -->
-        <div class="flex lg:hidden items-center justify-around border-t border-slate-200/70 dark:border-slate-800/70 px-2 py-1.5 bg-slate-100/50 dark:bg-slate-900/50 text-xs font-semibold">
-            <button onclick="switchView('groups')" id="m-nav-groups" class="px-2.5 py-1 rounded-lg text-emerald-600 dark:text-emerald-400 bg-emerald-100/60 dark:bg-emerald-950/70">Grupos</button>
-            <button onclick="switchView('matrix')" id="m-nav-matrix" class="px-2.5 py-1 rounded-lg text-slate-600 dark:text-slate-300">Matriz</button>
-            <button onclick="switchView('checklist')" id="m-nav-checklist" class="px-2.5 py-1 rounded-lg text-slate-600 dark:text-slate-300">Checklist</button>
+        <div class="flex lg:hidden items-center justify-around border-t border-slate-200/70 dark:border-slate-800/70 px-1 py-1.5 bg-slate-100/50 dark:bg-slate-900/50 text-[11px] font-bold">
+            <button onclick="switchView('instructions')" id="m-nav-instructions" class="px-2 py-1 rounded-lg text-emerald-600 dark:text-emerald-400 bg-emerald-100/60 dark:bg-emerald-950/70">Instrucciones</button>
+            <button onclick="switchView('groups')" id="m-nav-groups" class="px-2 py-1 rounded-lg text-slate-600 dark:text-slate-300">Grupos</button>
+            <button onclick="switchView('matrix')" id="m-nav-matrix" class="px-2 py-1 rounded-lg text-slate-600 dark:text-slate-300">Matriz</button>
+            <button onclick="switchView('checklist')" id="m-nav-checklist" class="px-2 py-1 rounded-lg text-slate-600 dark:text-slate-300">Checklist</button>
         </div>
     </header>
 
@@ -171,47 +192,268 @@
             </div>
         </section>
 
-        <!-- Hero Section -->
-        <section class="relative rounded-3xl p-6 sm:p-9 overflow-hidden bg-gradient-to-br from-slate-900 via-navy-900 to-slate-950 text-white shadow-xl border border-slate-800">
-            <div class="absolute -right-20 -top-20 w-80 h-80 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-blue-500/15 rounded-full blur-3xl pointer-events-none"></div>
+        <!-- VIEW 0: INSTRUCCIONES OFICIALES (VISTA PRINCIPAL POR DEFECTO) -->
+        <div id="view-instructions" class="space-y-8">
+            
+            <!-- Hero de Instrucciones -->
+            <div class="relative rounded-3xl p-6 sm:p-9 overflow-hidden bg-gradient-to-br from-slate-900 via-navy-900 to-slate-950 text-white shadow-xl border border-slate-800">
+                <div class="absolute -right-20 -top-20 w-80 h-80 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-blue-500/15 rounded-full blur-3xl pointer-events-none"></div>
 
-            <div class="relative z-10 space-y-4 max-w-4xl">
-                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-semibold">
-                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-                    <span>Guía Técnica &bull; Fase 4 (Frontend React 18 & Integración E2E)</span>
-                </div>
-                <h1 class="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-tight">
-                    Recomendaciones Estratégicas, Funcionales y Arquitectónicas
-                </h1>
-                <p class="text-slate-300 text-xs sm:text-sm md:text-base leading-relaxed">
-                    Plataforma interactiva de consulta para orientar el desarrollo de la <strong class="text-emerald-400">Fase 4</strong>. Proporciona recomendaciones adaptadas a las reglas de negocio de cada equipo con enfoque en usabilidad industrial, resiliencia y analítica en tiempo real.
-                </p>
+                <div class="relative z-10 space-y-4 max-w-4xl">
+                    <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-semibold">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i>
+                        <span>Guía Oficial de Entrega y Evaluación &bull; Fase 4</span>
+                    </div>
+                    <h1 class="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-tight">
+                        Instrucciones de Trabajo y Directrices para la Fase 4
+                    </h1>
+                    <p class="text-slate-300 text-xs sm:text-sm md:text-base leading-relaxed">
+                        Bienvenido a la plataforma interactiva <strong class="text-emerald-400">REAF-F4</strong>. Aquí encontrarás las recomendaciones personalizadas para la construcción de tu Frontend en <strong>React 18</strong>, la integración completa <strong>End-to-End</strong> con tu API en <strong>.NET 10</strong> y la preparación para la defensa presencial en aula.
+                    </p>
 
-                <!-- Quick Stats Grid -->
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3">
-                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
-                        <div class="text-emerald-400 font-extrabold text-xl sm:text-2xl">5 Grupos</div>
-                        <div class="text-[11px] sm:text-xs text-slate-400 font-medium">Modelos Especializados</div>
-                    </div>
-                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
-                        <div class="text-teal-400 font-extrabold text-xl sm:text-2xl">React 18 + .NET</div>
-                        <div class="text-[11px] sm:text-xs text-slate-400 font-medium">Arquitectura Desacoplada</div>
-                    </div>
-                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
-                        <div class="text-cyan-400 font-extrabold text-xl sm:text-2xl">RFC 7807 & JWT</div>
-                        <div class="text-[11px] sm:text-xs text-slate-400 font-medium">Seguridad & Resiliencia</div>
-                    </div>
-                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
-                        <div class="text-sky-400 font-extrabold text-xl sm:text-2xl">10 Checklist</div>
-                        <div class="text-[11px] sm:text-xs text-slate-400 font-medium">Pautas de Calidad</div>
+                    <!-- Botones de Acción Rápida -->
+                    <div class="flex flex-wrap items-center gap-3 pt-3">
+                        <button onclick="switchView('groups')" class="px-4 py-2.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm flex items-center space-x-2 shadow-lg shadow-emerald-500/25 transition">
+                            <i data-lucide="layers" class="w-4 h-4"></i>
+                            <span>Ir al Detalle de mi Grupo</span>
+                        </button>
+                        <button onclick="switchView('checklist')" class="px-4 py-2.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm flex items-center space-x-2 border border-white/15 backdrop-blur-sm transition">
+                            <i data-lucide="check-square" class="w-4 h-4"></i>
+                            <span>Abrir Checklist de Calidad</span>
+                        </button>
+                        <button onclick="copyAnnouncement()" id="btn-copy-announcement" class="px-4 py-2.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs sm:text-sm flex items-center space-x-2 border border-slate-700 transition">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                            <span id="copy-btn-text">Copiar Comunicado</span>
+                        </button>
                     </div>
                 </div>
             </div>
-        </section>
+
+            <!-- 4 Pasos Metodológicos -->
+            <div class="space-y-4">
+                <div class="flex items-center space-x-2">
+                    <i data-lucide="compass" class="w-5 h-5 text-emerald-500"></i>
+                    <h2 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">Flujo de Trabajo Sugerido para los Equipos</h2>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Paso 1 -->
+                    <div class="rounded-2xl glass-card p-5 border border-slate-200/80 dark:border-slate-800 space-y-2.5 relative overflow-hidden group hover:border-emerald-500/50 transition">
+                        <div class="w-8 h-8 rounded-xl bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center font-black text-sm">1</div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-sm">1. Explorar el Modelo</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Ingresen a la pestaña <strong>Grupos & Modelos</strong>, seleccionen su proyecto y analicen las brechas de negocio y componentes estrella propuestos.
+                        </p>
+                    </div>
+
+                    <!-- Paso 2 -->
+                    <div class="rounded-2xl glass-card p-5 border border-slate-200/80 dark:border-slate-800 space-y-2.5 relative overflow-hidden group hover:border-emerald-500/50 transition">
+                        <div class="w-8 h-8 rounded-xl bg-teal-100 dark:bg-teal-950 text-teal-600 dark:text-teal-400 flex items-center justify-center font-black text-sm">2</div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-sm">2. Diseñar la UI React 18</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Construyan la interfaz gráfica aplicando diseño responsivo (*Mobile First*), componentes modulares y estados visuales de carga (*Skeletons*).
+                        </p>
+                    </div>
+
+                    <!-- Paso 3 -->
+                    <div class="rounded-2xl glass-card p-5 border border-slate-200/80 dark:border-slate-800 space-y-2.5 relative overflow-hidden group hover:border-emerald-500/50 transition">
+                        <div class="w-8 h-8 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-black text-sm">3</div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-sm">3. Integración E2E & JWT</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Conecten la UI con los endpoints de su API en .NET 10 mediante Axios, gestionando tokens JWT Bearer y capturando errores bajo el estándar RFC 7807.
+                        </p>
+                    </div>
+
+                    <!-- Paso 4 -->
+                    <div class="rounded-2xl glass-card p-5 border border-slate-200/80 dark:border-slate-800 space-y-2.5 relative overflow-hidden group hover:border-emerald-500/50 transition">
+                        <div class="w-8 h-8 rounded-xl bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-400 flex items-center justify-center font-black text-sm">4</div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-sm">4. Validar con Checklist</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Completen los 10 puntos del <strong>Checklist Transversal</strong> y ensayen una demostración de flujo completo para la defensa presencial en aula.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pautas Específicas por Grupo (Tarjetas Rápidas con Botón Directo) -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="users" class="w-5 h-5 text-emerald-500"></i>
+                        <h2 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">Directrices Específicas por Equipo</h2>
+                    </div>
+                    <span class="text-xs text-slate-500 dark:text-slate-400">Haz clic en "Ver Ficha" para abrir el grupo</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    
+                    <!-- Grupo 1 Card -->
+                    <div class="rounded-3xl glass-card p-5 border border-slate-200/80 dark:border-slate-800 space-y-3.5 flex flex-col justify-between">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-0.5 rounded-lg text-xs font-extrabold bg-blue-600 text-white uppercase">Grupo 1</span>
+                                <span class="text-[11px] font-mono text-slate-400">Distribución</span>
+                            </div>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-sm">Distribución de Alimentos Polar</h3>
+                            <ul class="text-xs text-slate-600 dark:text-slate-400 space-y-1.5 list-disc list-inside">
+                                <li>Tablero de flotas y estado de camiones (*Truck Cards*).</li>
+                                <li>Módulo de liquidación ciega de chofer (*Blind Settlement*).</li>
+                                <li>Control de envases retornables (*Empty Groups*).</li>
+                                <li>Impresión térmica para tickets de entrega en ruta.</li>
+                            </ul>
+                        </div>
+                        <button onclick="goToGroup(1)" class="w-full py-2 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-500 transition text-slate-700 dark:text-slate-200 flex items-center justify-center space-x-1.5">
+                            <span>Ver Ficha Completa</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+
+                    <!-- Grupo 2 Card -->
+                    <div class="rounded-3xl glass-card p-5 border border-slate-200/80 dark:border-slate-800 space-y-3.5 flex flex-col justify-between">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-0.5 rounded-lg text-xs font-extrabold bg-amber-600 text-white uppercase">Grupo 2</span>
+                                <span class="text-[11px] font-mono text-slate-400">Lotería</span>
+                            </div>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-sm">Agencia de Lotería</h3>
+                            <ul class="text-xs text-slate-600 dark:text-slate-400 space-y-1.5 list-disc list-inside">
+                                <li class="text-amber-600 dark:text-amber-400 font-semibold">Prioridad: Migrar a PostgreSQL con EF Core y JWT.</li>
+                                <li>Terminal POS ultrarrápida (atajos de teclado).</li>
+                                <li>Control de riesgo de banca por jugada.</li>
+                                <li>Validador/escáner de tickets premiados y resultados.</li>
+                            </ul>
+                        </div>
+                        <button onclick="goToGroup(2)" class="w-full py-2 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-500 transition text-slate-700 dark:text-slate-200 flex items-center justify-center space-x-1.5">
+                            <span>Ver Ficha Completa</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+
+                    <!-- Grupo 3 Card -->
+                    <div class="rounded-3xl glass-card p-5 border border-slate-200/80 dark:border-slate-800 space-y-3.5 flex flex-col justify-between">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-0.5 rounded-lg text-xs font-extrabold bg-emerald-600 text-white uppercase">Grupo 3</span>
+                                <span class="text-[11px] font-mono text-slate-400">Ganadería</span>
+                            </div>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-sm">Sistema de Gestión de Ganado</h3>
+                            <ul class="text-xs text-slate-600 dark:text-slate-400 space-y-1.5 list-disc list-inside">
+                                <li>Ficha Técnica 360° del bovino con historial y fotos.</li>
+                                <li>Gráficas interactivas de Ganancia Diaria de Peso ($\text{GDP}$).</li>
+                                <li>Mapa visual de potreros con semáforo de capacidad.</li>
+                                <li>Módulo de pesaje masivo en manga sin recargas.</li>
+                            </ul>
+                        </div>
+                        <button onclick="goToGroup(3)" class="w-full py-2 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-500 transition text-slate-700 dark:text-slate-200 flex items-center justify-center space-x-1.5">
+                            <span>Ver Ficha Completa</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+
+                    <!-- Grupo 4 Card -->
+                    <div class="rounded-3xl glass-card p-5 border border-slate-200/80 dark:border-slate-800 space-y-3.5 flex flex-col justify-between">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-0.5 rounded-lg text-xs font-extrabold bg-purple-600 text-white uppercase">Grupo 4</span>
+                                <span class="text-[11px] font-mono text-slate-400">E-commerce</span>
+                            </div>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-sm">E-commerce Almacén</h3>
+                            <ul class="text-xs text-slate-600 dark:text-slate-400 space-y-1.5 list-disc list-inside">
+                                <li class="text-purple-600 dark:text-purple-400 font-semibold">Prioridad: Publicar repositorio en GitHub.</li>
+                                <li>Catálogo moderno con variantes y búsqueda con *debouncing*.</li>
+                                <li>Checkout guiado (*Stepper*) con reserva temporal de stock.</li>
+                                <li>Tablero Kanban de pedidos para aprobación de pagos.</li>
+                            </ul>
+                        </div>
+                        <button onclick="goToGroup(4)" class="w-full py-2 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-500 transition text-slate-700 dark:text-slate-200 flex items-center justify-center space-x-1.5">
+                            <span>Ver Ficha Completa</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+
+                    <!-- Grupo 5 Card -->
+                    <div class="rounded-3xl glass-card p-5 border border-slate-200/80 dark:border-slate-800 space-y-3.5 flex flex-col justify-between md:col-span-2 lg:col-span-2">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-0.5 rounded-lg text-xs font-extrabold bg-rose-600 text-white uppercase">Grupo 5</span>
+                                <span class="text-[11px] font-mono text-slate-400">Híbrido: Licorería + Discoteca</span>
+                            </div>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-sm">Local Comercial Híbrido (Licorería POS + Discoteca / Club Nocturno)</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-600 dark:text-slate-400">
+                                <ul class="space-y-1.5 list-disc list-inside">
+                                    <li>Doble modalidad operativa (Modo Día: Licorería / Modo Noche: Club).</li>
+                                    <li>Plano interactivo de mesas y zonas VIP (Canvas/SVG).</li>
+                                </ul>
+                                <ul class="space-y-1.5 list-disc list-inside">
+                                    <li>Pantalla KDS de barra con máquina de estados de comanda.</li>
+                                    <li>Cuentas abiertas con abonos multimoneda (USD/Bs) y mermas.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button onclick="goToGroup(5)" class="w-full py-2 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-500 transition text-slate-700 dark:text-slate-200 flex items-center justify-center space-x-1.5">
+                            <span>Ver Ficha Completa</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Criterios de Evaluación y Calidad -->
+            <div class="rounded-3xl glass-card p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800 space-y-4">
+                <div class="flex items-center space-x-2 text-emerald-600 dark:text-emerald-400">
+                    <i data-lucide="award" class="w-5 h-5"></i>
+                    <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Criterios de Aprobación para la Fase 4</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+                    <div class="p-3.5 rounded-2xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 space-y-1">
+                        <div class="font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            <span>1. Frontend Desacoplado & Moderno</span>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-xs">
+                            Desarrollado en <strong>React 18 / Vite / TypeScript</strong> con Tailwind CSS, modularizado en componentes limpios y sin código espagueti.
+                        </p>
+                    </div>
+
+                    <div class="p-3.5 rounded-2xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 space-y-1">
+                        <div class="font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                            <span class="w-2 h-2 rounded-full bg-teal-500"></span>
+                            <span>2. Integración End-to-End Real</span>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-xs">
+                            Todo dato visualizado debe guardarse y consumirse desde la base de datos PostgreSQL mediante la API .NET 10 (sin arreglos estáticos en memoria).
+                        </p>
+                    </div>
+
+                    <div class="p-3.5 rounded-2xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 space-y-1">
+                        <div class="font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                            <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+                            <span>3. Manejo de Errores RFC 7807</span>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-xs">
+                            Las alertas Toast y validaciones visuales deben capturar el formato estructurado <code>application/problem+json</code> emitido por el backend.
+                        </p>
+                    </div>
+
+                    <div class="p-3.5 rounded-2xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 space-y-1">
+                        <div class="font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            <span>4. Seguridad JWT y Control por Roles</span>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-xs">
+                            Protección de rutas privadas en React mediante *Guards* que verifiquen el rol del usuario autenticado (Admin vs. Operador/Empleado).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
         <!-- VIEW 1: GROUPS & BUSINESS MODELS -->
-        <div id="view-groups" class="space-y-6">
+        <div id="view-groups" class="hidden space-y-6">
 
             <!-- Group Selector Tabs (Scroll horizontal en móviles) -->
             <div class="flex items-center justify-between flex-wrap gap-3 pb-2 border-b border-slate-200 dark:border-slate-800">
@@ -574,8 +816,6 @@
         // Theme Toggle & Logo Switcher
         function initTheme() {
             const themeBtn = document.getElementById('theme-toggle-btn');
-            const themeIcon = document.getElementById('theme-icon');
-            const themeText = document.getElementById('theme-text');
             const unetLogoImg = document.getElementById('unet-logo-img');
 
             const isDark = localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
@@ -609,7 +849,7 @@
 
         // View Navigation
         function switchView(viewName) {
-            const views = ['groups', 'matrix', 'checklist'];
+            const views = ['instructions', 'groups', 'matrix', 'checklist'];
             views.forEach(v => {
                 const el = document.getElementById(`view-${v}`);
                 const nav = document.getElementById(`nav-${v}`);
@@ -636,6 +876,12 @@
                 }
             });
             lucide.createIcons();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goToGroup(groupId) {
+            selectGroup(groupId);
+            switchView('groups');
         }
 
         // Render Tabs
@@ -849,6 +1095,27 @@
 
             document.getElementById('checklist-progress-text').innerText = `${completed}/${total} Completados (${pct}%)`;
             document.getElementById('checklist-progress-bar').style.width = `${pct}%`;
+        }
+
+        // Copy Announcement Text
+        function copyAnnouncement() {
+            const textToCopy = `📢 COMUNICADO OFICIAL: Recomendaciones para la Fase 4 (REAF-F4)
+Universidad Nacional Experimental del Táchira (UNET)
+Desarrollo de Aplicaciones Web (Código: 0423807T)
+Facilitador: M.Sc. Ing. Gabriel Alexis Ramírez Sánchez
+
+Se encuentra disponible la plataforma interactiva con las recomendaciones estratégicas, funcionales y arquitectónicas para la Fase 4:
+👉 https://gramirezsunet.github.io/desarrolloAplicacionesWeb/REAF-F4/
+
+Por favor, ingresen a la plataforma, revisen las directrices específicas asignadas a su grupo y completen el checklist transversal de calidad industrial.`;
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const btnText = document.getElementById('copy-btn-text');
+                btnText.innerText = '¡Copiado!';
+                setTimeout(() => { btnText.innerText = 'Copiar Comunicado'; }, 2500);
+            }).catch(() => {
+                alert('Texto copiado al portapapeles.');
+            });
         }
     </script>
 </body>
