@@ -1,11 +1,27 @@
-# Sistema de Gestión de Inventario Empresarial (ERP)
+﻿<p align="center">
+  <img src="REAF-F4/Banner_Google_Classroom_GR.jpeg" alt="Banner Asignatura DAW" width="100%" />
+</p>
 
-### **Asignatura: Desarrollo de Aplicaciones Web (Código: 0423807T)**
+---
+
+<table>
+  <tr>
+    <td width="95" align="center" style="border:none;">
+      <img src="REAF-F4/unet-logo.png" alt="Logo UNET" width="80" />
+    </td>
+    <td style="border:none;">
+      <h1 style="border:none; margin:0; padding:0;">Sistema de Gestión de Inventario Empresarial (ERP)</h1>
+      <h3 style="border:none; margin:0; padding:0; color:#0b3c7b;">Asignatura: Desarrollo de Aplicaciones Web (Código: 0423807T)</h3>
+    </td>
+  </tr>
+</table>
 
 **Facilitador:** M.Sc. Ing. Gabriel Alexis Ramírez Sánchez  
-**Email:** gramirezs@unet.edu.ve  
-**Período Académico:** Septiembre, 2026  
+**Email:** [gramirezs@unet.edu.ve](mailto:gramirezs@unet.edu.ve)  
+**Período Académico:** Septiembre / Octubre, 2026  
 **San Cristóbal, Estado Táchira, Venezuela**
+
+> 🚀 **Plataforma Interactiva de Recomendaciones (Fase 4):** [Abrir REAF-F4 en Vivo](https://gramirezsunet.github.io/desarrolloAplicacionesWeb/REAF-F4/)
 
 ---
 
