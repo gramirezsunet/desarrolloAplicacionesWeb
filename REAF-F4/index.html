@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REAF-F4 | Recomendaciones Estratégicas, Funcionales y Arquitectónicas</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            900: '#14532d',
+                        },
+                        navy: {
+                            800: '#0f172a',
+                            900: '#020617',
+                            950: '#010409',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(51, 65, 85, 0.5);
+        }
+        .badge-pulse {
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-navy-950 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300 font-sans antialiased selection:bg-emerald-500 selection:text-white">
+
+    <!-- Navbar Sticky -->
+    <header class="sticky top-0 z-50 glass-card border-b border-slate-200/80 dark:border-slate-800/80 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
+                    <i data-lucide="layers" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-extrabold text-lg tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 dark:from-emerald-400 dark:to-teal-300">REAF-F4</span>
+                        <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 font-semibold border border-emerald-300 dark:border-emerald-800">Fase 4 Ready</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block">Guía Estratégica, Funcional y Arquitectónica para Desarrollo de Aplicaciones Web</p>
+                </div>
+            </div>
+
+            <!-- Quick Navigation & Theme Toggle -->
+            <div class="flex items-center space-x-2 sm:space-x-4">
+                <nav class="hidden md:flex items-center space-x-1 text-sm font-medium text-slate-600 dark:text-slate-300">
+                    <button onclick="switchView('groups')" id="nav-groups" class="px-3 py-1.5 rounded-lg text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 transition">Grupos & Modelos</button>
+                    <button onclick="switchView('matrix')" id="nav-matrix" class="px-3 py-1.5 rounded-lg hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition">Matriz Comparativa</button>
+                    <button onclick="switchView('checklist')" id="nav-checklist" class="px-3 py-1.5 rounded-lg hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition">Checklist Transversal</button>
+                </nav>
+
+                <div class="h-6 w-px bg-slate-200 dark:bg-slate-800 hidden md:block"></div>
+
+                <button id="theme-toggle" class="p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Alternar tema">
+                    <i data-lucide="moon" id="theme-icon" class="w-5 h-5"></i>
+                </button>
+
+                <button onclick="window.print()" class="hidden sm:flex items-center space-x-1.5 text-xs font-semibold px-3 py-2 rounded-xl bg-slate-200/70 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition">
+                    <i data-lucide="printer" class="w-4 h-4"></i>
+                    <span>Imprimir / PDF</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- Hero Section -->
+        <section class="relative rounded-3xl p-6 sm:p-10 overflow-hidden bg-gradient-to-br from-slate-900 via-navy-900 to-slate-950 text-white shadow-2xl border border-slate-800">
+            <div class="absolute -right-20 -top-20 w-80 h-80 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-teal-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 space-y-4 max-w-4xl">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-medium">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                    <span>Entrega Final &mdash; Frontend React 18 & Integración E2E</span>
+                </div>
+                <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
+                    Recomendaciones Estratégicas, Funcionales y Arquitectónicas
+                </h1>
+                <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                    Guía de ingeniería de software para la <strong class="text-emerald-400">Fase 4</strong>. Diseñada para potenciar el valor del modelo de negocio de cada equipo mediante interfaces desacopladas de alto rendimiento, integración resiliente con .NET 10 y analítica de datos operativa.
+                </p>
+
+                <!-- Quick Stats Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4">
+                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                        <div class="text-emerald-400 font-bold text-xl sm:text-2xl">5 Grupos</div>
+                        <div class="text-xs text-slate-400 font-medium">Modelos Especializados</div>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                        <div class="text-teal-400 font-bold text-xl sm:text-2xl">React 18 + .NET 10</div>
+                        <div class="text-xs text-slate-400 font-medium">Arquitectura Desacoplada</div>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                        <div class="text-cyan-400 font-bold text-xl sm:text-2xl">RFC 7807 + JWT</div>
+                        <div class="text-xs text-slate-400 font-medium">Seguridad & Resiliencia</div>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                        <div class="text-green-400 font-bold text-xl sm:text-2xl">100% Práctico</div>
+                        <div class="text-xs text-slate-400 font-medium">Checklist & Componentes</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 1: GROUPS & BUSINESS MODELS -->
+        <div id="view-groups" class="space-y-6">
+
+            <!-- Group Selector Tabs -->
+            <div class="flex items-center justify-between flex-wrap gap-3 pb-2 border-b border-slate-200 dark:border-slate-800">
+                <div class="flex items-center space-x-2 overflow-x-auto pb-1 max-w-full" id="group-tabs">
+                    <!-- Dynamic group buttons rendered by JS -->
+                </div>
+                <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 flex items-center space-x-1">
+                    <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                    <span>Selecciona un grupo para explorar</span>
+                </div>
+            </div>
+
+            <!-- Active Group Content Card -->
+            <div id="group-content-area" class="transition-all duration-300">
+                <!-- Group Details Card injected dynamically via JS -->
+            </div>
+        </div>
+
+        <!-- VIEW 2: COMPARATIVE MATRIX -->
+        <div id="view-matrix" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                        <i data-lucide="table" class="w-5 h-5 text-emerald-500"></i>
+                        <span>Matriz Comparativa de Implementación — Fase 4</span>
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Resumen arquitectónico de los componentes clave por modelo de negocio</p>
+                </div>
+
+                <!-- Matrix Search Filter -->
+                <div class="relative w-full sm:w-72">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
+                    <input type="text" id="matrix-search" placeholder="Buscar por palabra clave..." class="w-full pl-9 pr-4 py-2 rounded-xl text-xs sm:text-sm bg-white dark:bg-navy-900 border border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-slate-800 dark:text-slate-200">
+                </div>
+            </div>
+
+            <!-- Table Card -->
+            <div class="overflow-x-auto rounded-2xl glass-card shadow-sm border border-slate-200/80 dark:border-slate-800">
+                <table class="w-full text-left text-xs sm:text-sm" id="matrix-table">
+                    <thead class="bg-slate-100/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-800">
+                        <tr>
+                            <th class="p-4">Grupo</th>
+                            <th class="p-4">Propuesta de Valor</th>
+                            <th class="p-4">Componente UI Estrella</th>
+                            <th class="p-4">Flujo de Integración Clave</th>
+                            <th class="p-4">Analítica & Dashboard</th>
+                            <th class="p-4">Reto Arquitectónico</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200/60 dark:divide-slate-800 text-slate-600 dark:text-slate-300 font-normal" id="matrix-body">
+                        <!-- Rendered via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- VIEW 3: TRANSVERSAL CHECKLIST -->
+        <div id="view-checklist" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                        <i data-lucide="check-square" class="w-5 h-5 text-emerald-500"></i>
+                        <span>Checklist Transversal de Calidad Industrial (Fase 4)</span>
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Guarda tu progreso localmente a medida que tu equipo implemente cada funcionalidad</p>
+                </div>
+
+                <div class="flex items-center space-x-3">
+                    <span id="checklist-progress-text" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3 py-1.5 rounded-xl border border-emerald-200 dark:border-emerald-800">0/10 Completados (0%)</span>
+                    <button onclick="resetChecklist()" class="text-xs text-slate-500 hover:text-red-500 dark:hover:text-red-400 underline">Reiniciar</button>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-slate-200 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                <div id="checklist-progress-bar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+
+            <!-- Checklist Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="checklist-container">
+                <!-- Rendered via JS -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-16 border-t border-slate-200/80 dark:border-slate-800/80 py-8 text-center text-xs text-slate-500 dark:text-slate-400">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p class="font-medium">Universidad Nacional Experimental del Táchira &mdash; Departamento de Informática</p>
+            <p class="text-[11px] text-slate-400 dark:text-slate-500 font-mono">Desarrollo de Aplicaciones Web &bull; REAF-F4 &bull; Periodo 2026</p>
+        </div>
+    </footer>
+
+    <!-- App Data & Scripts -->
+    <script>
+        // Data Structure
+        const groupsData = [
+            {
+                id: 1,
+                name: "Grupo 1",
+                badgeColor: "from-blue-600 to-indigo-600",
+                projectTitle: "Sistema de Distribución de Alimentos Polar",
+                subtitle: "Logística de flotas, preventa, liquidación de camiones y envases retornables",
+                members: ["Javier Alejandro Chacón Ramírez", "Kevin Aldemar Orduz Carrillo", "Sarmiento Leynner Angulo Oswaldo"],
+                repoUrl: "https://github.com/Leynner2/DistribucionPolar",
+                icon: "truck",
+                businessCore: "Empresa de distribución masiva de alimentos en ruta y galpón central. Controla el inventario de camiones de despacho, transferencias entre depósitos, clientes mayoristas a crédito/contado y el balance de envases retornables (Empty Groups).",
+                keyOpportunities: [
+                    {
+                        title: "Liquidación Ciega de Ruta (Blind Settlement)",
+                        desc: "Al finalizar el día, el chofer/vendedor ingresa en el sistema el conteo físico de dinero recaudado y mercancía devuelta sin ver el valor esperado. El sistema calcula las discrepancias y genera la planilla de cuadre."
+                    },
+                    {
+                        title: "Control Estricto de Crédito y Cuentas por Cobrar",
+                        desc: "Bloquear automáticamente la emisión de nuevas facturas a clientes con facturas vencidas de más de N días o que excedan su límite de crédito en divisas/bolívares."
+                    },
+                    {
+                        title: "Gestión de Envases Retornables (Empty Groups)",
+                        desc: "Monitoreo bidireccional del inventario de cajas de refrescos/cervezas y gaveras entregadas en calidad de depósito vs. devueltas por el cliente."
+                    }
+                ],
+                frontendUI: [
+                    {
+                        title: "Tablero Visual de Flotas (Truck Cards)",
+                        desc: "Panel en React 18 con tarjetas de estado por camión (Cargando, En Ruta, Liquidado), barra de progreso de capacidad volumétrica/peso y monto total facturado."
+                    },
+                    {
+                        title: "Módulo de Impresión Térmica (80mm / 58mm)",
+                        desc: "Generación de tickets de entrega y recibos de cobro directamente desde el navegador con CSS print optimizado para impresoras POS portátiles."
+                    },
+                    {
+                        title: "Preventa Offline-First (PWA / IndexedDB)",
+                        desc: "Almacenamiento local de catálogo y pedidos para que el vendedor registre órdenes en zonas sin cobertura y las sincronice al reconectarse."
+                    }
+                ],
+                integration: [
+                    "Sincronización de pedidos mediante endpoints Scoped en .NET 10 con idempotencia (evitar facturas duplicadas).",
+                    "Descarga de respaldos y balances contables en JSON/CSV ya implementados en el backend.",
+                    "Manejo de errores RFC 7807 interceptados por Axios para notificar faltantes de stock en camión."
+                ],
+                analytics: "KPIs de utilización de flota (% ocupación por camión), rotación de productos estrella y envejecimiento de deuda de clientes mayoristas."
+            },
+            {
+                id: 2,
+                name: "Grupo 2",
+                badgeColor: "from-amber-600 to-yellow-500",
+                projectTitle: "Sistema para Agencia de Lotería",
+                subtitle: "Emisión ultrarrápida de jugadas, control de riesgo de banca y validación de premios",
+                members: ["Isaac Díaz Mora", "Osman Alexander Manrique Delpino"],
+                repoUrl: "https://github.com/elaprendiz41/LoteriaAgency",
+                icon: "ticket",
+                businessCore: "Comercialización de juegos de azar (animalitos, triples, terminales) en taquillas físicas. Requiere control riguroso de horarios de cierre de sorteos, validación de boletos ganadores y límites de riesgo financiero por jugada.",
+                keyOpportunities: [
+                    {
+                        title: "Migración a Persistencia Relacional y Seguridad (Urgente)",
+                        desc: "Completar la transición del prototipo en memoria a PostgreSQL con EF Core, hashing de contraseñas con salt y autenticación stateless JWT para taquilleros y administradores."
+                    },
+                    {
+                        title: "Control de Exposición al Riesgo por Número/Animalito",
+                        desc: "Algoritmo que bloquea apuestas sobre un número cuando el premio potencial acumulado supera la reserva máxima de pago de la agencia para ese sorteo."
+                    },
+                    {
+                        title: "Cierre Automatizado de Sorteos por Horario",
+                        desc: "Bloqueo matemático de emisión exactamente N minutos antes del sorteo (ej. 5 min antes) para garantizar transparencia y evitar tickets fuera de tiempo."
+                    }
+                ],
+                frontendUI: [
+                    {
+                        title: "Terminal POS Ultrarrápida (Teclado Numérico)",
+                        desc: "Interfaz optimizada al 100% para atajos de teclado (Enter, F2, Espacio) permitiendo emitir tickets en menos de 5 segundos sin usar el ratón."
+                    },
+                    {
+                        title: "Lector y Validador de Tickets (Código de Barras / QR)",
+                        desc: "Módulo con escáner de cámara o pistola lectora que muestre inmediatamente en pantalla gigante: GANADOR (Monto) o NO PREMIADO."
+                    },
+                    {
+                        title: "Pantalla Pública de Resultados en Vivo",
+                        desc: "Vista pública para monitores de la agencia que renderice en tiempo real los resultados de los sorteos y los animalitos premiados del día."
+                    }
+                ],
+                integration: [
+                    "Canal de notificaciones reactivas (WebSockets / SignalR / SSE) para actualizar el estado del sorteo en pantalla tan pronto se publica el ganador.",
+                    "Validación de tickets con firma criptográfica o serial único para evitar clonación de boletos premiados."
+                ],
+                analytics: "Gráfica de números más apostados del día, balance financiero neto por sorteo (Recaudado - Premios Pagados) y arqueo de caja por taquillero."
+            },
+            {
+                id: 3,
+                name: "Grupo 3",
+                badgeColor: "from-emerald-600 to-green-600",
+                projectTitle: "Sistema de Gestión de Ganado (DAW)",
+                subtitle: "Trazabilidad bovina integral, sanidad, pesajes, potreros y producción agropecuaria",
+                members: ["Andres Augusto Gutierrez Ordaz", "Santiago Hernandez Gelvez"],
+                repoUrl: "https://github.com/AndrGutierrez/DAW",
+                icon: "activity",
+                businessCore: "Plataforma de administración pecuaria integral para fincas. Gestiona la trazabilidad individual de animales (RFID / Arete), genealogía, pesajes periódicos, sanidad/cuarentena, producción (leche/carne) y rotación de potreros.",
+                keyOpportunities: [
+                    {
+                        title: "Curva de Ganancia Diaria de Peso (GDP)",
+                        desc: "Algoritmo que calcule la Ganancia Diaria de Peso (GDP = (Peso Actual - Peso Anterior) / Días) y alerte automáticamente al productor sobre animales con bajo rendimiento."
+                    },
+                    {
+                        title: "Alertas Sanitarias y Períodos de Retiro",
+                        desc: "Notificaciones visuales de medicamentos aplicados cuyo período de retiro inhabilita temporalmente la venta de leche o el sacrificio para consumo humano."
+                    },
+                    {
+                        title: "Cálculo de Carga Animal por Hectárea",
+                        desc: "Monitoreo de la capacidad de carga de cada potrero para prevenir sobrepastoreo y degradación del pasto."
+                    }
+                ],
+                frontendUI: [
+                    {
+                        title: "Ficha Técnica 360° del Animal",
+                        desc: "Componente con historial clínico, fotos cronológicas, árbol genealógico interactivo, estado reproductivo y gráfica de evolución de peso (Recharts)."
+                    },
+                    {
+                        title: "Mapa Interactivo de Potreros y Lotes",
+                        desc: "Visualización espacial de los potreros de la finca con código de semáforo según capacidad de carga y días de ocupación."
+                    },
+                    {
+                        title: "Módulo de Pesaje Masivo en Manga",
+                        desc: "Formulario de alta velocidad optimizado para báscula de ganado, permitiendo capturar pesos consecutivos sin recargar la pantalla."
+                    }
+                ],
+                integration: [
+                    "Carga y compresión de fotos de animales en el cliente antes de invocar la API en .NET 10.",
+                    "Exportación de reportes de producción láctea y sanitaria a formatos Excel y PDF para entidades de control agropecuario."
+                ],
+                analytics: "Curva de producción lechera diaria por lote, distribución de pesos por rango de edad y tasa de preñez/fertilidad del rebaño."
+            },
+            {
+                id: 4,
+                name: "Grupo 4",
+                badgeColor: "from-purple-600 to-violet-600",
+                projectTitle: "Sistema E-commerce con Usuarios y Administración",
+                subtitle: "Tienda online, catálogo con variantes, carrito multimoneda y panel administrativo",
+                members: ["María Fernanda Cachopo Rojas", "José Gregorio Briceño Romero", "Francisco Andrés Sánchez Zea"],
+                repoUrl: "https://github.com/FranciscoSanchez001/Backend_Almacen",
+                icon: "shopping-bag",
+                businessCore: "Plataforma de comercio electrónico para almacén con catálogo categorizado, gestión de inventario con variantes (tallas, colores), carrito de compras multimoneda y panel administrativo de ventas y despachos.",
+                keyOpportunities: [
+                    {
+                        title: "Apertura Pública del Repositorio (Inmediato)",
+                        desc: "Modificar la visibilidad del repositorio en GitHub a Público para permitir la validación del código por parte del docente y la comunidad académica."
+                    },
+                    {
+                        title: "Reserva Temporal de Stock en Checkout",
+                        desc: "Bloquear temporalmente el inventario durante el proceso de pago (por X minutos) para evitar sobreventa (Overselling) antes de que se confirme la transferencia."
+                    },
+                    {
+                        title: "Flujo de Comprobantes de Pago Digital",
+                        desc: "Permitir al cliente adjuntar captura de Pago Móvil o Zelle con validación visual en el panel del administrador antes de despachar."
+                    }
+                ],
+                frontendUI: [
+                    {
+                        title: "Storefront con Búsqueda Predictiva y Filtros",
+                        desc: "Catálogo moderno con búsqueda con debouncing, filtros facetados por precio/marca/disponibilidad y carrito persistente en localStorage."
+                    },
+                    {
+                        title: "Checkout en Pasos (Stepper Guiado)",
+                        desc: "Proceso fluido en 3 pasos: 1. Datos de Envío -> 2. Método de Pago (Pago Móvil / Divisas) -> 3. Carga de Comprobante y Confirmación."
+                    },
+                    {
+                        title: "Tablero Kanban de Pedidos Administrativo",
+                        desc: "Panel estilo Trello: Pendiente por Validar -> Pagado -> En Preparación -> Despachado -> Entregado, con botón de aprobación rápida."
+                    }
+                ],
+                integration: [
+                    "Carga asíncrona de comprobantes de pago con vista previa y validación de tipos MIME autorizados (JPEG/PNG/PDF).",
+                    "Notificaciones de cambio de estado de pedido para el usuario comprador."
+                ],
+                analytics: "Tasa de conversión del embudo de ventas (Vistas -> Carrito -> Checkout -> Pagado), ticket promedio y productos más buscados sin stock."
+            },
+            {
+                id: 5,
+                name: "Grupo 5",
+                badgeColor: "from-rose-600 to-pink-600",
+                projectTitle: "Local Comercial Híbrido: Licorería POS + Discoteca / Club Nocturno",
+                subtitle: "Plano de mesas VIP, KDS de barra, comandas por estados, cuentas abiertas y mermas",
+                members: ["Kelwuin Esloyner Carrillo Ortiz", "José Javier Garcia Peñaloza"],
+                repoUrl: "https://github.com/Javier-GarciaP/Licoreria-Backend-NET/tree/docs/evidencias-fase-2-3",
+                icon: "sparkles",
+                businessCore: "Modelo híbrido de alta rotación que opera como Licorería mayorista/minorista de día y como Club Nocturno / Discoteca de noche (Cover en puerta, Reservas de mesas VIP, Comandas en barra/cocina, Cuentas abiertas y Mermas).",
+                keyOpportunities: [
+                    {
+                        title: "Doble Modalidad Operativa (Modo Día / Modo Noche)",
+                        desc: "Alternar la interfaz entre 'Modo Licorería' (POS rápido de mostrador para botellas) y 'Modo Discoteca' (gestión de plano de mesas, comandas y cover en puerta)."
+                    },
+                    {
+                        title: "Máquina de Estados de Comandas y Barra",
+                        desc: "Implementar la máquina de estados ya programada en el backend (Recibido -> Preparado -> Entregado) para agilizar la salida de cócteles y servicios en barra."
+                    },
+                    {
+                        title: "Detección de Conflictos en Reservas VIP",
+                        desc: "Utilizar el servicio DetectorConflictosReserva para impedir dobles reservas de mesas en franjas horarias concurrentes durante fines de semana."
+                    },
+                    {
+                        title: "Control de Cuentas Abiertas con Abonos Mixtos",
+                        desc: "Permitir que una mesa acumule consumos y registre abonos parciales combinando efectivo USD y Pago Móvil Bs al cambio oficial del BCV."
+                    }
+                ],
+                frontendUI: [
+                    {
+                        title: "Plano Interactivo de Mesas y Zonas VIP (React Canvas/SVG)",
+                        desc: "Mapa visual del club con mesas clasificadas por zonas (VIP, Pista, Terraza, Barra) y código de color según estado (Libre, Reservada, Ocupada, En Limpieza)."
+                    },
+                    {
+                        title: "Pantalla KDS (Kitchen/Bar Display) para Bartenders",
+                        desc: "Vista en tiempo real para la estación de barra con tarjetas de comandas pendientes, tiempo transcurrido y botón de 'Marcar Preparado'."
+                    },
+                    {
+                        title: "Registro Rápido de Mermas y Cortesías de Barra",
+                        desc: "Formulario para justificar botellas rotas o tragos de cortesía a clientes VIP (EvaluadorMerma) descontando el inventario automáticamente."
+                    }
+                ],
+                integration: [
+                    "Actualización reactiva de comandas y estado de mesas en tiempo real.",
+                    "Sincronización de la tasa de cambio vigente (Singleton en backend) para recalcular consumos en USD y Bs sin demoras."
+                ],
+                analytics: "Mapa de calor de consumo por franja horaria (identificación de 'horas pico'), diagnóstico de salud de stock (subabastecido/óptimo) y reporte de mermas vs. ventas."
+            }
+        ];
+
+        const checklistItems = [
+            { id: 1, title: "Autenticación Segura en Frontend (JWT)", desc: "Almacenar el token en memoria o cookies seguras, con interceptores que inyecten el encabezado 'Authorization: Bearer <token>'." },
+            { id: 2, title: "Manejo Uniforme de Errores RFC 7807", desc: "Capturar respuestas 'application/problem+json' y mostrar alertas Toast amigables con 'title' y 'detail' del servidor." },
+            { id: 3, title: "Rutas Protegidas por Rol (RBAC Guards)", desc: "Crear componentes <PrivateRoute allowedRoles={['Admin']} /> para restringir vistas exclusivas de administración." },
+            { id: 4, title: "Validación de Formularios en Cliente", desc: "Validar campos en React (React Hook Form / Zod) replicando las reglas de negocio de FluentValidation antes del envío." },
+            { id: 5, title: "Paginación y Búsqueda en Servidor", desc: "Implementar filtros, búsqueda y paginación en tablas extensas para no sobrecargar el navegador con miles de registros." },
+            { id: 6, title: "Diseño Totalmente Responsivo (Mobile First)", desc: "Optimizar pantallas para tablets y móviles (clave para preventistas, taquilleros, meseros y administradores)." },
+            { id: 7, title: "Estados de Carga y Skeletons", desc: "Mostrar indicadores visuales de carga (Skeletons/Spinners) mientras se resuelven las peticiones asíncronas." },
+            { id: 8, title: "Manejo de Moneda y Formato Decimal", desc: "Formatear montos con precisión de 2 decimales e indicar claramente la moneda (USD / Bs) con la tasa de cambio oficial." },
+            { id: 9, title: "Despliegue y Orquestación Docker", desc: "Incluir docker-compose.yml que levante PostgreSQL, la API en .NET 10 y el Frontend en Nginx con un solo comando." },
+            { id: 10, title: "Defensa Presencial y Demostración E2E", desc: "Preparar un flujo completo de demostración en vivo que evidencie el valor del modelo de negocio de principio a fin." }
+        ];
+
+        let activeGroupId = 1;
+
+        // Init App
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            initTheme();
+            renderGroupTabs();
+            renderActiveGroup(activeGroupId);
+            renderMatrix();
+            renderChecklist();
+            initMatrixSearch();
+        });
+
+        // Theme Toggle
+        function initTheme() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            const isDark = localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                themeIcon.setAttribute('data-lucide', 'sun');
+            } else {
+                document.documentElement.classList.remove('dark');
+                themeIcon.setAttribute('data-lucide', 'moon');
+            }
+            lucide.createIcons();
+
+            themeToggle.addEventListener('click', () => {
+                const nowDark = document.documentElement.classList.toggle('dark');
+                localStorage.setItem('theme', nowDark ? 'dark' : 'light');
+                themeIcon.setAttribute('data-lucide', nowDark ? 'sun' : 'moon');
+                lucide.createIcons();
+            });
+        }
+
+        // View Navigation
+        function switchView(viewName) {
+            const views = ['groups', 'matrix', 'checklist'];
+            views.forEach(v => {
+                const el = document.getElementById(`view-${v}`);
+                const nav = document.getElementById(`nav-${v}`);
+                if (v === viewName) {
+                    el.classList.remove('hidden');
+                    nav.classList.add('text-emerald-600', 'dark:text-emerald-400', 'bg-emerald-50', 'dark:bg-emerald-950/50');
+                    nav.classList.remove('hover:bg-slate-100', 'dark:hover:bg-slate-800/50');
+                } else {
+                    el.classList.add('hidden');
+                    nav.classList.remove('text-emerald-600', 'dark:text-emerald-400', 'bg-emerald-50', 'dark:bg-emerald-950/50');
+                    nav.classList.add('hover:bg-slate-100', 'dark:hover:bg-slate-800/50');
+                }
+            });
+            lucide.createIcons();
+        }
+
+        // Render Tabs
+        function renderGroupTabs() {
+            const container = document.getElementById('group-tabs');
+            container.innerHTML = groupsData.map(g => `
+                <button onclick="selectGroup(${g.id})" id="tab-btn-${g.id}" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 whitespace-nowrap flex items-center space-x-2 ${g.id === activeGroupId ? 'bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 shadow-md' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800'}">
+                    <i data-lucide="${g.icon}" class="w-4 h-4"></i>
+                    <span>${g.name}: ${g.projectTitle.split(' ')[0]} ${g.projectTitle.split(' ')[1] || ''}</span>
+                </button>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function selectGroup(id) {
+            activeGroupId = id;
+            renderGroupTabs();
+            renderActiveGroup(id);
+        }
+
+        // Render Active Group Details
+        function renderActiveGroup(id) {
+            const g = groupsData.find(item => item.id === id);
+            const container = document.getElementById('group-content-area');
+
+            container.innerHTML = `
+                <div class="space-y-6">
+                    <!-- Header Card -->
+                    <div class="rounded-3xl glass-card p-6 sm:p-8 shadow-sm border border-slate-200/80 dark:border-slate-800 relative overflow-hidden">
+                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                            <div class="space-y-3">
+                                <div class="flex items-center space-x-3">
+                                    <span class="px-3 py-1 rounded-lg text-xs font-extrabold uppercase tracking-wider bg-gradient-to-r ${g.badgeColor} text-white shadow-sm">${g.name}</span>
+                                    <a href="${g.repoUrl}" target="_blank" class="text-xs text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 flex items-center space-x-1 font-mono transition">
+                                        <i data-lucide="github" class="w-3.5 h-3.5"></i>
+                                        <span>Repositorio</span>
+                                        <i data-lucide="external-link" class="w-3 h-3"></i>
+                                    </a>
+                                </div>
+                                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">${g.projectTitle}</h2>
+                                <p class="text-sm text-slate-600 dark:text-slate-300 font-medium">${g.subtitle}</p>
+                                <div class="flex flex-wrap items-center gap-2 pt-1 text-xs text-slate-500 dark:text-slate-400">
+                                    <span class="font-semibold text-slate-700 dark:text-slate-300 flex items-center space-x-1">
+                                        <i data-lucide="users" class="w-3.5 h-3.5"></i>
+                                        <span>Equipo:</span>
+                                    </span>
+                                    ${g.members.map(m => `<span class="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">${m}</span>`).join('')}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Core Description -->
+                        <div class="mt-6 pt-6 border-t border-slate-200/80 dark:border-slate-800 text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                            <strong class="text-emerald-600 dark:text-emerald-400">Modelo de Negocio:</strong> ${g.businessCore}
+                        </div>
+                    </div>
+
+                    <!-- 3-Column Recommendations Grid -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                        <!-- Column 1: Estrategia y Modelo de Negocio -->
+                        <div class="rounded-3xl glass-card p-6 shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-4">
+                            <div class="flex items-center space-x-2 text-emerald-600 dark:text-emerald-400">
+                                <i data-lucide="target" class="w-5 h-5"></i>
+                                <h3 class="font-bold text-base text-slate-900 dark:text-white">1. Estrategia & Oportunidades</h3>
+                            </div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Mejoras de alto impacto en el flujo funcional del negocio:</p>
+                            <div class="space-y-3">
+                                ${g.keyOpportunities.map(op => `
+                                    <div class="p-3.5 rounded-2xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-800/70 space-y-1">
+                                        <h4 class="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center space-x-1.5">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                            <span>${op.title}</span>
+                                        </h4>
+                                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">${op.desc}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Column 2: Frontend & Experiencia de Usuario -->
+                        <div class="rounded-3xl glass-card p-6 shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-4">
+                            <div class="flex items-center space-x-2 text-teal-600 dark:text-teal-400">
+                                <i data-lucide="layout" class="w-5 h-5"></i>
+                                <h3 class="font-bold text-base text-slate-900 dark:text-white">2. Frontend React 18 & UI/UX</h3>
+                            </div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Componentes e interfaces recomendadas para construir:</p>
+                            <div class="space-y-3">
+                                ${g.frontendUI.map(ui => `
+                                    <div class="p-3.5 rounded-2xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-800/70 space-y-1">
+                                        <h4 class="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center space-x-1.5">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
+                                            <span>${ui.title}</span>
+                                        </h4>
+                                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">${ui.desc}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Column 3: Integración E2E y Analítica -->
+                        <div class="rounded-3xl glass-card p-6 shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-4">
+                            <div class="flex items-center space-x-2 text-cyan-600 dark:text-cyan-400">
+                                <i data-lucide="cpu" class="w-5 h-5"></i>
+                                <h3 class="font-bold text-base text-slate-900 dark:text-white">3. Integración E2E & Analítica</h3>
+                            </div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Conexión con .NET 10 y métricas de toma de decisiones:</p>
+                            
+                            <div class="p-3.5 rounded-2xl bg-cyan-50/50 dark:bg-cyan-950/30 border border-cyan-200/50 dark:border-cyan-800/50 space-y-2">
+                                <h4 class="text-xs font-bold text-cyan-900 dark:text-cyan-300 flex items-center space-x-1.5">
+                                    <i data-lucide="plug" class="w-3.5 h-3.5"></i>
+                                    <span>Flujos de Integración Clave:</span>
+                                </h4>
+                                <ul class="text-xs text-slate-600 dark:text-slate-400 space-y-1.5 list-disc list-inside">
+                                    ${g.integration.map(item => `<li>${item}</li>`).join('')}
+                                </ul>
+                            </div>
+
+                            <div class="p-3.5 rounded-2xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-800/70 space-y-1.5">
+                                <h4 class="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center space-x-1.5">
+                                    <i data-lucide="bar-chart-3" class="w-3.5 h-3.5 text-emerald-500"></i>
+                                    <span>Dashboard & Analítica:</span>
+                                </h4>
+                                <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">${g.analytics}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        // Render Matrix
+        function renderMatrix() {
+            const tbody = document.getElementById('matrix-body');
+            tbody.innerHTML = groupsData.map(g => `
+                <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-900/50 transition">
+                    <td class="p-4 font-bold text-slate-900 dark:text-white whitespace-nowrap">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-gradient-to-r ${g.badgeColor}"></span>
+                            <span>${g.name}</span>
+                        </div>
+                    </td>
+                    <td class="p-4 max-w-xs">${g.projectTitle}</td>
+                    <td class="p-4 font-medium text-emerald-600 dark:text-emerald-400">${g.frontendUI[0]?.title || 'POS Específico'}</td>
+                    <td class="p-4 max-w-xs text-xs">${g.integration[0] || 'Integración REST'}</td>
+                    <td class="p-4 max-w-xs text-xs">${g.analytics}</td>
+                    <td class="p-4">
+                        <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+                            ${g.id === 5 ? 'Híbrido Día/Noche' : g.id === 1 ? 'Logística Ruta' : g.id === 2 ? 'Concurrencia Alta' : g.id === 3 ? 'Modelado Complejo' : 'Checkout & Stock'}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Filter Matrix
+        function initMatrixSearch() {
+            const searchInput = document.getElementById('matrix-search');
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                const rows = document.querySelectorAll('#matrix-body tr');
+                rows.forEach(row => {
+                    const text = row.innerText.toLowerCase();
+                    row.style.display = text.includes(query) ? '' : 'none';
+                });
+            });
+        }
+
+        // Checklist Logic
+        function renderChecklist() {
+            const container = document.getElementById('checklist-container');
+            const savedState = JSON.parse(localStorage.getItem('reaf_checklist') || '{}');
+
+            container.innerHTML = checklistItems.map(item => {
+                const isChecked = !!savedState[item.id];
+                return `
+                    <label class="p-4 rounded-2xl glass-card flex items-start space-x-3.5 cursor-pointer hover:border-emerald-500/50 transition-all group ${isChecked ? 'ring-1 ring-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/20' : ''}">
+                        <input type="checkbox" onchange="toggleChecklistItem(${item.id})" ${isChecked ? 'checked' : ''} class="mt-1 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                        <div class="space-y-1">
+                            <span class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition flex items-center space-x-2">
+                                <span>${item.title}</span>
+                            </span>
+                            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">${item.desc}</p>
+                        </div>
+                    </label>
+                `;
+            }).join('');
+
+            updateChecklistProgress();
+        }
+
+        function toggleChecklistItem(id) {
+            const savedState = JSON.parse(localStorage.getItem('reaf_checklist') || '{}');
+            savedState[id] = !savedState[id];
+            localStorage.setItem('reaf_checklist', JSON.stringify(savedState));
+            renderChecklist();
+        }
+
+        function resetChecklist() {
+            localStorage.removeItem('reaf_checklist');
+            renderChecklist();
+        }
+
+        function updateChecklistProgress() {
+            const savedState = JSON.parse(localStorage.getItem('reaf_checklist') || '{}');
+            const completed = Object.values(savedState).filter(Boolean).length;
+            const total = checklistItems.length;
+            const pct = Math.round((completed / total) * 100);
+
+            document.getElementById('checklist-progress-text').innerText = `${completed}/${total} Completados (${pct}%)`;
+            document.getElementById('checklist-progress-bar').style.width = `${pct}%`;
+        }
+    </script>
+</body>
+</html>
