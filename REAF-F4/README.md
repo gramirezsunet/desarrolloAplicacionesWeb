@@ -24,13 +24,19 @@ La aplicación interactiva está construida como una Single Page Application (SP
    * **Grupo 4 (E-commerce Almacén):** Catálogo con búsqueda predictiva, checkout guiado (*Stepper*), carga de comprobantes de pago y tablero Kanban administrativo.
    * **Grupo 5 (Licorería + Discoteca / Club Nocturno):** Modelo híbrido (Modo Día / Modo Noche), plano interactivo de mesas/zonas VIP, pantalla KDS de barra para bartenders, máquina de estados de comandas (`Recibido -> Preparado -> Entregado`), cuentas abiertas con abonos mixtos y control de mermas/cortesías.
 
-2. **Matriz Comparativa de Implementación:**
+2. **Matriz y Cuadro de Mando de Evaluación Oficial (Sesión 9 de Octubre):**
+   * Puntuación máxima de **80 Puntos (4 criterios equitativos de 20 pts c/u)** y ponderación del 32.0%.
+   * Calificaciones oficiales y porcentajes obtenidos por cada grupo (G1: No Presentó, G2: No Presentó, G3: 60 pts / 75.0%, G4: 68 pts / 85.0%, G5: 50 pts / 62.5%).
+   * Observaciones y retroalimentación técnica individualizada para cada equipo con directrices para la Fase 5.
+   * Filtro interactivo por estado (*Todos*, *Evaluados*, *Pendientes*).
+
+3. **Matriz Comparativa de Implementación:**
    * Tabla con buscador en tiempo real que compara los componentes Frontend clave, flujos de integración y analítica de negocio entre los 5 proyectos.
 
-3. **Checklist Transversal de Calidad Industrial:**
+4. **Checklist Transversal de Calidad Industrial:**
    * 10 puntos de control con almacenamiento de progreso en `localStorage` (Autenticación JWT, Interceptor RFC 7807, RBAC Guards, Skeletons, Paginación, Docker, etc.).
 
-4. **Modo Claro / Oscuro & Exportación a PDF/Impresión.**
+5. **Modo Claro / Oscuro Institucional UNET & Exportación a PDF/Impresión.**
 
 ---
 

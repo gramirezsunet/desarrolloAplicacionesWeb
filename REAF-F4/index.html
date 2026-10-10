@@ -96,6 +96,10 @@
                         <i data-lucide="megaphone" class="w-4 h-4"></i>
                         <span>Instrucciones Oficiales</span>
                     </button>
+                    <button onclick="switchView('evaluations')" id="nav-evaluations" class="px-3 py-2 rounded-xl hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition flex items-center space-x-1.5 text-blue-600 dark:text-blue-400 font-bold">
+                        <i data-lucide="clipboard-check" class="w-4 h-4 text-blue-500"></i>
+                        <span>Evaluación & Observaciones</span>
+                    </button>
                     <button onclick="switchView('groups')" id="nav-groups" class="px-3 py-2 rounded-xl hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition flex items-center space-x-1.5">
                         <i data-lucide="layers" class="w-4 h-4"></i>
                         <span>Grupos & Modelos</span>
@@ -129,6 +133,7 @@
         <!-- Mobile Navigation Sub-Bar -->
         <div class="flex lg:hidden items-center justify-around border-t border-slate-200/70 dark:border-slate-800/70 px-1 py-1.5 bg-slate-100/50 dark:bg-slate-900/50 text-[11px] font-bold">
             <button onclick="switchView('instructions')" id="m-nav-instructions" class="px-2 py-1 rounded-lg text-emerald-600 dark:text-emerald-400 bg-emerald-100/60 dark:bg-emerald-950/70">Instrucciones</button>
+            <button onclick="switchView('evaluations')" id="m-nav-evaluations" class="px-2 py-1 rounded-lg text-blue-600 dark:text-blue-400">Evaluación</button>
             <button onclick="switchView('groups')" id="m-nav-groups" class="px-2 py-1 rounded-lg text-slate-600 dark:text-slate-300">Grupos</button>
             <button onclick="switchView('matrix')" id="m-nav-matrix" class="px-2 py-1 rounded-lg text-slate-600 dark:text-slate-300">Matriz</button>
             <button onclick="switchView('checklist')" id="m-nav-checklist" class="px-2 py-1 rounded-lg text-slate-600 dark:text-slate-300">Checklist</button>
@@ -214,6 +219,10 @@
 
                     <!-- Botones de Acción Rápida -->
                     <div class="flex flex-wrap items-center gap-3 pt-3">
+                        <button onclick="switchView('evaluations')" class="px-4 py-2.5 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm flex items-center space-x-2 shadow-lg shadow-blue-500/25 transition">
+                            <i data-lucide="award" class="w-4 h-4"></i>
+                            <span>Ver Evaluaciones & Notas (9 Oct)</span>
+                        </button>
                         <button onclick="switchView('groups')" class="px-4 py-2.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm flex items-center space-x-2 shadow-lg shadow-emerald-500/25 transition">
                             <i data-lucide="layers" class="w-4 h-4"></i>
                             <span>Ir al Detalle de mi Grupo</span>
@@ -228,6 +237,29 @@
                         </button>
                     </div>
                 </div>
+            </div>
+
+            <!-- Banner Alerta de Evaluación Publicada (9 de Octubre) -->
+            <div class="rounded-3xl p-5 sm:p-6 bg-gradient-to-r from-blue-950/70 via-indigo-950/60 to-navy-900 border border-blue-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-lg">
+                <div class="flex items-start space-x-3.5">
+                    <div class="p-3 rounded-2xl bg-blue-500/20 text-blue-400 border border-blue-400/30 shrink-0">
+                        <i data-lucide="clipboard-check" class="w-6 h-6"></i>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="flex items-center space-x-2 flex-wrap">
+                            <h3 class="font-extrabold text-white text-sm sm:text-base">Resultados de Evaluación y Observaciones Técnicas (9 de Octubre)</h3>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-500 text-slate-950 uppercase">80 Pts Máx</span>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">4 Criterios &times; 20 Pts</span>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Ya puedes consultar las calificaciones oficiales registradas por rúbrica estandarizada y las observaciones específicas por cada equipo para el cierre de la Fase 4 y preparación de la Fase 5.
+                        </p>
+                    </div>
+                </div>
+                <button onclick="switchView('evaluations')" class="px-4 py-2.5 rounded-xl bg-blue-500 hover:bg-blue-400 text-slate-950 font-bold text-xs shrink-0 flex items-center space-x-1.5 transition shadow-md">
+                    <span>Consultar Mi Evaluación</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
             </div>
 
             <!-- 4 Pasos Metodológicos -->
@@ -400,52 +432,75 @@
                 </div>
             </div>
 
-            <!-- Criterios de Evaluación y Calidad -->
-            <div class="rounded-3xl glass-card p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800 space-y-4">
-                <div class="flex items-center space-x-2 text-emerald-600 dark:text-emerald-400">
-                    <i data-lucide="award" class="w-5 h-5"></i>
-                    <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Criterios de Aprobación para la Fase 4</h2>
+            <!-- Criterios de Evaluación y Calidad (Rúbrica Oficial: 4 Criterios x 20 Pts = 80 Pts) -->
+            <div class="rounded-3xl glass-card p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800 space-y-5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/60 dark:border-slate-800/80 pb-3">
+                    <div class="flex items-center space-x-2 text-emerald-600 dark:text-emerald-400">
+                        <i data-lucide="award" class="w-5 h-5"></i>
+                        <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Rúbrica y Criterios Oficiales de Evaluación — Fase 4 ERP</h2>
+                    </div>
+                    <span class="text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700">80 Puntos Totales (20 pts por Criterio)</span>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
-                    <div class="p-3.5 rounded-2xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 space-y-1">
-                        <div class="font-bold text-slate-900 dark:text-white flex items-center space-x-2">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                            <span>1. Frontend Desacoplado & Moderno</span>
+                    <!-- Criterio 1 -->
+                    <div class="p-4 rounded-2xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <div class="font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                                <span>Criterio 1: Arquitectura Frontend SPA & Componentización</span>
+                            </div>
+                            <span class="px-2 py-0.5 rounded-md text-[11px] font-extrabold bg-blue-100 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300 font-mono">20 pts</span>
                         </div>
-                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-xs">
-                            Desarrollado en <strong>React 18 / Vite / TypeScript</strong> con Tailwind CSS, modularizado en componentes limpios y sin código espagueti.
-                        </p>
+                        <ul class="text-slate-600 dark:text-slate-400 text-xs space-y-1 list-disc list-inside">
+                            <li><strong>Estructura & Enrutamiento (10 pts):</strong> React + Vite, rutas protegidas y diseño responsivo con Tailwind CSS.</li>
+                            <li><strong>Modularidad & Estado (10 pts):</strong> Reusabilidad de componentes, props tipadas y desacoplamiento limpio.</li>
+                        </ul>
                     </div>
 
-                    <div class="p-3.5 rounded-2xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 space-y-1">
-                        <div class="font-bold text-slate-900 dark:text-white flex items-center space-x-2">
-                            <span class="w-2 h-2 rounded-full bg-teal-500"></span>
-                            <span>2. Integración End-to-End Real</span>
+                    <!-- Criterio 2 -->
+                    <div class="p-4 rounded-2xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <div class="font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-teal-500"></span>
+                                <span>Criterio 2: Consumo de APIs REST & Manejo de Estado</span>
+                            </div>
+                            <span class="px-2 py-0.5 rounded-md text-[11px] font-extrabold bg-teal-100 dark:bg-teal-950/80 text-teal-700 dark:text-teal-300 font-mono">20 pts</span>
                         </div>
-                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-xs">
-                            Todo dato visualizado debe guardarse y consumirse desde la base de datos PostgreSQL mediante la API .NET 10 (sin arreglos estáticos en memoria).
-                        </p>
+                        <ul class="text-slate-600 dark:text-slate-400 text-xs space-y-1 list-disc list-inside">
+                            <li><strong>Integración HTTP & Errores (10 pts):</strong> Procesamiento asíncrono, captura de RFC 7807 y estabilidad de red.</li>
+                            <li><strong>Autenticación JWT & Seguridad (10 pts):</strong> Persistencia del token Bearer, estado global/local uniforme y control de sesión.</li>
+                        </ul>
                     </div>
 
-                    <div class="p-3.5 rounded-2xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 space-y-1">
-                        <div class="font-bold text-slate-900 dark:text-white flex items-center space-x-2">
-                            <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
-                            <span>3. Manejo de Errores RFC 7807</span>
+                    <!-- Criterio 3 -->
+                    <div class="p-4 rounded-2xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <div class="font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-cyan-500"></span>
+                                <span>Criterio 3: Dashboard de Indicadores KPI & Analítica</span>
+                            </div>
+                            <span class="px-2 py-0.5 rounded-md text-[11px] font-extrabold bg-cyan-100 dark:bg-cyan-950/80 text-cyan-700 dark:text-cyan-300 font-mono">20 pts</span>
                         </div>
-                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-xs">
-                            Las alertas Toast y validaciones visuales deben capturar el formato estructurado <code>application/problem+json</code> emitido por el backend.
-                        </p>
+                        <ul class="text-slate-600 dark:text-slate-400 text-xs space-y-1 list-disc list-inside">
+                            <li><strong>Tarjetas KPI Clave (10 pts):</strong> Diseño e implementación de métricas vitales para la toma de decisiones empresariales.</li>
+                            <li><strong>Gráficos & Filtros Dinámicos (10 pts):</strong> Visualizaciones interactivas sincronizadas en tiempo real con endpoints del backend.</li>
+                        </ul>
                     </div>
 
-                    <div class="p-3.5 rounded-2xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 space-y-1">
-                        <div class="font-bold text-slate-900 dark:text-white flex items-center space-x-2">
-                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-                            <span>4. Seguridad JWT y Control por Roles</span>
+                    <!-- Criterio 4 -->
+                    <div class="p-4 rounded-2xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <div class="font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span>
+                                <span>Criterio 4: Pruebas Unitarias & Cobertura (xUnit & Moq)</span>
+                            </div>
+                            <span class="px-2 py-0.5 rounded-md text-[11px] font-extrabold bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 font-mono">20 pts</span>
                         </div>
-                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-xs">
-                            Protección de rutas privadas en React mediante *Guards* que verifiquen el rol del usuario autenticado (Admin vs. Operador/Empleado).
-                        </p>
+                        <ul class="text-slate-600 dark:text-slate-400 text-xs space-y-1 list-disc list-inside">
+                            <li><strong>Lógica en xUnit (10 pts):</strong> Casos exitosos y de borde validando algoritmos críticos y excepciones de negocio.</li>
+                            <li><strong>Aislamiento con Moq (10 pts):</strong> Uso riguroso de dobles de prueba sin acoplamiento a bases de datos y ejecución 100% verde.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -538,6 +593,262 @@
             </div>
         </div>
 
+        <!-- VIEW 4: EVALUACIONES Y OBSERVACIONES POR GRUPO (9 DE OCTUBRE) -->
+        <div id="view-evaluations" class="hidden space-y-8">
+            
+            <!-- Hero Header de Evaluaciones -->
+            <div class="relative rounded-3xl p-6 sm:p-9 overflow-hidden bg-gradient-to-br from-navy-950 via-slate-900 to-navy-900 text-white shadow-xl border border-slate-800">
+                <div class="absolute -right-20 -top-20 w-80 h-80 bg-blue-500/15 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="relative z-10 space-y-4 max-w-4xl">
+                    <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-semibold">
+                        <i data-lucide="clipboard-check" class="w-4 h-4"></i>
+                        <span>Evaluación Presencial &bull; Sesión 9 de Octubre de 2026</span>
+                    </div>
+                    <h1 class="text-2xl sm:text-4xl font-black tracking-tight text-white leading-tight">
+                        Evaluación Oficial y Observaciones Técnicas — Fase 4 ERP
+                    </h1>
+                    <p class="text-slate-300 text-xs sm:text-sm md:text-base leading-relaxed">
+                        Revisión técnica y sustentación oral del <strong>Frontend SPA (React 18 + Vite + Tailwind CSS)</strong>, el <strong>Dashboard de Indicadores KPI</strong> y la suite de <strong>Pruebas Unitarias automatizadas en C# (xUnit & Moq)</strong>. Cada equipo fue evaluado bajo 4 criterios equitativos de <strong>20 puntos cada uno (80 puntos máximos / 32.0% de ponderación)</strong>.
+                    </p>
+
+                    <!-- Resumen de Indicadores Clave (4 Mini KPIs) -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3">
+                        <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                            <span class="text-[11px] text-slate-400 uppercase font-semibold">Promedio Evaluados</span>
+                            <div class="text-xl sm:text-2xl font-black text-emerald-400">59.3 <span class="text-xs text-slate-400 font-normal">/ 80 pts</span></div>
+                            <span class="text-[10px] text-emerald-300/80 font-mono">74.2% Rendimiento</span>
+                        </div>
+                        <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                            <span class="text-[11px] text-slate-400 uppercase font-semibold">Mayor Calificación</span>
+                            <div class="text-xl sm:text-2xl font-black text-blue-400">68 <span class="text-xs text-slate-400 font-normal">/ 80 pts</span></div>
+                            <span class="text-[10px] text-blue-300/80 font-mono">Grupo 4 (85.0%)</span>
+                        </div>
+                        <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                            <span class="text-[11px] text-slate-400 uppercase font-semibold">Equipos Evaluados</span>
+                            <div class="text-xl sm:text-2xl font-black text-white">3 / 5</div>
+                            <span class="text-[10px] text-slate-300 font-mono">2 Pendientes</span>
+                        </div>
+                        <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                            <span class="text-[11px] text-slate-400 uppercase font-semibold">xUnit & Moq Máx.</span>
+                            <div class="text-xl sm:text-2xl font-black text-purple-400">20 <span class="text-xs text-slate-400 font-normal">/ 20 pts</span></div>
+                            <span class="text-[10px] text-purple-300/80 font-mono">Grupo 4 (100% Verde)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla Matriz Oficial de Rúbrica y Calificaciones (REAF-F4) -->
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                            <i data-lucide="table" class="w-5 h-5 text-blue-500"></i>
+                            <span>Matriz de Rúbrica y Calificaciones Obtenidas (REAF-F4)</span>
+                        </h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Instrumento oficial estandarizado de evaluación aplicado el 9 de octubre de 2026</p>
+                    </div>
+
+                    <!-- Escalas de Evaluación -->
+                    <div class="flex items-center space-x-1.5 flex-wrap text-[10px] font-bold">
+                        <span class="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700">Excelente: 18-20</span>
+                        <span class="px-2 py-0.5 rounded-md bg-blue-100 text-blue-800 dark:bg-blue-950/80 dark:text-blue-300 border border-blue-300 dark:border-blue-700">Bueno: 14-17</span>
+                        <span class="px-2 py-0.5 rounded-md bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-300 dark:border-amber-700">Suficiente: 10-13</span>
+                        <span class="px-2 py-0.5 rounded-md bg-rose-100 text-rose-800 dark:bg-rose-950/80 dark:text-rose-300 border border-rose-300 dark:border-rose-700">Incompleto: 0-9</span>
+                    </div>
+                </div>
+
+                <!-- Tabla Responsive -->
+                <div class="overflow-x-auto rounded-3xl glass-card shadow-sm border border-slate-200/80 dark:border-slate-800">
+                    <table class="w-full text-left text-xs sm:text-sm min-w-[760px]">
+                        <thead class="bg-slate-100/90 dark:bg-slate-900/90 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-800">
+                            <tr>
+                                <th class="p-3.5 sm:p-4">Criterio de Evaluación</th>
+                                <th class="p-3.5 sm:p-4">Aspectos a Evaluar (Subcriterios)</th>
+                                <th class="p-3.5 sm:p-4 text-center">Máx.</th>
+                                <th class="p-3.5 sm:p-4 text-center">G1: Polar</th>
+                                <th class="p-3.5 sm:p-4 text-center">G2: Lotería</th>
+                                <th class="p-3.5 sm:p-4 text-center bg-emerald-500/5 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 font-extrabold">G3: Ganado</th>
+                                <th class="p-3.5 sm:p-4 text-center bg-blue-500/5 dark:bg-blue-500/10 text-blue-700 dark:text-blue-300 font-extrabold">G4: E-com</th>
+                                <th class="p-3.5 sm:p-4 text-center bg-amber-500/5 dark:bg-amber-500/10 text-amber-700 dark:text-amber-300 font-extrabold">G5: Híbrido</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200/60 dark:divide-slate-800 text-slate-700 dark:text-slate-300 text-xs">
+                            <!-- Criterio 1 -->
+                            <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-900/50 transition">
+                                <td class="p-3.5 sm:p-4 font-bold text-slate-900 dark:text-white whitespace-nowrap">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                        <span>1. Frontend SPA & Componentización</span>
+                                    </div>
+                                </td>
+                                <td class="p-3.5 sm:p-4 text-slate-600 dark:text-slate-400">
+                                    • Estructura React + Vite, enrutamiento y Tailwind (10 pts)<br>
+                                    • Modularidad y gestión de estado de componentes (10 pts)
+                                </td>
+                                <td class="p-3.5 sm:p-4 text-center font-bold font-mono">20 pts</td>
+                                <td class="p-3.5 sm:p-4 text-center font-mono text-slate-400">—</td>
+                                <td class="p-3.5 sm:p-4 text-center font-mono text-slate-400">—</td>
+                                <td class="p-3.5 sm:p-4 text-center font-bold font-mono text-blue-600 dark:text-blue-400 bg-emerald-500/5 dark:bg-emerald-500/10">16</td>
+                                <td class="p-3.5 sm:p-4 text-center font-bold font-mono text-blue-600 dark:text-blue-400 bg-blue-500/5 dark:bg-blue-500/10">14</td>
+                                <td class="p-3.5 sm:p-4 text-center font-bold font-mono text-emerald-600 dark:text-emerald-400 bg-amber-500/5 dark:bg-amber-500/10">18</td>
+                            </tr>
+                            <!-- Criterio 2 -->
+                            <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-900/50 transition">
+                                <td class="p-3.5 sm:p-4 font-bold text-slate-900 dark:text-white whitespace-nowrap">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="w-2 h-2 rounded-full bg-teal-500"></span>
+                                        <span>2. Consumo de APIs & Estado</span>
+                                    </div>
+                                </td>
+                                <td class="p-3.5 sm:p-4 text-slate-600 dark:text-slate-400">
+                                    • Integración de peticiones HTTP asíncronas y errores (10 pts)<br>
+                                    • Autenticación con JWT y estado local/global (10 pts)
+                                </td>
+                                <td class="p-3.5 sm:p-4 text-center font-bold font-mono">20 pts</td>
+                                <td class="p-3.5 sm:p-4 text-center font-mono text-slate-400">—</td>
+                                <td class="p-3.5 sm:p-4 text-center font-mono text-slate-400">—</td>
+                                <td class="p-3.5 sm:p-4 text-center font-bold font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-500/5 dark:bg-emerald-500/10">18</td>
+                                <td class="p-3.5 sm:p-4 text-center font-bold font-mono text-blue-600 dark:text-blue-400 bg-blue-500/5 dark:bg-blue-500/10">16</td>
+                                <td class="p-3.5 sm:p-4 text-center font-bold font-mono text-amber-600 dark:text-amber-400 bg-amber-500/5 dark:bg-amber-500/10">12</td>
+                            </tr>
+                            <!-- Criterio 3 -->
+                            <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-900/50 transition">
+                                <td class="p-3.5 sm:p-4 font-bold text-slate-900 dark:text-white whitespace-nowrap">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+                                        <span>3. Dashboard KPI & Métricas</span>
+                                    </div>
+                                </td>
+                                <td class="p-3.5 sm:p-4 text-slate-600 dark:text-slate-400">
+                                    • Tarjetas de métricas y métricas KPI clave (10 pts)<br>
+                                    • Gráficos interactivos y filtros dinámicos (10 pts)
+                                </td>
+                                <td class="p-3.5 sm:p-4 text-center font-bold font-mono">20 pts</td>
+                                <td class="p-3.5 sm:p-4 text-center font-mono text-slate-400">—</td>
+                                <td class="p-3.5 sm:p-4 text-center font-mono text-slate-400">—</td>
+                                <td class="p-3.5 sm:p-4 text-center font-bold font-mono text-blue-600 dark:text-blue-400 bg-emerald-500/5 dark:bg-emerald-500/10">16</td>
+                                <td class="p-3.5 sm:p-4 text-center font-bold font-mono text-emerald-600 dark:text-emerald-400 bg-blue-500/5 dark:bg-blue-500/10">18</td>
+                                <td class="p-3.5 sm:p-4 text-center font-bold font-mono text-blue-600 dark:text-blue-400 bg-amber-500/5 dark:bg-amber-500/10">14</td>
+                            </tr>
+                            <!-- Criterio 4 -->
+                            <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-900/50 transition">
+                                <td class="p-3.5 sm:p-4 font-bold text-slate-900 dark:text-white whitespace-nowrap">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                                        <span>4. Pruebas Unitarias (xUnit & Moq)</span>
+                                    </div>
+                                </td>
+                                <td class="p-3.5 sm:p-4 text-slate-600 dark:text-slate-400">
+                                    • Pruebas unitarias de lógica de negocio en xUnit (10 pts)<br>
+                                    • Aislamiento de capas y mocks con Moq (10 pts)
+                                </td>
+                                <td class="p-3.5 sm:p-4 text-center font-bold font-mono">20 pts</td>
+                                <td class="p-3.5 sm:p-4 text-center font-mono text-slate-400">—</td>
+                                <td class="p-3.5 sm:p-4 text-center font-mono text-slate-400">—</td>
+                                <td class="p-3.5 sm:p-4 text-center font-bold font-mono text-amber-600 dark:text-amber-400 bg-emerald-500/5 dark:bg-emerald-500/10">10</td>
+                                <td class="p-3.5 sm:p-4 text-center font-bold font-mono text-emerald-600 dark:text-emerald-400 bg-blue-500/5 dark:bg-blue-500/10">20</td>
+                                <td class="p-3.5 sm:p-4 text-center font-bold font-mono text-rose-600 dark:text-rose-400 bg-amber-500/5 dark:bg-amber-500/10">6</td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="bg-slate-100/90 dark:bg-slate-900/90 font-extrabold border-t-2 border-slate-300 dark:border-slate-700 text-xs sm:text-sm">
+                            <tr>
+                                <td class="p-3.5 sm:p-4 text-slate-900 dark:text-white" colspan="2">TOTAL FASE 4 (80 Puntos Máximos):</td>
+                                <td class="p-3.5 sm:p-4 text-center font-mono">80 pts</td>
+                                <td class="p-3.5 sm:p-4 text-center font-mono text-slate-400">No Presentó</td>
+                                <td class="p-3.5 sm:p-4 text-center font-mono text-slate-400">No Presentó</td>
+                                <td class="p-3.5 sm:p-4 text-center font-mono text-emerald-600 dark:text-emerald-400 text-base bg-emerald-500/10">60 pts</td>
+                                <td class="p-3.5 sm:p-4 text-center font-mono text-blue-600 dark:text-blue-400 text-base bg-blue-500/10">68 pts</td>
+                                <td class="p-3.5 sm:p-4 text-center font-mono text-amber-600 dark:text-amber-400 text-base bg-amber-500/10">50 pts</td>
+                            </tr>
+                            <tr class="border-t border-slate-200 dark:border-slate-800 text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+                                <td class="p-3 sm:p-4" colspan="2">Ponderación Real en la Asignatura (32.0%):</td>
+                                <td class="p-3 sm:p-4 text-center font-mono">32.0%</td>
+                                <td class="p-3 sm:p-4 text-center font-mono">—</td>
+                                <td class="p-3 sm:p-4 text-center font-mono">—</td>
+                                <td class="p-3 sm:p-4 text-center font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10">24.0%</td>
+                                <td class="p-3 sm:p-4 text-center font-mono font-bold text-blue-600 dark:text-blue-400 bg-blue-500/10">27.2%</td>
+                                <td class="p-3 sm:p-4 text-center font-mono font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10">20.0%</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Fichas Específicas de Retroalimentación y Observaciones por Grupo -->
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="message-square-code" class="w-5 h-5 text-emerald-500"></i>
+                        <h2 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">Observaciones y Retroalimentación Técnica por Equipo</h2>
+                    </div>
+
+                    <!-- Filtro por Estado -->
+                    <div class="flex items-center space-x-1.5 p-1 rounded-2xl bg-slate-200/60 dark:bg-slate-900/60 text-xs font-semibold">
+                        <button onclick="filterEvaluationCards('all')" id="eval-filter-all" class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm transition">Todos (5)</button>
+                        <button onclick="filterEvaluationCards('evaluated')" id="eval-filter-evaluated" class="px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">Evaluados (3)</button>
+                        <button onclick="filterEvaluationCards('pending')" id="eval-filter-pending" class="px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">Pendientes (2)</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6" id="evaluations-cards-container">
+                    <!-- Rendered dynamically via renderEvaluations() -->
+                </div>
+            </div>
+
+            <!-- Justificación Técnica y Contexto de los Criterios -->
+            <div class="rounded-3xl glass-card p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 space-y-6">
+                <div class="flex items-center space-x-2.5 text-blue-600 dark:text-blue-400">
+                    <i data-lucide="book-open" class="w-5 h-5"></i>
+                    <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Fundamentación y Justificación Técnica de los Criterios de Evaluación</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                    <div class="space-y-2 p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800">
+                        <h4 class="font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            <span>Arquitectura Frontend SPA & Componentización</span>
+                        </h4>
+                        <p class="text-xs">
+                            El diseño de una SPA moderna requiere una arquitectura sólida e interactiva. La estructuración adecuada mediante React y Vite, junto con Tailwind CSS, acelera los tiempos de carga y asegura la sostenibilidad del proyecto mediante la modularización en componentes. El desarrollo de interfaces adaptables (Mobile First) garantiza una experiencia intuitiva e independiente del dispositivo.
+                        </p>
+                    </div>
+
+                    <div class="space-y-2 p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800">
+                        <h4 class="font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                            <span class="w-2 h-2 rounded-full bg-teal-500"></span>
+                            <span>Consumo de APIs REST, JWT & Manejo de Estado</span>
+                        </h4>
+                        <p class="text-xs">
+                            La integración eficiente entre el cliente y el backend ERP constituye la columna vertebral del sistema, donde el procesamiento asíncrono y la gestión rigurosa de errores respaldan la estabilidad. La autenticación con tokens JWT Bearer resguarda la plataforma ante accesos indebidos, mientras que el estado uniforme garantiza la actualización inmediata de la información.
+                        </p>
+                    </div>
+
+                    <div class="space-y-2 p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800">
+                        <h4 class="font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                            <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+                            <span>Dashboard KPI & Visualización Estratégica</span>
+                        </h4>
+                        <p class="text-xs">
+                            La alta dirección requiere datos consolidados para la toma estratégica de decisiones. La creación de un Dashboard interactivo que transforme datos complejos en paneles visuales agiliza el diagnóstico del desempeño operativo, vinculando la analítica de software con el impacto real en el negocio.
+                        </p>
+                    </div>
+
+                    <div class="space-y-2 p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800">
+                        <h4 class="font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                            <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                            <span>Pruebas Unitarias Automatizadas (xUnit & Moq)</span>
+                        </h4>
+                        <p class="text-xs">
+                            Verificar de manera automatizada la lógica de negocio previene fallas críticas en producción. xUnit certifica el funcionamiento individual de los algoritmos y operaciones del ERP, mientras que el uso de dobles de prueba con Moq posibilita el aislamiento completo frente a la base de datos, agilizando la ejecución y asegurando independencia y reproducibilidad.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
     </main>
 
     <!-- Footer Institucional -->
@@ -603,7 +914,25 @@
                     "Descarga de respaldos y balances contables en JSON/CSV ya implementados en el backend.",
                     "Manejo de errores RFC 7807 interceptados por Axios para notificar faltantes de stock en camión."
                 ],
-                analytics: "KPIs de utilización de flota (% ocupación por camión), rotación de productos estrella y envejecimiento de deuda de clientes mayoristas."
+                analytics: "KPIs de utilización de flota (% ocupación por camión), rotación de productos estrella y envejecimiento de deuda de clientes mayoristas.",
+                evaluation: {
+                    presented: false,
+                    sessionDate: "9 de Octubre, 2026",
+                    statusBadge: "No Presentó",
+                    badgeClass: "bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border border-slate-300 dark:border-slate-700",
+                    c1: null,
+                    c2: null,
+                    c3: null,
+                    c4: null,
+                    total: 0,
+                    maxTotal: 80,
+                    percentage: 0,
+                    weightAwarded: 0,
+                    observations: [
+                        "El equipo no realizó la presentación técnica pautada para la sesión del 9 de octubre.",
+                        "Debe coordinar con el docente la recuperación o sustentación extraordinaria antes del cierre de la Fase 5."
+                    ]
+                }
             },
             {
                 id: 2,
@@ -647,7 +976,25 @@
                     "Canal de notificaciones reactivas (WebSockets / SignalR / SSE) para actualizar el estado del sorteo en pantalla tan pronto se publica el ganador.",
                     "Validación de tickets con firma criptográfica o serial único para evitar clonación de boletos premiados."
                 ],
-                analytics: "Gráfica de números más apostados del día, balance financiero neto por sorteo (Recaudado - Premios Pagados) y arqueo de caja por taquillero."
+                analytics: "Gráfica de números más apostados del día, balance financiero neto por sorteo (Recaudado - Premios Pagados) y arqueo de caja por taquillero.",
+                evaluation: {
+                    presented: false,
+                    sessionDate: "9 de Octubre, 2026",
+                    statusBadge: "No Presentó",
+                    badgeClass: "bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border border-slate-300 dark:border-slate-700",
+                    c1: null,
+                    c2: null,
+                    c3: null,
+                    c4: null,
+                    total: 0,
+                    maxTotal: 80,
+                    percentage: 0,
+                    weightAwarded: 0,
+                    observations: [
+                        "El equipo no realizó la presentación técnica pautada para la sesión del 9 de octubre.",
+                        "Debe coordinar con el docente la recuperación o sustentación extraordinaria antes del cierre de la Fase 5."
+                    ]
+                }
             },
             {
                 id: 3,
@@ -691,7 +1038,28 @@
                     "Carga y compresión de fotos de animales en el cliente antes de invocar la API en .NET 10.",
                     "Exportación de reportes de producción láctea y sanitaria a formatos Excel y PDF para entidades de control agropecuario."
                 ],
-                analytics: "Curva de producción lechera diaria por lote, distribución de pesos por rango de edad y tasa de preñez/fertilidad del rebaño."
+                analytics: "Curva de producción lechera diaria por lote, distribución de pesos por rango de edad y tasa de preñez/fertilidad del rebaño.",
+                evaluation: {
+                    presented: true,
+                    sessionDate: "9 de Octubre, 2026",
+                    statusBadge: "Bueno (75.0%)",
+                    badgeClass: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700",
+                    c1: 16,
+                    c2: 18,
+                    c3: 16,
+                    c4: 10,
+                    total: 60,
+                    maxTotal: 80,
+                    percentage: 75.0,
+                    weightAwarded: 24.0,
+                    observations: [
+                        "Completar la cobertura de pruebas unitarias y de integración (xUnit, Moq y Playwright).",
+                        "Añadir notificaciones detalladas en el encabezado (header) dirigidas a distintos roles de la aplicación.",
+                        "Optimizar el manejo de concurrencia en la gestión de inventario.",
+                        "Mejorar el módulo de gestión de potreros y traslado de ganado con esquemas visuales interactivos y dinámicos.",
+                        "Implementar lector/cargador de código QR y NFC para la identificación y registro de animales."
+                    ]
+                }
             },
             {
                 id: 4,
@@ -735,7 +1103,28 @@
                     "Carga asíncrona de comprobantes de pago con vista previa y validación de tipos MIME autorizados (JPEG/PNG/PDF).",
                     "Notificaciones de cambio de estado de pedido para el usuario comprador."
                 ],
-                analytics: "Tasa de conversión del embudo de ventas (Vistas -> Carrito -> Checkout -> Pagado), ticket promedio y productos más buscados sin stock."
+                analytics: "Tasa de conversión del embudo de ventas (Vistas -> Carrito -> Checkout -> Pagado), ticket promedio y productos más buscados sin stock.",
+                evaluation: {
+                    presented: true,
+                    sessionDate: "9 de Octubre, 2026",
+                    statusBadge: "Distinguido / Alto (85.0%)",
+                    badgeClass: "bg-blue-100 text-blue-800 dark:bg-blue-950/80 dark:text-blue-300 border border-blue-300 dark:border-blue-700",
+                    c1: 14,
+                    c2: 16,
+                    c3: 18,
+                    c4: 20,
+                    total: 68,
+                    maxTotal: 80,
+                    percentage: 85.0,
+                    weightAwarded: 27.2,
+                    observations: [
+                        "Incorporar métricas de analítica relacionadas con tipos de dispositivos utilizados.",
+                        "Ajustar la jerarquía visual del Dashboard: reducir el tamaño de los gráficos y aumentar el tamaño de fuente en las tarjetas de KPI.",
+                        "Mejorar la interfaz agregando la funcionalidad de colapsar/expandir la barra de navegación lateral.",
+                        "Implementar exportación e impresión de reportes en formato PDF.",
+                        "Incorporar un módulo de gestión de promociones y cupones de descuento."
+                    ]
+                }
             },
             {
                 id: 5,
@@ -783,7 +1172,28 @@
                     "Actualización reactiva de comandas y estado de mesas en tiempo real.",
                     "Sincronización de la tasa de cambio vigente (Singleton en backend) para recalcular consumos en USD y Bs sin demoras."
                 ],
-                analytics: "Mapa de calor de consumo por franja horaria (identificación de 'horas pico'), diagnóstico de salud de stock (subabastecido/óptimo) y reporte de mermas vs. ventas."
+                analytics: "Mapa de calor de consumo por franja horaria (identificación de 'horas pico'), diagnóstico de salud de stock (subabastecido/óptimo) y reporte de mermas vs. ventas.",
+                evaluation: {
+                    presented: true,
+                    sessionDate: "9 de Octubre, 2026",
+                    statusBadge: "Suficiente (62.5%)",
+                    badgeClass: "bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-300 dark:border-amber-700",
+                    c1: 18,
+                    c2: 12,
+                    c3: 14,
+                    c4: 6,
+                    total: 50,
+                    maxTotal: 80,
+                    percentage: 62.5,
+                    weightAwarded: 20.0,
+                    observations: [
+                        "Desarrollar la suite de pruebas unitarias faltantes para validar la lógica de negocio.",
+                        "Incorporar nuevos KPIs relevantes y ajustar el tamaño de las gráficas en el Dashboard.",
+                        "Implementar la generación y exportación de reportes en formatos PDF y Excel.",
+                        "Permitir precargar un croquis en el lienzo para la distribución de mesas y restringir la edición de mobiliario únicamente a los empleados.",
+                        "Refinar la paleta de colores y el diseño visual de la interfaz gráfica."
+                    ]
+                }
             }
         ];
 
@@ -811,6 +1221,7 @@
             renderMatrix();
             renderChecklist();
             initMatrixSearch();
+            renderEvaluations();
         });
 
         // Theme Toggle & Logo Switcher
@@ -849,14 +1260,14 @@
 
         // View Navigation
         function switchView(viewName) {
-            const views = ['instructions', 'groups', 'matrix', 'checklist'];
+            const views = ['instructions', 'evaluations', 'groups', 'matrix', 'checklist'];
             views.forEach(v => {
                 const el = document.getElementById(`view-${v}`);
                 const nav = document.getElementById(`nav-${v}`);
                 const mNav = document.getElementById(`m-nav-${v}`);
 
                 if (v === viewName) {
-                    el.classList.remove('hidden');
+                    if (el) el.classList.remove('hidden');
                     if (nav) {
                         nav.classList.add('text-emerald-600', 'dark:text-emerald-400', 'bg-emerald-50', 'dark:bg-emerald-950/60');
                         nav.classList.remove('hover:bg-slate-100', 'dark:hover:bg-slate-800/50');
@@ -865,7 +1276,7 @@
                         mNav.classList.add('text-emerald-600', 'dark:text-emerald-400', 'bg-emerald-100/60', 'dark:bg-emerald-950/70');
                     }
                 } else {
-                    el.classList.add('hidden');
+                    if (el) el.classList.add('hidden');
                     if (nav) {
                         nav.classList.remove('text-emerald-600', 'dark:text-emerald-400', 'bg-emerald-50', 'dark:bg-emerald-950/60');
                         nav.classList.add('hover:bg-slate-100', 'dark:hover:bg-slate-800/50');
@@ -936,6 +1347,104 @@
                         <!-- Core Description -->
                         <div class="mt-6 pt-6 border-t border-slate-200/80 dark:border-slate-800 text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
                             <strong class="text-emerald-600 dark:text-emerald-400">Modelo de Negocio:</strong> ${g.businessCore}
+                        </div>
+                    </div>
+
+                    <!-- Panel Destacado de Evaluación Oficial (Sesión 9 de Octubre) -->
+                    <div class="rounded-3xl glass-card p-6 sm:p-7 shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-5">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200/60 dark:border-slate-800/80 pb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="p-2.5 rounded-2xl bg-blue-50 dark:bg-blue-950/70 text-blue-600 dark:text-blue-400 border border-blue-200/60 dark:border-blue-900/50">
+                                    <i data-lucide="award" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <div class="flex items-center space-x-2">
+                                        <h3 class="font-extrabold text-base text-slate-900 dark:text-white">Evaluación Oficial &mdash; Sesión 9 de Octubre</h3>
+                                        <span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-mono">Fase 4 ERP</span>
+                                    </div>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">Revisión técnica de Frontend SPA React, Dashboard KPI y Pruebas Unitarias xUnit/Moq</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2 flex-wrap">
+                                <span class="px-3 py-1.5 rounded-xl text-xs font-black ${g.evaluation.badgeClass}">
+                                    ${g.evaluation.statusBadge}
+                                </span>
+                                ${g.evaluation.presented ? `
+                                    <div class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-mono font-bold text-xs border border-slate-200 dark:border-slate-700">
+                                        ${g.evaluation.total} / 80 pts (${g.evaluation.weightAwarded.toFixed(1)}% / 32.0%)
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+
+                        ${g.evaluation.presented ? `
+                            <!-- Desglose por los 4 Criterios (20 pts c/u) -->
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                                <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800 space-y-1.5">
+                                    <div class="flex items-center justify-between text-slate-500 dark:text-slate-400">
+                                        <span class="font-bold text-[11px]">1. Frontend SPA</span>
+                                        <span class="font-mono font-black text-slate-900 dark:text-white">${g.evaluation.c1} / 20</span>
+                                    </div>
+                                    <div class="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                                        <div class="bg-blue-500 h-1.5 rounded-full" style="width: ${(g.evaluation.c1 / 20) * 100}%"></div>
+                                    </div>
+                                    <span class="text-[10px] text-slate-400 block">${(g.evaluation.c1 / 20) * 100}% obtenido</span>
+                                </div>
+                                <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800 space-y-1.5">
+                                    <div class="flex items-center justify-between text-slate-500 dark:text-slate-400">
+                                        <span class="font-bold text-[11px]">2. APIs & Estado</span>
+                                        <span class="font-mono font-black text-slate-900 dark:text-white">${g.evaluation.c2} / 20</span>
+                                    </div>
+                                    <div class="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                                        <div class="bg-teal-500 h-1.5 rounded-full" style="width: ${(g.evaluation.c2 / 20) * 100}%"></div>
+                                    </div>
+                                    <span class="text-[10px] text-slate-400 block">${(g.evaluation.c2 / 20) * 100}% obtenido</span>
+                                </div>
+                                <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800 space-y-1.5">
+                                    <div class="flex items-center justify-between text-slate-500 dark:text-slate-400">
+                                        <span class="font-bold text-[11px]">3. Dashboard KPI</span>
+                                        <span class="font-mono font-black text-slate-900 dark:text-white">${g.evaluation.c3} / 20</span>
+                                    </div>
+                                    <div class="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                                        <div class="bg-cyan-500 h-1.5 rounded-full" style="width: ${(g.evaluation.c3 / 20) * 100}%"></div>
+                                    </div>
+                                    <span class="text-[10px] text-slate-400 block">${(g.evaluation.c3 / 20) * 100}% obtenido</span>
+                                </div>
+                                <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800 space-y-1.5">
+                                    <div class="flex items-center justify-between text-slate-500 dark:text-slate-400">
+                                        <span class="font-bold text-[11px]">4. xUnit & Moq</span>
+                                        <span class="font-mono font-black text-slate-900 dark:text-white">${g.evaluation.c4} / 20</span>
+                                    </div>
+                                    <div class="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                                        <div class="bg-purple-500 h-1.5 rounded-full" style="width: ${(g.evaluation.c4 / 20) * 100}%"></div>
+                                    </div>
+                                    <span class="text-[10px] text-slate-400 block">${(g.evaluation.c4 / 20) * 100}% obtenido</span>
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        <!-- Observaciones Registradas para el Equipo -->
+                        <div class="space-y-3">
+                            <div class="flex items-center space-x-2 text-xs font-bold text-slate-800 dark:text-slate-200">
+                                <i data-lucide="message-square" class="w-4 h-4 text-emerald-500"></i>
+                                <span>Observaciones y Recomendaciones Puntuales del Docente:</span>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                                ${g.evaluation.observations.map(obs => `
+                                    <div class="p-3.5 rounded-2xl bg-slate-100/80 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800/80 flex items-start space-x-2.5">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i>
+                                        <span class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-medium">${obs}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div class="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs border-t border-slate-200/60 dark:border-slate-800/60 pt-3">
+                            <span class="text-slate-500 dark:text-slate-400">Facilitador: M.Sc. Ing. Gabriel Alexis Ramírez Sánchez &bull; Sesión 9 de Octubre de 2026</span>
+                            <button onclick="switchView('evaluations')" class="text-blue-600 dark:text-blue-400 font-bold hover:underline flex items-center space-x-1">
+                                <span>Ver Matriz Comparativa General</span>
+                                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                            </button>
                         </div>
                     </div>
 
@@ -1116,6 +1625,149 @@ Por favor, ingresen a la plataforma, revisen las directrices específicas asigna
             }).catch(() => {
                 alert('Texto copiado al portapapeles.');
             });
+        }
+
+        // Evaluations Logic
+        let currentEvalFilter = 'all';
+
+        function filterEvaluationCards(filter) {
+            currentEvalFilter = filter;
+            const buttons = ['all', 'evaluated', 'pending'];
+            buttons.forEach(b => {
+                const btn = document.getElementById(`eval-filter-${b}`);
+                if (!btn) return;
+                if (b === filter) {
+                    btn.className = 'px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm font-bold transition';
+                } else {
+                    btn.className = 'px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition';
+                }
+            });
+            renderEvaluations();
+        }
+
+        function renderEvaluations() {
+            const container = document.getElementById('evaluations-cards-container');
+            if (!container) return;
+
+            let filtered = groupsData;
+            if (currentEvalFilter === 'evaluated') {
+                filtered = groupsData.filter(g => g.evaluation.presented);
+            } else if (currentEvalFilter === 'pending') {
+                filtered = groupsData.filter(g => !g.evaluation.presented);
+            }
+
+            container.innerHTML = filtered.map(g => `
+                <div class="rounded-3xl glass-card p-6 sm:p-7 shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-5 hover:border-slate-300 dark:hover:border-slate-700 transition">
+                    <!-- Top Info Header -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/60 dark:border-slate-800/80 pb-4">
+                        <div class="space-y-1.5">
+                            <div class="flex items-center space-x-2.5 flex-wrap">
+                                <span class="px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-wider bg-gradient-to-r ${g.badgeColor} text-white shadow-sm">${g.name}</span>
+                                <h3 class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white">${g.projectTitle}</h3>
+                                <a href="${g.repoUrl}" target="_blank" class="text-xs text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 flex items-center space-x-1 font-mono transition">
+                                    <i data-lucide="github" class="w-3.5 h-3.5"></i>
+                                    <span>Repo</span>
+                                    <i data-lucide="external-link" class="w-3 h-3"></i>
+                                </a>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 pt-0.5">
+                                <span class="font-semibold text-slate-600 dark:text-slate-300">Integrantes:</span>
+                                ${g.members.map(m => `<span class="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">${m}</span>`).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Score Badge -->
+                        <div class="flex items-center space-x-3 shrink-0">
+                            <span class="px-3.5 py-1.5 rounded-xl text-xs font-black ${g.evaluation.badgeClass}">
+                                ${g.evaluation.statusBadge}
+                            </span>
+                            ${g.evaluation.presented ? `
+                                <div class="text-right">
+                                    <div class="text-lg font-black text-slate-900 dark:text-white font-mono">${g.evaluation.total} <span class="text-xs text-slate-500 font-normal">/ 80 pts</span></div>
+                                    <div class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 font-mono">${g.evaluation.weightAwarded.toFixed(1)}% / 32.0%</div>
+                                </div>
+                            ` : `
+                                <div class="text-xs text-slate-400 font-semibold italic">Pendiente de recuperación</div>
+                            `}
+                        </div>
+                    </div>
+
+                    ${g.evaluation.presented ? `
+                        <!-- 4 Criteria Mini-Grid (20 pts c/u) -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                            <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800 space-y-1.5">
+                                <div class="flex justify-between font-bold text-slate-600 dark:text-slate-400 text-[11px]">
+                                    <span>1. Frontend SPA</span>
+                                    <span class="font-mono text-slate-900 dark:text-white font-black">${g.evaluation.c1} / 20</span>
+                                </div>
+                                <div class="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-blue-500 h-1.5 rounded-full" style="width: ${(g.evaluation.c1 / 20) * 100}%"></div>
+                                </div>
+                                <span class="text-[10px] text-slate-400 block">${(g.evaluation.c1 / 20) * 100}% obtenido</span>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800 space-y-1.5">
+                                <div class="flex justify-between font-bold text-slate-600 dark:text-slate-400 text-[11px]">
+                                    <span>2. APIs & Estado</span>
+                                    <span class="font-mono text-slate-900 dark:text-white font-black">${g.evaluation.c2} / 20</span>
+                                </div>
+                                <div class="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-teal-500 h-1.5 rounded-full" style="width: ${(g.evaluation.c2 / 20) * 100}%"></div>
+                                </div>
+                                <span class="text-[10px] text-slate-400 block">${(g.evaluation.c2 / 20) * 100}% obtenido</span>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800 space-y-1.5">
+                                <div class="flex justify-between font-bold text-slate-600 dark:text-slate-400 text-[11px]">
+                                    <span>3. Dashboard KPI</span>
+                                    <span class="font-mono text-slate-900 dark:text-white font-black">${g.evaluation.c3} / 20</span>
+                                </div>
+                                <div class="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-cyan-500 h-1.5 rounded-full" style="width: ${(g.evaluation.c3 / 20) * 100}%"></div>
+                                </div>
+                                <span class="text-[10px] text-slate-400 block">${(g.evaluation.c3 / 20) * 100}% obtenido</span>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800 space-y-1.5">
+                                <div class="flex justify-between font-bold text-slate-600 dark:text-slate-400 text-[11px]">
+                                    <span>4. xUnit & Moq</span>
+                                    <span class="font-mono text-slate-900 dark:text-white font-black">${g.evaluation.c4} / 20</span>
+                                </div>
+                                <div class="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-purple-500 h-1.5 rounded-full" style="width: ${(g.evaluation.c4 / 20) * 100}%"></div>
+                                </div>
+                                <span class="text-[10px] text-slate-400 block">${(g.evaluation.c4 / 20) * 100}% obtenido</span>
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <!-- Observaciones y Retroalimentación Específica -->
+                    <div class="space-y-2.5">
+                        <div class="flex items-center space-x-2 text-xs font-bold text-slate-800 dark:text-slate-200">
+                            <i data-lucide="list-checks" class="w-4 h-4 text-emerald-500"></i>
+                            <span>Observaciones Docentes & Oportunidades de Mejora:</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                            ${g.evaluation.observations.map(obs => `
+                                <div class="p-3.5 rounded-2xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-800/70 flex items-start space-x-2.5">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i>
+                                    <span class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-medium">${obs}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Footer Action -->
+                    <div class="pt-3 border-t border-slate-200/60 dark:border-slate-800/80 flex items-center justify-between flex-wrap gap-2 text-xs">
+                        <span class="text-slate-500 dark:text-slate-400 font-mono text-[11px]">Sesión Presencial: ${g.evaluation.sessionDate}</span>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="goToGroup(${g.id})" class="px-3 py-1.5 rounded-xl font-bold text-xs bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-500 text-slate-700 dark:text-slate-200 transition flex items-center space-x-1.5">
+                                <span>Ver Recomendaciones de Arquitectura</span>
+                                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
         }
     </script>
 </body>
