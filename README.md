@@ -21,7 +21,8 @@
 **Período Académico:** Septiembre / Octubre, 2026  
 **San Cristóbal, Estado Táchira, Venezuela**
 
-> 🚀 **Plataforma Interactiva de Recomendaciones (Fase 4):** [Abrir REAF-F4 en Vivo](https://gramirezsunet.github.io/desarrolloAplicacionesWeb/REAF-F4/)
+> 🚀 **Plataforma Interactiva de Recomendaciones (Fase 4):** [Abrir REAF-F4 en Vivo](https://gramirezsunet.github.io/desarrolloAplicacionesWeb/REAF-F4/)  
+> 📊 **Analizador de Propuestas y Observaciones (Programa Integrador):** [Abrir REAP-PI en Vivo](https://gramirezsunet.github.io/desarrolloAplicacionesWeb/REAP-PI/)
 
 ---
 

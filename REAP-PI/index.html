@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REAP-PI | Analizador de Propuestas & Observaciones — Programa Integrador</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            900: '#14532d',
+                        },
+                        navy: {
+                            800: '#0f172a',
+                            900: '#020617',
+                            950: '#010409',
+                        },
+                        unet: {
+                            blue: '#0b3c7b',
+                            dark: '#061f42',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.85);
+        }
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.80);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(51, 65, 85, 0.55);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        @media print {
+            header, .no-print { display: none !important; }
+            body { background: #fff !important; color: #000 !important; }
+            .glass-card { background: #fff !important; border: 1px solid #cbd5e1 !important; backdrop-filter: none !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-navy-950 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300 font-sans antialiased selection:bg-emerald-500 selection:text-white">
+
+    <!-- Top Navbar Sticky -->
+    <header class="sticky top-0 z-50 glass-card border-b border-slate-200/80 dark:border-slate-800/80 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Left: UNET Logo & Title -->
+            <div class="flex items-center space-x-3 sm:space-x-4">
+                <a href="#" onclick="switchView('overview'); return false;" class="flex items-center space-x-3 group">
+                    <img id="unet-logo-img" src="unet-logo.png" alt="Logo UNET" class="h-10 sm:h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-105" />
+                    <div class="border-l border-slate-300 dark:border-slate-700 pl-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="font-black text-base sm:text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-700 via-teal-600 to-emerald-600 dark:from-sky-400 dark:via-teal-300 dark:to-emerald-400">REAP-PI</span>
+                            <span class="text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950/90 dark:text-emerald-300 font-bold border border-emerald-300 dark:border-emerald-800">UNET 2026</span>
+                        </div>
+                        <p class="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-medium leading-tight">Dpto. Informática &bull; DAW (0423807T)</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Right: Navigation, Theme Toggle, Print -->
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <nav class="hidden lg:flex items-center space-x-1 text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300">
+                    <button onclick="switchView('overview')" id="nav-overview" class="px-3 py-2 rounded-xl text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 transition flex items-center space-x-1.5">
+                        <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+                        <span>Estadísticas & Listado</span>
+                    </button>
+                    <button onclick="switchView('proposals')" id="nav-proposals" class="px-3 py-2 rounded-xl hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition flex items-center space-x-1.5">
+                        <i data-lucide="file-search" class="w-4 h-4"></i>
+                        <span>Propuestas & Observaciones</span>
+                    </button>
+                    <button onclick="switchView('analyzer')" id="nav-analyzer" class="px-3 py-2 rounded-xl hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition flex items-center space-x-1.5 text-blue-600 dark:text-blue-400 font-bold">
+                        <i data-lucide="cpu" class="w-4 h-4"></i>
+                        <span>Analizador Interactivo</span>
+                    </button>
+                    <button onclick="switchView('matrix')" id="nav-matrix" class="px-3 py-2 rounded-xl hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition flex items-center space-x-1.5">
+                        <i data-lucide="table" class="w-4 h-4"></i>
+                        <span>Matriz Comparativa</span>
+                    </button>
+                    <button onclick="switchView('rubric')" id="nav-rubric" class="px-3 py-2 rounded-xl hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition flex items-center space-x-1.5">
+                        <i data-lucide="check-square" class="w-4 h-4"></i>
+                        <span>Checklist Fases 1–5</span>
+                    </button>
+                </nav>
+
+                <div class="h-6 w-px bg-slate-200 dark:bg-slate-800 hidden lg:block"></div>
+
+                <button id="theme-toggle-btn" class="flex items-center space-x-2 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition" title="Cambiar Tema (Claro / Oscuro)">
+                    <i data-lucide="moon" id="theme-icon" class="w-4 h-4 text-amber-500 dark:text-sky-300"></i>
+                    <span id="theme-text" class="hidden sm:inline">Modo Oscuro</span>
+                </button>
+
+                <button onclick="window.print()" class="hidden md:flex items-center space-x-1.5 text-xs font-semibold px-3 py-2 rounded-xl bg-slate-200/80 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition">
+                    <i data-lucide="printer" class="w-4 h-4"></i>
+                    <span>Imprimir</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Sub-Bar -->
+        <div class="flex lg:hidden items-center justify-around border-t border-slate-200/70 dark:border-slate-800/70 px-1 py-1.5 bg-slate-100/50 dark:bg-slate-900/50 text-[11px] font-bold overflow-x-auto hide-scrollbar">
+            <button onclick="switchView('overview')" id="m-nav-overview" class="px-2 py-1 rounded-lg text-emerald-600 dark:text-emerald-400 bg-emerald-100/60 dark:bg-emerald-950/70 whitespace-nowrap">Estadísticas</button>
+            <button onclick="switchView('proposals')" id="m-nav-proposals" class="px-2 py-1 rounded-lg text-slate-600 dark:text-slate-300 whitespace-nowrap">Propuestas</button>
+            <button onclick="switchView('analyzer')" id="m-nav-analyzer" class="px-2 py-1 rounded-lg text-blue-600 dark:text-blue-400 whitespace-nowrap">Analizador</button>
+            <button onclick="switchView('matrix')" id="m-nav-matrix" class="px-2 py-1 rounded-lg text-slate-600 dark:text-slate-300 whitespace-nowrap">Matriz</button>
+            <button onclick="switchView('rubric')" id="m-nav-rubric" class="px-2 py-1 rounded-lg text-slate-600 dark:text-slate-300 whitespace-nowrap">Checklist</button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8">
+
+        <!-- Banner Centrado de la Asignatura -->
+        <section class="flex flex-col items-center justify-center">
+            <div class="w-full max-w-5xl rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-900 group">
+                <img src="Banner_Google_Classroom_GR.jpeg" alt="Banner DAW - Desarrollo de Aplicaciones Web" class="w-full h-auto object-cover transform duration-300 group-hover:scale-[1.01]" />
+            </div>
+        </section>
+
+        <!-- Tarjeta Informativa Institucional & Docente -->
+        <section class="rounded-3xl glass-card p-5 sm:p-7 shadow-sm border border-slate-200/80 dark:border-slate-800">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 text-xs sm:text-sm">
+                <div class="flex items-start space-x-3.5">
+                    <div class="p-2.5 rounded-2xl bg-blue-50 dark:bg-blue-950/70 text-blue-600 dark:text-blue-400 border border-blue-200/60 dark:border-blue-900/50">
+                        <i data-lucide="book-open" class="w-5 h-5"></i>
+                    </div>
+                    <div class="space-y-0.5">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Asignatura & Programa</span>
+                        <div class="font-extrabold text-slate-900 dark:text-white text-sm sm:text-base">Desarrollo de Aplicaciones Web</div>
+                        <div class="text-xs font-mono font-semibold text-blue-600 dark:text-blue-400">Código: 0423807T &bull; Trabajo Integrador</div>
+                    </div>
+                </div>
+
+                <div class="flex items-start space-x-3.5">
+                    <div class="p-2.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 border border-emerald-200/60 dark:border-emerald-900/50">
+                        <i data-lucide="user-check" class="w-5 h-5"></i>
+                    </div>
+                    <div class="space-y-0.5">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Facilitador</span>
+                        <div class="font-bold text-slate-900 dark:text-white">M.Sc. Ing. Gabriel Alexis Ramírez Sánchez</div>
+                        <a href="mailto:gramirezs@unet.edu.ve" class="text-xs text-emerald-600 dark:text-emerald-400 hover:underline font-mono flex items-center space-x-1">
+                            <i data-lucide="mail" class="w-3 h-3"></i>
+                            <span>gramirezs@unet.edu.ve</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="flex items-start space-x-3.5 md:col-span-2 lg:col-span-1">
+                    <div class="p-2.5 rounded-2xl bg-purple-50 dark:bg-purple-950/70 text-purple-600 dark:text-purple-400 border border-purple-200/60 dark:border-purple-900/50">
+                        <i data-lucide="calendar" class="w-5 h-5"></i>
+                    </div>
+                    <div class="space-y-0.5">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Corte de Revisión & Sede</span>
+                        <div class="font-semibold text-slate-900 dark:text-white">Noviembre, 2026 (Corte 20–23/11)</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400 flex items-center space-x-1">
+                            <i data-lucide="map-pin" class="w-3 h-3 text-red-500"></i>
+                            <span>San Cristóbal, Estado Táchira, Venezuela</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 1: ESTADÍSTICAS & LISTADO OFICIAL (VISTA PRINCIPAL) -->
+        <div id="view-overview" class="space-y-8">
+            <!-- Hero -->
+            <div class="relative rounded-3xl p-6 sm:p-9 overflow-hidden bg-gradient-to-br from-slate-900 via-navy-900 to-slate-950 text-white shadow-xl border border-slate-800">
+                <div class="absolute -right-20 -top-20 w-80 h-80 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-blue-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="relative z-10 space-y-4">
+                    <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-semibold">
+                        <i data-lucide="radar" class="w-4 h-4"></i>
+                        <span>Diagnóstico Técnico de Propuestas &bull; Fases 1 a 5 (Énfasis F1–F2)</span>
+                    </div>
+                    <h1 class="text-2xl sm:text-4xl font-black tracking-tight text-white leading-tight">
+                        Análisis de Propuestas del Programa Integrador (REAP-PI)
+                    </h1>
+                    <p class="text-slate-300 text-xs sm:text-sm md:text-base leading-relaxed max-w-4xl">
+                        Plataforma dinámica de retroalimentación técnica constructiva para los equipos del corte <strong>Noviembre 2026</strong>. Evalúa la solidez de cada propuesta frente a las <strong>Fases 1 y 2</strong> (Arquitectura Onion, validación de stock/reglas, RFC 7807, EF Core 10, Fluent API y borrado lógico) y su proyección hacia las <strong>Fases 3, 4 y 5</strong> (JWT/RBAC, React 18 + KPIs, xUnit/Moq y Docker/CI-CD).
+                    </p>
+
+                    <!-- 4 KPI Cards de Participación -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
+                        <div class="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                            <span class="text-[11px] text-slate-400 uppercase font-semibold">Listado Oficial (20/11)</span>
+                            <div class="text-2xl sm:text-3xl font-black text-white mt-0.5">16 <span class="text-xs text-slate-400 font-normal">alumnos</span></div>
+                            <span class="text-[11px] text-sky-300 font-mono">100% cohorte registrada</span>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-400/25 backdrop-blur-sm">
+                            <span class="text-[11px] text-emerald-300 uppercase font-semibold">Con Grupo / Entregaron</span>
+                            <div class="text-2xl sm:text-3xl font-black text-emerald-400 mt-0.5">10 <span class="text-xs text-emerald-200/70 font-normal">/ 16</span></div>
+                            <span class="text-[11px] text-emerald-300 font-mono">62.5% (8 en equipo + 2 indiv.)</span>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-rose-500/10 border border-rose-400/25 backdrop-blur-sm">
+                            <span class="text-[11px] text-rose-300 uppercase font-semibold">Aún Sin Reportarse</span>
+                            <div class="text-2xl sm:text-3xl font-black text-rose-400 mt-0.5">6 <span class="text-xs text-rose-200/70 font-normal">/ 16</span></div>
+                            <span class="text-[11px] text-rose-300 font-mono">37.5% pendiente de grupo</span>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-blue-500/10 border border-blue-400/25 backdrop-blur-sm">
+                            <span class="text-[11px] text-blue-300 uppercase font-semibold">Propuestas Analizadas</span>
+                            <div class="text-2xl sm:text-3xl font-black text-blue-400 mt-0.5">7 <span class="text-xs text-blue-200/70 font-normal">docs</span></div>
+                            <span class="text-[11px] text-amber-300 font-mono">5 listado + 1 externo + 1 sin firma</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-3 pt-2 no-print">
+                        <button onclick="switchView('proposals')" class="px-4 py-2.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm flex items-center space-x-2 shadow-lg shadow-emerald-500/25 transition">
+                            <i data-lucide="file-search" class="w-4 h-4"></i>
+                            <span>Explorar Observaciones por Propuesta</span>
+                        </button>
+                        <button onclick="switchView('analyzer')" class="px-4 py-2.5 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm flex items-center space-x-2 shadow-lg shadow-blue-500/25 transition">
+                            <i data-lucide="cpu" class="w-4 h-4"></i>
+                            <span>Abrir Analizador Interactivo</span>
+                        </button>
+                        <button onclick="copySummaryAnnouncement()" class="px-4 py-2.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm flex items-center space-x-2 border border-white/15 transition">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                            <span id="copy-summary-text">Copiar Comunicado de Resultados</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alertas Administrativas Críticas -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="rounded-3xl p-5 bg-amber-50/90 dark:bg-amber-950/30 border border-amber-300/80 dark:border-amber-700/60 flex items-start space-x-3.5 shadow-sm">
+                    <div class="p-2.5 rounded-2xl bg-amber-500/20 text-amber-700 dark:text-amber-300 shrink-0">
+                        <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+                    </div>
+                    <div class="space-y-1 text-xs">
+                        <h3 class="font-extrabold text-amber-900 dark:text-amber-200 text-sm">Alerta 1: Propuesta Sin Autoría Declarada ("Cero Stock / Librería")</h3>
+                        <p class="text-amber-800 dark:text-amber-300/90 leading-relaxed">
+                            El documento <strong>Sistema de Gestión Bajo Pedido (Cero Stock)</strong> no incluye portada, nombres ni cédulas. Podría corresponder a parte de los <strong>6 estudiantes sin reporte</strong>. Deben reclamar formalmente su autoría ante el docente y sustituir ejemplos genéricos de clase por su diseño propio.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="rounded-3xl p-5 bg-sky-50/90 dark:bg-sky-950/30 border border-sky-300/80 dark:border-sky-700/60 flex items-start space-x-3.5 shadow-sm">
+                    <div class="p-2.5 rounded-2xl bg-sky-500/20 text-sky-700 dark:text-sky-300 shrink-0">
+                        <i data-lucide="user-plus" class="w-5 h-5"></i>
+                    </div>
+                    <div class="space-y-1 text-xs">
+                        <h3 class="font-extrabold text-sky-900 dark:text-sky-200 text-sm">Alerta 2: Entrega Fuera de Listado ("AQUABI" — Jhon Rico)</h3>
+                        <p class="text-sky-800 dark:text-sky-300/90 leading-relaxed">
+                            <strong>Jhon Alfredo Rico García (C.I. 18.564.692)</strong> entregó la propuesta <strong>AQUABI</strong>, pero <strong>no figura en el control de asistencia del 20/11/2026 (16 alumnos)</strong>. Se recomienda verificar su inscripción oficial en la sección y confirmar si trabajará individual o en equipo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráficas Estadísticas Visuales (Sin dependencias externas) -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Distribución de Estudiantes -->
+                <div class="rounded-3xl glass-card p-6 border border-slate-200/80 dark:border-slate-800 space-y-5">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                                <i data-lucide="pie-chart" class="w-5 h-5 text-emerald-500"></i>
+                                <span>Distribución del Listado Oficial (16 Estudiantes)</span>
+                            </h2>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Estatus de conformación de grupos y entrega de propuesta</p>
+                        </div>
+                        <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">n = 16</span>
+                    </div>
+
+                    <!-- Barra Apilada -->
+                    <div class="space-y-2">
+                        <div class="w-full h-5 rounded-full overflow-hidden flex bg-slate-200 dark:bg-slate-800 shadow-inner">
+                            <div class="bg-emerald-500 h-full transition-all" style="width: 50%" title="En Grupo (8 alumnos / 50.0%)"></div>
+                            <div class="bg-blue-500 h-full transition-all" style="width: 12.5%" title="Individual (2 alumnos / 12.5%)"></div>
+                            <div class="bg-rose-500 h-full transition-all" style="width: 37.5%" title="Sin Reportar (6 alumnos / 37.5%)"></div>
+                        </div>
+                        <div class="flex flex-wrap justify-between text-[11px] font-semibold gap-2 pt-1">
+                            <span class="flex items-center space-x-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span>En Equipo (8 &bull; 50.0%)</span></span>
+                            <span class="flex items-center space-x-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span><span>Individual (2 &bull; 12.5%)</span></span>
+                            <span class="flex items-center space-x-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span><span>Sin Reportar (6 &bull; 37.5%)</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Desglose por Propuesta -->
+                    <div class="space-y-2.5 pt-2 border-t border-slate-200/70 dark:border-slate-800 text-xs">
+                        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-900/60">
+                            <span class="font-semibold text-slate-800 dark:text-slate-200">Grupo Transformadores Wilfredo Pérez</span>
+                            <span class="font-mono font-bold text-emerald-600 dark:text-emerald-400">3 estudiantes (Equipo)</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-900/60">
+                            <span class="font-semibold text-slate-800 dark:text-slate-200">Grupo Sistema de Taxis (Líneas Frontera / RUTA)</span>
+                            <span class="font-mono font-bold text-emerald-600 dark:text-emerald-400">3 estudiantes (Equipo)</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-900/60">
+                            <span class="font-semibold text-slate-800 dark:text-slate-200">Grupo NexoHogar (Soluciones Técnicas)</span>
+                            <span class="font-mono font-bold text-emerald-600 dark:text-emerald-400">2 estudiantes (Equipo)</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-900/60">
+                            <span class="font-semibold text-slate-800 dark:text-slate-200">SIGMO-UNET &amp; Sistema Empresa de Servicio</span>
+                            <span class="font-mono font-bold text-blue-600 dark:text-blue-400">2 estudiantes (1 c/u)</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200/60 dark:border-amber-800/50">
+                            <span class="font-semibold text-amber-900 dark:text-amber-200">Casos Especiales (AQUABI fuera lista + Cero Stock sin firma)</span>
+                            <span class="font-mono font-bold text-amber-700 dark:text-amber-300">2 propuestas</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Madurez Promedio por Fase -->
+                <div class="rounded-3xl glass-card p-6 border border-slate-200/80 dark:border-slate-800 space-y-4">
+                    <div>
+                        <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                            <i data-lucide="activity" class="w-5 h-5 text-blue-500"></i>
+                            <span>Índice de Preparación por Fase (7 Propuestas)</span>
+                        </h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Cobertura técnica declarada en los documentos recibidos frente al estándar DAW</p>
+                    </div>
+                    <div id="phase-maturity-bars" class="space-y-3 pt-1">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarjetas Rápidas de las 7 Propuestas -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="layers" class="w-5 h-5 text-emerald-500"></i>
+                        <h2 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">Resumen Ejecutivo de las 7 Propuestas Analizadas</h2>
+                    </div>
+                    <span class="text-xs text-slate-500 dark:text-slate-400">Haz clic en "Ver Observaciones" para abrir el diagnóstico completo</span>
+                </div>
+                <div id="overview-proposals-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+
+            <!-- Listado Oficial de Estudiantes con Filtro y Buscador -->
+            <div class="rounded-3xl glass-card p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800 space-y-5">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                            <i data-lucide="users" class="w-5 h-5 text-emerald-500"></i>
+                            <span>Seguimiento Individual — Control de Asistencia (20/11/2026)</span>
+                        </h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Listado oficial de 16 alumnos + registro externo detectado (AQUABI)</p>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 no-print">
+                        <div class="flex items-center space-x-1 p-1 rounded-2xl bg-slate-200/60 dark:bg-slate-900/60 text-xs font-semibold overflow-x-auto">
+                            <button onclick="filterRoster('all')" id="roster-filter-all" class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm whitespace-nowrap">Todos (16+1)</button>
+                            <button onclick="filterRoster('delivered')" id="roster-filter-delivered" class="px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-400 whitespace-nowrap">Entregaron (10)</button>
+                            <button onclick="filterRoster('pending')" id="roster-filter-pending" class="px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-400 whitespace-nowrap">Sin Reportar (6)</button>
+                            <button onclick="filterRoster('external')" id="roster-filter-external" class="px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-400 whitespace-nowrap">Fuera Lista (1)</button>
+                        </div>
+                        <div class="relative">
+                            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+                            <input type="text" id="roster-search" placeholder="Buscar alumno o cédula..." class="w-full sm:w-56 pl-9 pr-3 py-2 rounded-xl text-xs bg-white dark:bg-navy-900 border border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/50" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto rounded-2xl border border-slate-200/70 dark:border-slate-800">
+                    <table class="w-full text-left text-xs sm:text-sm min-w-[720px]">
+                        <thead class="bg-slate-100/90 dark:bg-slate-900/90 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-800">
+                            <tr>
+                                <th class="p-3.5 text-center w-12">N°</th>
+                                <th class="p-3.5">Cédula</th>
+                                <th class="p-3.5">Estudiante</th>
+                                <th class="p-3.5">Estado de Entrega</th>
+                                <th class="p-3.5">Modalidad</th>
+                                <th class="p-3.5">Propuesta Asociada</th>
+                                <th class="p-3.5 text-right no-print">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="roster-table-body" class="divide-y divide-slate-200/60 dark:divide-slate-800 text-xs">
+                            <!-- Rendered by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 2: PROPUESTAS & OBSERVACIONES TÉCNICAS -->
+        <div id="view-proposals" class="hidden space-y-6">
+            <div class="flex items-center justify-between flex-wrap gap-3 pb-2 border-b border-slate-200 dark:border-slate-800">
+                <div class="flex items-center space-x-2 overflow-x-auto pb-2 w-full sm:w-auto hide-scrollbar" id="proposal-tabs">
+                    <!-- Dynamic tabs -->
+                </div>
+                <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 hidden sm:flex items-center space-x-1">
+                    <i data-lucide="touchpad" class="w-3.5 h-3.5"></i>
+                    <span>Selecciona una propuesta para ver su diagnóstico Fases 1–5</span>
+                </div>
+            </div>
+
+            <div id="proposal-detail-area" class="transition-all duration-300">
+                <!-- Rendered by JS -->
+            </div>
+        </div>
+
+        <!-- VIEW 3: ANALIZADOR INTERACTIVO DE PROPUESTAS (FASES 1–5) -->
+        <div id="view-analyzer" class="hidden space-y-6">
+            <div class="rounded-3xl glass-card p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 space-y-6">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-200/70 dark:border-slate-800 pb-4">
+                    <div class="space-y-1">
+                        <div class="inline-flex items-center space-x-2 px-3 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 text-[11px] font-bold">
+                            <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+                            <span>Motor de Evaluación Heurística DAW 0423807T</span>
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">Analizador de Propuestas del Programa Integrador</h2>
+                        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+                            Evalúa cualquier borrador o propuesta nueva frente a los criterios de <strong>Fase 1 y Fase 2</strong> (Arquitectura Onion, Stock/Negocio, RFC 7807, EF Core, Fluent API, Borrado Lógico) y <strong>Fases 3, 4 y 5</strong> (JWT/RBAC, KPIs con umbrales, xUnit/Moq y Docker).
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="loadSampleIntoAnalyzer(6)" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white transition">Cargar Ejemplo: Transformadores</button>
+                        <button onclick="loadSampleIntoAnalyzer(2)" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white transition">Cargar Ejemplo: Servicio</button>
+                        <button onclick="clearAnalyzer()" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-300 hover:bg-rose-100 transition">Limpiar</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Input Column -->
+                    <div class="lg:col-span-5 space-y-4">
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Título de la Propuesta / Equipo</label>
+                            <input id="analyzer-title" type="text" placeholder="Ej: MediStock ERP — Equipo Alpha" class="w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm bg-white dark:bg-navy-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Contenido de la Propuesta (Problema, Entidades, Reglas, KPIs, Stack)</label>
+                            <textarea id="analyzer-text" rows="13" placeholder="Pega aquí el texto de la propuesta (descripción, problema, roles RBAC, entidades, validación de stock, borrado lógico, Fluent API, KPIs con umbrales y stack .NET 10 / React / Docker)..." class="w-full px-3.5 py-3 rounded-2xl text-xs sm:text-sm bg-white dark:bg-navy-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-sans leading-relaxed"></textarea>
+                        </div>
+                        <button onclick="runLiveAnalyzer()" class="w-full py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-sm shadow-lg shadow-emerald-500/20 flex items-center justify-center space-x-2 transition">
+                            <i data-lucide="sparkles" class="w-4 h-4"></i>
+                            <span>Ejecutar Análisis Técnico (Fases 1–5)</span>
+                        </button>
+                    </div>
+
+                    <!-- Output Column -->
+                    <div class="lg:col-span-7">
+                        <div id="analyzer-result" class="rounded-3xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 p-5 sm:p-6 space-y-5 min-h-[420px]">
+                            <div class="flex flex-col items-center justify-center text-center py-16 space-y-3 text-slate-500 dark:text-slate-400">
+                                <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 shadow-sm">
+                                    <i data-lucide="scan-search" class="w-8 h-8 text-emerald-500"></i>
+                                </div>
+                                <h3 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Listo para Analizar</h3>
+                                <p class="text-xs max-w-md">Pega el contenido de una propuesta o carga uno de los ejemplos superiores y presiona <strong>Ejecutar Análisis Técnico</strong> para obtener el diagnóstico por fases y observaciones constructivas.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 4: MATRIZ COMPARATIVA -->
+        <div id="view-matrix" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                        <i data-lucide="table" class="w-5 h-5 text-emerald-500"></i>
+                        <span>Matriz Comparativa Técnica de Propuestas (Fases 1–5)</span>
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Evaluación comparativa de cobertura arquitectónica, reglas de stock, borrado lógico y KPIs</p>
+                </div>
+
+                <div class="relative w-full sm:w-72 no-print">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
+                    <input type="text" id="matrix-search" placeholder="Filtrar propuesta, autor o brecha..." class="w-full pl-9 pr-4 py-2 rounded-xl text-xs sm:text-sm bg-white dark:bg-navy-900 border border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/50">
+                </div>
+            </div>
+
+            <div class="overflow-x-auto rounded-3xl glass-card shadow-sm border border-slate-200/80 dark:border-slate-800">
+                <table class="w-full text-left text-xs sm:text-sm min-w-[900px]">
+                    <thead class="bg-slate-100/90 dark:bg-slate-900/90 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-800">
+                        <tr>
+                            <th class="p-4">Propuesta</th>
+                            <th class="p-4">Autores & Estatus Listado</th>
+                            <th class="p-4 text-center">Madurez Global</th>
+                            <th class="p-4">F1: Dominio & Stock</th>
+                            <th class="p-4">F2: Fluent API & Soft Delete</th>
+                            <th class="p-4">F3: RBAC & JWT</th>
+                            <th class="p-4">F4–F5: KPIs, QA & Docker</th>
+                        </tr>
+                    </thead>
+                    <tbody id="matrix-body" class="divide-y divide-slate-200/60 dark:divide-slate-800 text-xs">
+                        <!-- Rendered by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- VIEW 5: CHECKLIST TRANSVERSAL FASES 1–5 -->
+        <div id="view-rubric" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                        <i data-lucide="check-square" class="w-5 h-5 text-emerald-500"></i>
+                        <span>Checklist Obligatorio de Formulación &amp; Arquitectura (Fases 1–5)</span>
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Requisitos que toda propuesta aprobada debe garantizar antes de iniciar el sprint final</p>
+                </div>
+
+                <div class="flex items-center space-x-3">
+                    <span id="checklist-progress-text" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3 py-1.5 rounded-xl border border-emerald-200 dark:border-emerald-800">0/12 Completados (0%)</span>
+                    <button onclick="resetChecklist()" class="text-xs text-slate-500 hover:text-red-500 dark:hover:text-red-400 underline">Reiniciar</button>
+                </div>
+            </div>
+
+            <div class="w-full bg-slate-200 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                <div id="checklist-progress-bar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="checklist-container">
+                <!-- Rendered by JS -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer Institucional -->
+    <footer class="mt-16 border-t border-slate-200/80 dark:border-slate-800/80 py-8 bg-white/40 dark:bg-navy-950/40 text-center text-xs text-slate-500 dark:text-slate-400">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <div class="flex items-center justify-center flex-wrap gap-2">
+                <span class="font-bold text-slate-700 dark:text-slate-300">Universidad Nacional Experimental del Táchira</span>
+                <span>&bull;</span>
+                <span>Decanato de Docencia</span>
+                <span>&bull;</span>
+                <span>Departamento de Ingeniería en Informática</span>
+            </div>
+            <p class="text-[11px] text-slate-400 dark:text-slate-500 font-mono">
+                REAP-PI &bull; Desarrollo de Aplicaciones Web (0423807T) &bull; Corte Noviembre, 2026 &bull; San Cristóbal, Venezuela
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // 1. Official Attendance Roster (20/11/2026 - 16 students) + 1 External Submission
+        const studentRoster = [
+            { num: 1, cedula: "V31123065", name: "Aliendres Moreno Douglas Alejandro", status: "delivered", modality: "Individual", proposalId: 3, proposalName: "SIGMO-UNET (Ordeño en Fincas)", inOfficialList: true },
+            { num: 2, cedula: "V25168390", name: "Amaya Pino Maria Gabriela Alejandra", status: "pending", modality: "Sin Reportar", proposalId: null, proposalName: "Pendiente de grupo/propuesta", inOfficialList: true },
+            { num: 3, cedula: "V27114065", name: "Arenales Zambrano Yeyner Jesus", status: "delivered", modality: "Equipo (3)", proposalId: 1, proposalName: "Sistema de Taxis (Líneas Frontera / RUTA)", inOfficialList: true },
+            { num: 4, cedula: "V30965748", name: "Becerra Salamanca Moisés David", status: "delivered", modality: "Equipo (3)", proposalId: 6, proposalName: "Transformadores Wilfredo Pérez", inOfficialList: true },
+            { num: 5, cedula: "V26702690", name: "Benitez Maestre Reinaldo Antonio", status: "delivered", modality: "Equipo (2)", proposalId: 7, proposalName: "NexoHogar (Servicios Técnicos)", inOfficialList: true },
+            { num: 6, cedula: "V31019515", name: "Carrillo Ortiz Kelwuin Esloyner", status: "pending", modality: "Sin Reportar", proposalId: null, proposalName: "Pendiente de grupo/propuesta", inOfficialList: true },
+            { num: 7, cedula: "V15858775", name: "Contreras Olivar, William Eduardo", status: "delivered", modality: "Individual", proposalId: 2, proposalName: "Sistema para Empresa de Servicio", inOfficialList: true },
+            { num: 8, cedula: "V24743880", name: "Garrido Ruiz Jesus Francisco", status: "pending", modality: "Sin Reportar", proposalId: null, proposalName: "Pendiente de grupo/propuesta", inOfficialList: true },
+            { num: 9, cedula: "V31180408", name: "Omaña Colmenares Luis Alfonso", status: "delivered", modality: "Equipo (3)", proposalId: 6, proposalName: "Transformadores Wilfredo Pérez", inOfficialList: true },
+            { num: 10, cedula: "V31098348", name: "Patiño Blanco Alejandra Antonela", status: "pending", modality: "Sin Reportar", proposalId: null, proposalName: "Pendiente de grupo/propuesta", inOfficialList: true },
+            { num: 11, cedula: "V31217796", name: "Perez Lobo Lahian Wilfredo", status: "delivered", modality: "Equipo (3)", proposalId: 6, proposalName: "Transformadores Wilfredo Pérez", inOfficialList: true },
+            { num: 12, cedula: "V28131712", name: "Sanchez Contreras Angel Gabriel", status: "pending", modality: "Sin Reportar", proposalId: null, proposalName: "Pendiente de grupo/propuesta", inOfficialList: true },
+            { num: 13, cedula: "V24745014", name: "Sánchez Cotamo Manuel Alejandro", status: "pending", modality: "Sin Reportar", proposalId: null, proposalName: "Pendiente de grupo/propuesta", inOfficialList: true },
+            { num: 14, cedula: "V31386357", name: "Urbina Rangel Miguel Alexander", status: "delivered", modality: "Equipo (3)", proposalId: 1, proposalName: "Sistema de Taxis (Líneas Frontera / RUTA)", inOfficialList: true },
+            { num: 15, cedula: "V27893732", name: "Villasmil Silva Francisco Javier", status: "delivered", modality: "Equipo (2)", proposalId: 7, proposalName: "NexoHogar (Servicios Técnicos)", inOfficialList: true },
+            { num: 16, cedula: "V29976865", name: "Vizcaya Gonzalez Juan Alejandro", status: "delivered", modality: "Equipo (3)", proposalId: 1, proposalName: "Sistema de Taxis (Líneas Frontera / RUTA)", inOfficialList: true },
+            { num: "EXT", cedula: "V18564692", name: "Rico García, Jhon Alfredo", status: "external", modality: "Individual (Fuera de Lista)", proposalId: 4, proposalName: "AQUABI (Productos del Mar)", inOfficialList: false }
+        ];
+
+        // 2. Proposals Technical Analysis Data (Aligned with Phases 1-5)
+        const proposalsData = [
+            {
+                id: 1,
+                shortName: "Propuesta 1",
+                title: "Sistema de Taxis (Líneas Frontera / RUTA)",
+                subtitle: "Administración de flota, socios/conductores, cobranza multimoneda USD/Bs, caja chica y morosidad",
+                authors: [
+                    "Juan Alejandro Vizcaya Gonzalez (V-29.976.865)",
+                    "Miguel Alexander Urbina Rangel (V-31.386.357)",
+                    "Yeyner Jesus Arenales Zambrano (V-27.114.065)"
+                ],
+                rosterStatus: "Equipo de 3 en Listado Oficial",
+                badgeColor: "from-rose-700 to-amber-700",
+                statusTag: "Buen Dominio — Falta Stack & Umbrales",
+                statusTagClass: "bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-300 dark:border-amber-700",
+                icon: "car",
+                scores: { f1: 48, f2: 42, f3: 25, f4: 68, f5: 15 },
+                totalScore: 42,
+                summary: "Plataforma administrativa para línea de taxis con 5 módulos (Flota/Vehículos, Socios y Conductores, Cobranza de Cuotas multimoneda USD/Bs, Gastos/Caja Chica y Reportes), 9 KPIs con fórmulas matemáticas y dos propuestas preliminares de branding (Líneas Frontera y RUTA).",
+                matrixF1: "Buen dominio; falta Onion, BaseEntity, RFC 7807 y reglas de asignación",
+                matrixF2: "Falta EF Core/Fluent API, claves únicas (Placa/Unidad) y Soft Delete",
+                matrixF3: "No define roles RBAC ni restricciones 403",
+                matrixF4F5: "9 KPIs (corregir símbolos PDF y añadir metas); falta xUnit/Docker",
+                strengths: [
+                    "Portada institucional UNET completa con los 3 integrantes y cédulas correctamente identificadas.",
+                    "Módulos operativos bien aterrizados al negocio real de una línea de taxis: control documental (RCV, licencias, certificados), historial de asignaciones unidad-conductor, cuotas multimoneda (USD/Bs) y Caja Chica.",
+                    "Incluye 9 KPIs categorizados (Financieros, Cobranza/Solvencia y Flota/Operatividad) y exploración temprana de identidad visual (Líneas Frontera / RUTA)."
+                ],
+                obsPhase12: [
+                    { title: "Definir Arquitectura Onion (.NET 10) y RFC 7807 (Fase 1)", desc: "El documento no especifica el stack obligatorio (.NET 10, Onion Architecture, PostgreSQL 15, React 18). Deben modelar las entidades en Core.Domain heredando de BaseEntity (Guid, CreatedAt UTC, IsDeleted) y documentar ExceptionMiddleware bajo application/problem+json." },
+                    { title: "Reglas de Bloqueo de Flota, Conductores y Caja Chica (Fase 1)", desc: "Establecer validaciones estrictas en Backend (InvalidOperationException -> HTTP 400): (1) impedir asignar a ruta una unidad 'En Taller/Suspendida' o con RCV vencido, (2) evitar que un conductor opere dos unidades activas a la vez, (3) exigir TasaCambio vigente y montos > 0, y (4) bloquear egresos que dejen la Caja Chica en saldo negativo." },
+                    { title: "Fluent API, Índices Únicos y Borrado Lógico Financiero (Fase 2)", desc: "Configurar IEntityTypeConfiguration<T> con índices únicos en Placa, NumeroControl/Unidad, SerialCarroceria, Cedula y NumeroRecibo; usar HasPrecision(18,2) en cuotas/egresos y (18,4) en tasa cambiaria; DeleteBehavior.Restrict y Soft Delete (IsDeleted + HasQueryFilter) para jamás borrar físicamente recibos, cuotas ni unidades con historial." }
+                ],
+                obsPhase345: [
+                    { title: "Matriz RBAC y Prevención de Fraude en Caja/Recibos (Fase 3)", desc: "No especifica roles de acceso. Definir al menos: AdminDirectivo (egresos, tasas, anulación de recibos y reportes globales), OperadorTaquilla (cobro de cuotas y asignación de unidades) y SocioConductor (consulta de su solvencia y recibos -> HTTP 403 en caja chica o datos de terceros)." },
+                    { title: "Corregir Fórmulas en PDF, Añadir Metas a KPIs y xUnit/Moq (Fase 4)", desc: "En el PDF exportado, las fórmulas de los KPIs salieron con caracteres corruptos (simbología matemática sin fuente embebida); corregirlas y añadir a cada KPI su Meta/Umbral + Decisión (ej. 'Morosidad > 15% -> bloquear asignación de unidad'). Priorizar Flota + Cobranza + Gastos + Dashboard en React 18 y cubrir cálculo de morosidad y conversión USD/Bs con xUnit + Moq." },
+                    { title: "Plan Docker Compose & Data Seeding Realista (Fase 5)", desc: "Incorporar el plan de Docker Multi-stage, docker-compose.yml y CI/CD en GitHub Actions, preparando un Data Seeding con unidades activas, en taller, RCV por vencer (< 30 días) y socios solventes vs. morosos." }
+                ]
+            },
+            {
+                id: 2,
+                shortName: "Propuesta 2",
+                title: "Sistema para Empresa de Servicio",
+                subtitle: "Gestión de tickets técnicos asignados, soportes en campo y ciclo de presupuestos",
+                authors: ["William Eduardo Contreras Olivar (V-15.858.775)"],
+                rosterStatus: "Individual en Listado Oficial",
+                badgeColor: "from-slate-600 to-slate-800",
+                statusTag: "Requiere Ampliación Técnica",
+                statusTagClass: "bg-rose-100 text-rose-800 dark:bg-rose-950/80 dark:text-rose-300 border border-rose-300 dark:border-rose-700",
+                icon: "wrench",
+                scores: { f1: 35, f2: 20, f3: 25, f4: 45, f5: 10 },
+                totalScore: 28,
+                summary: "Borrador inicial de 1 página enfocado en técnicos que visualizan tickets asignados (asignado -> en progreso -> en espera -> cerrado), adjuntan soportes al cliente y generan presupuestos (borrador -> validado -> aceptado -> rechazado).",
+                matrixF1: "Falta Onion, BaseEntity y validación de stock/materiales",
+                matrixF2: "Sin Fluent API, sin claves únicas ni borrado lógico",
+                matrixF3: "No define matriz RBAC ni permisos 403",
+                matrixF4F5: "KPIs sin umbral/decisión; sin Docker ni xUnit",
+                strengths: [
+                    "Define dos máquinas de estado claras: ciclo de vida de Tickets y ciclo de vida de Presupuestos.",
+                    "Incluye trazabilidad hacia el cliente mediante adjunto de soportes e historial de lo ejecutado.",
+                    "Propone 5 indicadores iniciales orientados a carga por técnico, tipo de trabajo y conversión económica de presupuestos."
+                ],
+                obsPhase12: [
+                    { title: "Formalización Documental & Arquitectura Onion (Fase 1)", desc: "El documento tiene 1 sola página y carece de portada institucional UNET, planteamiento del problema y justificación. Debe estructurar explícitamente las 4 capas (.NET 10): Core.Domain (BaseEntity con Guid, CreatedAt UTC e IsDeleted), Core.Application, Infrastructure y Presentation.API." },
+                    { title: "Reglas de Negocio, Stock de Repuestos y RFC 7807 (Fase 1)", desc: "Toda empresa de servicio consume materiales o repuestos en instalaciones/reparaciones. Si manejan insumos, deben validar stock en Core.Domain lanzando InvalidOperationException (HTTP 400 RFC 7807) y bloquear transiciones ilegales (ej. un presupuesto 'Rechazado' no puede pasar a 'Aceptado', ni cerrar un ticket sin soporte adjunto)." },
+                    { title: "Modelado Relacional, Fluent API y Borrado Lógico (Fase 2)", desc: "Falta listar las entidades maestras vs. transaccionales (Cliente, Técnico, Ticket, Presupuesto, Material/Item), definir índices únicos (Código de Ticket, N° Presupuesto, RIF/Cédula), precisión decimal(18,2) en montos, DeleteBehavior.Restrict y Soft Delete (IsDeleted + HasQueryFilter) para no perder el historial financiero." }
+                ],
+                obsPhase345: [
+                    { title: "Matriz RBAC y Control de Acceso 403 (Fase 3)", desc: "Debe definir al menos 3 roles (Admin, Técnico, Cliente/Supervisor) con JWT Bearer y asegurar que un Técnico solo pueda editar tickets asignados a él (prevención de IDOR/BOLA) y reciba 403 Forbidden al intentar validar o aprobar presupuestos." },
+                    { title: "KPIs Accionables con Fórmula + Umbral + Decisión (Fase 4)", desc: "Los KPIs propuestos ('promedio de...') son descriptivos pero no accionables. Reformular aplicando la fórmula de clase: ej. 'Tasa de aprobación de presupuestos < 40% -> revisar precios/tiempos de respuesta'; 'Tickets en espera > 48h -> alerta al supervisor'. Incorporar React 18, Tailwind CSS y pruebas xUnit + Moq." },
+                    { title: "Persistencia de Adjuntos en Docker y Trabajo en Equipo (Fase 5)", desc: "Al mencionar adjunto de soportes, el docker-compose.yml deberá montar un volumen persistente para archivos. Se recomienda evaluar integrar a 1–2 compañeros del listado sin reporte para cubrir todo el alcance." }
+                ]
+            },
+            {
+                id: 3,
+                shortName: "Propuesta 3",
+                title: "SIGMO-UNET (Gestión y Mantenimiento del Ordeño)",
+                subtitle: "Plataforma Multi-Tenant de producción láctea, potreros, insumos críticos y mantenimiento en fincas",
+                authors: ["Douglas Alejandro Aliendres Moreno (V-31.123.065)"],
+                rosterStatus: "Individual en Listado Oficial",
+                badgeColor: "from-amber-700 to-amber-900",
+                statusTag: "Muy Sólida — Acotar Alcance",
+                statusTagClass: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700",
+                icon: "droplets",
+                scores: { f1: 82, f2: 65, f3: 45, f4: 92, f5: 40 },
+                totalScore: 69,
+                summary: "Propuesta de alto nivel con branding completo (modo claro/oscuro 'Ordeño Madrugador AM'), arquitectura Onion en .NET 10 + React 18, separación MVP (ordeño manual) vs. Escalamiento (ordeño mecánico/CIP) y 11 KPIs con fórmulas matemáticas, umbrales y alertas visuales.",
+                matrixF1: "Excelente dominio; falta aislar Multi-Tenant y RFC 7807",
+                matrixF2: "Falta detallar Fluent API, Restrict y Soft Delete",
+                matrixF3: "No especifica roles RBAC ni claims JWT de Finca",
+                matrixF4F5: "KPIs sobresalientes; acotar a MVP y sumar Docker/xUnit",
+                strengths: [
+                    "Identidad visual y UX de nivel profesional: paleta 60-30-10 justificada para lectura bajo luz solar directa y Modo Oscuro de ordeño madrugador.",
+                    "KPIs formulados con rigor matemático (fórmula en Core.Application, propósito de negocio y alerta visual en UI, ej. ocupación de tanque > 85% y pulso cada 48h de sal mineral).",
+                    "Separación estratégica en Fase MVP (Ordeño Manual) vs. Escalamiento (Ordeño Mecánico y lavado CIP)."
+                ],
+                obsPhase12: [
+                    { title: "Aislamiento Multi-Tenant y Excepciones de Retiro Antibiótico (Fase 1)", desc: "Al declararse Multi-Tenant, BaseEntity o una interfaz ITenantEntity debe incluir FarmId desde Core.Domain. Además, formalizar en ExceptionMiddleware (RFC 7807) las reglas críticas de negocio: lanzar InvalidOperationException (400) si se intenta registrar leche al tanque desde una vaca con IsMilkWithheld = true (retiro antibiótico) o si un tratamiento médico intenta descontar más stock del disponible." },
+                    { title: "Fluent API, Claves Compuestas y Borrado Lógico Multi-Tenant (Fase 2)", desc: "El documento no detalla las configuraciones de Infrastructure: debe definir IEntityTypeConfiguration<T>, índices únicos compuestos por finca (ej. FarmId + Arete/RFID), precisión decimal(18,2) en costos/litros, DeleteBehavior.Restrict y Soft Delete (IsDeleted) combinado con HasQueryFilter global (!IsDeleted && TenantId)." },
+                    { title: "Data Seeding Calibrado y .AsNoTracking() (Fase 2)", desc: "Para demostrar sus KPIs en el Dashboard (sal cada 48h, limpieza cada 15d, potreros 'Ready' vs. 'Overdue'), deberá sembrar un Data Seeding con fechas relativas a DateTime.UtcNow y usar .AsNoTracking() en los cálculos agregados." }
+                ],
+                obsPhase345: [
+                    { title: "Definición de Roles RBAC y Prevención BOLA en Multi-Tenant (Fase 3)", desc: "La propuesta omite los roles de usuario. Definir al menos: AdminFinca (Propietario), Ordeñador/Capataz y Veterinario, con matriz de códigos 403 Forbidden e inyección del FarmId dentro de los Claims del JWT para impedir que un usuario consulte datos de otra finca." },
+                    { title: "Control Estricto de Alcance MVP (Fase 4)", desc: "Al trabajar de forma individual, implementar todo el módulo mecánico + sanidad + nutrición + potreros + mantenimiento en 5 semanas conlleva alto riesgo de entrega parcial. Acote la implementación del Trabajo Integrador estrictamente al MVP (Ordeño Manual) y valide las fórmulas de rotación de potreros y MinStock con pruebas xUnit + Moq." },
+                    { title: "Plan de Despliegue Docker & Colaboración (Fase 5)", desc: "Incorporar la estrategia de docker-compose.yml (API + PostgreSQL 15 + React/Nginx) y pipeline CI/CD. Al estar solo en el listado, puede considerar sumar 1 integrante sin grupo para dividir Frontend y Testing/DevOps." }
+                ]
+            },
+            {
+                id: 4,
+                shortName: "Propuesta 4",
+                title: "AQUABI (Productos del Mar Congelados)",
+                subtitle: "Control de inventario por kilogramos y lotes, trazabilidad FEFO, demanda no atendida y prevención de mermas",
+                authors: ["Jhon Alfredo Rico García (V-18.564.692) ⚠️ Fuera del listado 20/11"],
+                rosterStatus: "⚠️ No figura en listado 20/11/2026",
+                badgeColor: "from-cyan-600 to-blue-700",
+                statusTag: "Buen Dominio — Falta Stack Técnico",
+                statusTagClass: "bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-300 dark:border-amber-700",
+                icon: "fish",
+                scores: { f1: 45, f2: 40, f3: 30, f4: 80, f5: 10 },
+                totalScore: 42,
+                summary: "Sistema de gestión comercial por kilogramo para pescadería/congelados. Destaca por incluir un módulo específico de 'Demanda no atendida' (ventas perdidas por falta de stock) y un mockup de tablero con 4 KPIs y recomendaciones automáticas.",
+                matrixF1: "Regla FEFO y kg claros; falta stack .NET/Onion/RFC 7807",
+                matrixF2: "Falta Fluent API, índices únicos y Soft Delete en mermas",
+                matrixF3: "Solo menciona Administrador; falta matriz RBAC y JWT",
+                matrixF4F5: "Excelentes KPIs y mockup; falta xUnit/Moq y Docker",
+                strengths: [
+                    "Caso de negocio realista y muy bien acotado: venta por kilogramo, compras por lote y manejo explícito de mermas por deterioro.",
+                    "Aporte diferencial valioso: módulo de 'Demanda no atendida' para cuantificar ventas perdidas y calibrar pedidos a proveedores.",
+                    "Excelente prototipo visual de Dashboard con metas numéricas (<5% por vencer, <1% deterioro, <=5% demanda no atendida, >=8 días cobertura) y recomendaciones accionables."
+                ],
+                obsPhase12: [
+                    { title: "Especificación Obligatoria del Stack y Arquitectura Onion (Fase 1)", desc: "El documento no menciona en ningún apartado las tecnologías obligatorias de la asignatura (.NET 10, C# 14, Onion Architecture, PostgreSQL 15, React 18). Debe alinear formalmente su diseño a las 4 capas y documentar el ExceptionMiddleware bajo RFC 7807." },
+                    { title: "Validación de Stock en Kilogramos y Algoritmo FEFO (Fase 1)", desc: "Al vender por kilogramos en múltiples lotes de un mismo producto (ej. Salmón), debe implementar en Core.Domain la validación estricta de stock total y descuento FEFO (First-Expired, First-Out), bloqueando automáticamente con HTTP 400 (InvalidOperationException) cualquier venta sobre lotes ya vencidos o dados de baja." },
+                    { title: "Fluent API, Precisión Decimal y Borrado Lógico de Lotes (Fase 2)", desc: "Definir explícitamente las entidades y sus relaciones con DeleteBehavior.Restrict, precisión (18,2) para montos y (18,3) para kilogramos, índice único en SKU y Código de Lote, y Borrado Lógico (IsDeleted + HasQueryFilter): un lote dado de baja por deterioro NO se elimina físicamente de PostgreSQL, pasa a estado 'Dado de Baja' o genera un registro de Merma auditable." }
+                ],
+                obsPhase345: [
+                    { title: "Roles RBAC más allá del Administrador (Fase 3)", desc: "El módulo 1 solo menciona al 'Administrador'. Para cumplir con RBAC y pruebas de código 403 Forbidden, debe separar al menos: Administrador (compras, proveedores, bajas y KPIs financieros) y Vendedor/Despachador (registro de ventas y demanda no atendida, bloqueado con 403 en bajas o costos)." },
+                    { title: "Pruebas Unitarias del Algoritmo FEFO y Cobertura (Fase 4)", desc: "Los 4 KPIs de su mockup requieren lógica financiera y de proyección de días de inventario. Cubrir con xUnit y Moq el cálculo de rotación/cobertura, el bloqueo de lotes vencidos y el registro de demanda no atendida." },
+                    { title: "Regularización Administrativa + Plan DevOps (Fase 5)", desc: "Verificar inmediatamente con el facilitador su inclusión en el listado oficial de la sección y añadir al documento la estrategia de contenerización con Docker Compose y CI/CD en GitHub Actions." }
+                ]
+            },
+            {
+                id: 5,
+                shortName: "Propuesta 5",
+                title: "Sistema Bajo Pedido (Cero Stock) — Librería",
+                subtitle: "Gestión Make-to-Order y Cross-Docking con abonos 50/50, lotes de importación y contingencias",
+                authors: ["⚠️ Autoría No Declarada en el Documento"],
+                rosterStatus: "⚠️ Sin Portada ni Autores",
+                badgeColor: "from-purple-600 to-fuchsia-700",
+                statusTag: "⚠️ Reclamar Autoría + Corregir Stack",
+                statusTagClass: "bg-rose-100 text-rose-800 dark:bg-rose-950/80 dark:text-rose-300 border border-rose-300 dark:border-rose-700",
+                icon: "package-check",
+                scores: { f1: 68, f2: 60, f3: 55, f4: 50, f5: 15 },
+                totalScore: 53,
+                summary: "Propuesta de intermediación de importación sin inventario en vitrina (caso Librería). Modela abonos del 50%, consolidación en lotes, cross-docking, devoluciones a 3 semanas y 5 roles. Presenta alerta administrativa por ausencia de autores y riesgo arquitectónico por proponer persistencia híbrida SQL + NoSQL.",
+                matrixF1: "Buen flujo 50/50; validar cupo de lote y volumetría",
+                matrixF2: "⚠️ Riesgo: NoSQL innecesario; consolidar en PostgreSQL",
+                matrixF3: "5 roles declarados; falta matriz 403 y FluentValidation",
+                matrixF4F5: "KPIs muy genéricos; cita MCP sin justificar; sin Docker",
+                strengths: [
+                    "Premisa operativa coherente (Cero Stock / trazabilidad 1 a 1) con manejo realista de casos borde (pedidos no realizables con reembolso a 3 semanas y demoras aduaneras).",
+                    "Identifica 3 reglas estrictas de unicidad clave (ISBN, Cédula del cliente y Número de Guía).",
+                    "Incorpora correctamente los conceptos de Fase 1 (validación en backend) y Fase 2 (Fluent API sin ensuciar Core.Domain + Soft Delete)."
+                ],
+                obsPhase12: [
+                    { title: "Urgente — Autoría Sin Identificar y Personalización Técnica", desc: "El PDF no tiene portada, nombres ni cédulas, y copia frases literales de la guía de clase sin aterrizar las clases, endpoints ni nombres de tablas propios del sistema. El equipo autor debe reportarse de inmediato y documentar su diseño específico." },
+                    { title: "Validación de Capacidad, Cupos y Liquidación 50% + 50% (Fase 1)", desc: "Aunque opere bajo 'Cero Stock', sí existen límites físicos y financieros que deben validarse en Core.Domain (RFC 7807 / 400): (1) no asignar paquetes si la bodega supera su % de volumetría horizontal, (2) no emitir guía nacional si SaldoPendiente > 0, y (3) validar el plazo de 3 semanas antes de aprobar un reembolso." },
+                    { title: "Alerta Arquitectónica — Eliminar NoSQL Innecesario (Fase 2)", desc: "Proponen 'PostgreSQL 15 + NoSQL para catálogo, banners y bitácoras'. Mantener dos motores de BD en un proyecto de 5 semanas complica migraciones, transacciones y Docker Compose sin beneficio real. Consolidar 100% en PostgreSQL 15 (usando jsonb en EF Core 10 si requieren bitácoras flexibles) con Fluent API, Restrict y Soft Delete." }
+                ],
+                obsPhase345: [
+                    { title: "Concretar Matriz RBAC y Reglas FluentValidation (Fase 3)", desc: "Tienen 5 roles (Propietario, Administrativo, Operacional, Marketing, Cliente), lo cual es ambicioso. Deben detallar qué operaciones devuelven 403 Forbidden entre Operacional, Marketing y Administrativo, y validar que el Cliente solo vea sus propias órdenes (anti-IDOR)." },
+                    { title: "Reemplazar KPIs Genéricos por KPIs del Negocio Cero Stock (Fase 4)", desc: "Su tabla de KPIs ('Ventas, Alcance, Costos, Ganancias' por día/semana/mes/año) no refleja el modelo bajo pedido. Sustituir por KPIs accionables reales: '% Ocupación de bodega de tránsito', 'Lead Time promedio de importación', 'Tasa de devoluciones a 3 semanas' y 'Saldo pendiente por liquidar (50% restante)'. Retirar la mención a 'integración MCP' si no forma parte del MVP." },
+                    { title: "Incorporar Testing xUnit/Moq y Despliegue Docker (Fases 4 y 5)", desc: "Falta por completo el plan de pruebas unitarias (ej. cálculo de reembolsos y validación de saldo) y la sección de Docker Compose / CI-CD." }
+                ]
+            },
+            {
+                id: 6,
+                shortName: "Propuesta 6",
+                title: "Transformadores Wilfredo Pérez",
+                subtitle: "Sistema integral de inventario (kardex), órdenes de reparación con asignación de costos y venta",
+                authors: [
+                    "Omaña Colmenares Luis Alfonso (V-31.180.408)",
+                    "Becerra Salamanca Moisés David (V-30.965.746)",
+                    "Perez Lobo Lahian Wilfredo (V-31.217.796)"
+                ],
+                rosterStatus: "Equipo de 3 en Listado Oficial",
+                badgeColor: "from-sky-700 to-cyan-600",
+                statusTag: "Propuesta Modelo — Lista para Construir",
+                statusTagClass: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700",
+                icon: "zap",
+                scores: { f1: 92, f2: 90, f3: 85, f4: 82, f5: 40 },
+                totalScore: 81,
+                summary: "Propuesta sobresaliente para una empresa real de reparación y venta de transformadores. Separa entidades maestras y transaccionales, define una matriz RBAC exacta con HTTP 403, prohíbe stock negativo y borrado físico, y formula 4 KPIs accionables con metas, umbrales y decisiones claras.",
+                matrixF1: "Excelente: stock >= 0, orden única activa, HTTP 409",
+                matrixF2: "Claves únicas (RIF/SKU/Serie), no borrado físico, kardex",
+                matrixF3: "Matriz RBAC completa con 403; reforzar anti-IDOR Técnico",
+                matrixF4F5: "KPIs ejemplares; falta detallar xUnit/Moq y Docker",
+                strengths: [
+                    "Planteamiento del problema financiero impecable: conecta el consumo real de cobre, aceite dieléctrico y láminas con el costo real de cada orden para calcular rentabilidad.",
+                    "Reglas de bloqueo de negocio ejemplares: stock nunca negativo, duplicados con HTTP 409, movimientos de kardex inmutables (solo corregibles mediante Ajuste del Admin), órdenes anulables pero nunca eliminables y restricción de una sola orden activa por transformador.",
+                    "Matriz RBAC completa y 4 KPIs con metas cuantitativas claras (semáforo de stock, Lead Time <= 10d, desviación de costo <= 10%, rotación >= 0.5)."
+                ],
+                obsPhase12: [
+                    { title: "Concurrencia Optimista en Consumo de Materiales (Fase 1–2)", desc: "Al tener un Almacenista y varios Técnicos descontando materiales en paralelo (ventas + órdenes de reparación), agregar control de concurrencia optimista (RowVersion / xmin en PostgreSQL) en la entidad Material para evitar condiciones de carrera que lleven el stock por debajo de cero." },
+                    { title: "Precisión Decimal Diferenciada y Máquinas de Estado (Fase 2)", desc: "En Fluent API, usar HasPrecision(18,2) para costos/precios USD, pero considerar HasPrecision(18,3) para MovimientoStock.Cantidad (cobre por kg/metros, aceite por litros). Documentar explícitamente las transiciones permitidas en OrdenReparación y aplicar HasQueryFilter(!IsDeleted) + DeleteBehavior.Restrict en todas las relaciones 1:N." },
+                    { title: "Mapeo de Excepciones RFC 7807 (Fase 1)", desc: "Ya definieron muy bien HTTP 409 para duplicados y bloqueo de stock negativo; asegurar que ExceptionMiddleware mapee explícitamente KeyNotFoundException (404), InvalidOperationException (400) y ConflictException (409) bajo application/problem+json." }
+                ],
+                obsPhase345: [
+                    { title: "Prevención de IDOR/BOLA en el Rol Técnico (Fase 3)", desc: "Su matriz indica acertadamente que el Técnico registra consumo 'Solo en órdenes asignadas'. Asegurarse de validar esto en Core.Application comparando el UserId del JWT contra TechnicianId de la Orden (devolviendo 403 Forbidden si intenta consumir en una orden ajena)." },
+                    { title: "Priorización de Exportables y Cobertura xUnit/Moq (Fase 4)", desc: "Mencionan exportación mensual a PDF/Excel y cotizaciones. Priorizar primero el flujo completo E2E (Kardex + Orden + Dashboard KPI) y cubrir con xUnit + Moq los cálculos de desviación de costo real vs. estimado y la regla de orden activa única por transformador." },
+                    { title: "Plan DevOps y Data Seeding de Demostración (Fase 5)", desc: "El documento no incluye aún la sección de despliegue (Docker Multi-stage, Docker Compose, GitHub Actions). Planificar un Data Seeding con transformadores en reparación, materiales en rojo y materiales con rotación < 0.2 para lucir los KPIs en la defensa." }
+                ]
+            },
+            {
+                id: 7,
+                shortName: "Propuesta 7",
+                title: "NexoHogar (Soluciones Técnicas Residenciales)",
+                subtitle: "Coordinación de clientes, contratos, cuadrillas técnicas, inventario de recursos y órdenes de servicio",
+                authors: [
+                    "Reinaldo Antonio Benitez Maestre (V-26.702.690)",
+                    "Francisco Javier Villasmil Silva (V-27.893.732)"
+                ],
+                rosterStatus: "Equipo de 2 en Listado Oficial",
+                badgeColor: "from-teal-600 to-emerald-700",
+                statusTag: "Excelente Alineación 5 Fases",
+                statusTagClass: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700",
+                icon: "home",
+                scores: { f1: 86, f2: 84, f3: 85, f4: 84, f5: 80 },
+                totalScore: 84,
+                summary: "Propuesta muy completa y estructurada exactamente bajo las 5 fases de la asignatura (incluyendo tabla de entregables F1–F5, Docker y CI/CD). Modela contratos, cuadrillas, flujo de estados de órdenes, 4 KPIs cuantitativos y branding institucional propio.",
+                matrixF1: "Falta modelar entidades de Inventario/Cuadrilla M:N",
+                matrixF2: "Contempla Fluent API, Soft Delete y Seeding; falta presupuesto en BD",
+                matrixF3: "3 roles + 403 claros; validar cruce de horarios y cuadrilla",
+                matrixF4F5: "Plan completo hasta Docker/CI-CD; cubrir reglas con xUnit",
+                strengths: [
+                    "Alineación total con el cronograma de la materia: desglosa entregables técnicos reales para las Fases 1, 2, 3, 4 y 5 (incluyendo Nginx y GitHub Actions).",
+                    "Reglas de negocio de alto valor corporativo: vigencia de contrato obligatoria, compatibilidad de especialidades por cuadrilla, detección de solapamiento de horarios de técnicos y prohibición de eliminación física con relaciones activas.",
+                    "Excelente acotamiento del MVP (posponiendo geolocalización para versiones futuras) y 4 KPIs con umbrales precisos (<30 días contratos, >85% ocupación, <90% cumplimiento)."
+                ],
+                obsPhase12: [
+                    { title: "Completar el Modelado de Entidades de Inventario y M:N (Fase 1)", desc: "En la sección 'Modelado de entidades Núcleo' listan 5 entidades (Cliente, Contrato, Técnico, Cuadrilla, Orden de Servicio), pero omiten las entidades de Inventario/Recursos (Material, Equipo/Herramienta, ConsumoOrden) y la relación CuadrillaTecnico. Deben incorporarlas en Core.Domain desde Fase 1 para sostener la regla de disponibilidad y el KPI 9.3." },
+                    { title: "Campos Financieros y Fluent API para KPIs (Fase 2)", desc: "El KPI 9.3 evalúa cuando el costo de materiales supera 'el presupuesto establecido'. Asegurar que OrdenServicio (o Contrato) incluya el campo BudgetAmount mapeado con HasPrecision(18,2) en Fluent API, junto con HasQueryFilter(!IsDeleted) y DeleteBehavior.Restrict." },
+                    { title: "Validación Atómica de Stock y Horarios (Fase 1–2)", desc: "Al cerrar o ejecutar una orden de servicio, validar en Core.Application que el consumo de materiales no genere stock negativo y que las herramientas asignadas cambien de estado ('Disponible' -> 'En Uso') de forma transaccional." }
+                ],
+                obsPhase345: [
+                    { title: "Regla de Choque de Horarios y Autorización por Cuadrilla (Fase 3)", desc: "Implementar con FluentValidation + servicio de dominio la detección matemática de solapamiento horario (FechaInicio < FinExistente && FechaFin > InicioExistente) y restringir a nivel de servicio que el rol Técnico solo reporte avances en órdenes de su cuadrilla asignada (403 en otras)." },
+                    { title: "Pruebas Unitarias de Reglas Críticas (Fase 4)", desc: "Priorizar pruebas en xUnit + Moq para las 3 validaciones clave: (1) rechazo de orden si el contrato está vencido, (2) rechazo de asignación por especialidad incompatible o choque de horario, y (3) alerta de exceso de presupuesto en materiales." },
+                    { title: "Data Seeding Estratégico para el Dashboard (Fase 5)", desc: "Aprovechando que ya incluyeron Docker Compose y CI/CD en su plan, preparar un Data Seeding con al menos un contrato a < 30 días de vencer y cuadrillas por encima/debajo del 85% para demostrar las alertas visuales en vivo." }
+                ]
+            }
+        ];
+
+        // 3. Checklist Items (12 mandatory points across Fases 1-5)
+        const checklistItems = [
+            { id: 1, title: "Identidad, Autores y Planteamiento del Dolor (General)", desc: "Portada UNET con nombres y cédulas completas, descripción del problema operativo/financiero real y delimitación clara del MVP." },
+            { id: 2, title: "Fase 1: Arquitectura Onion en .NET 10 (4 Capas)", desc: "Separación estricta: Core.Domain (100% puro, sin paquetes externos), Core.Application, Infrastructure y Presentation.API." },
+            { id: 3, title: "Fase 1: BaseEntity con Trazabilidad & Soft Delete", desc: "Todas las entidades heredan de BaseEntity con Id (Guid), CreatedAt (DateTime UTC) e IsDeleted (bool) / DeletedAt." },
+            { id: 4, title: "Fase 1: Validación Estricta de Stock / Capacidad en Backend", desc: "Prohibido stock negativo o sobreventa. Validado en Dominio/Aplicación lanzando InvalidOperationException (no solo en Frontend)." },
+            { id: 5, title: "Fase 1: ExceptionMiddleware RFC 7807", desc: "Captura global (404 KeyNotFound, 400 InvalidOperation, 409 Conflict, 500 sin Stack Trace) respondiendo application/problem+json." },
+            { id: 6, title: "Fase 2: Fluent API Desacoplada en Infrastructure", desc: "IEntityTypeConfiguration<T> con precisión decimal(18,2), índices únicos en SKU/RIF/Guías/Series y DeleteBehavior.Restrict." },
+            { id: 7, title: "Fase 2: Borrado Lógico (Soft Delete) en el CRUD", desc: "Endpoints DELETE ejecutan UPDATE IsDeleted = true (nunca Remove físico) combinado con HasQueryFilter(e => !e.IsDeleted)." },
+            { id: 8, title: "Fase 2: Migraciones Versionadas, Seeding y .AsNoTracking()", desc: "Migraciones en Git, datos semilla realistas (no 'test1') para probar KPIs, y .AsNoTracking() en consultas GET." },
+            { id: 9, title: "Fase 3: Autenticación JWT, Matriz RBAC (403) y Anti-IDOR", desc: "Roles definidos (Admin + roles operativos), respuestas 401/403 verificadas y validaciones de propiedad (BOLA) con FluentValidation." },
+            { id: 10, title: "Fase 4: KPIs Accionables (Métrica + Umbral + Decisión)", desc: "Mínimo 3–4 KPIs en React 18 + Tailwind CSS con metas numéricas, semáforos visuales y acciones gerenciales concretas." },
+            { id: 11, title: "Fase 4: Suite de Pruebas Unitarias (xUnit + Moq)", desc: "Casos felices y de borde (stock insuficiente, contrato vencido, cálculo de KPIs) aislados con Moq al 100% en verde." },
+            { id: 12, title: "Fase 5: Docker Compose, CI/CD y Flujo E2E", desc: "Contenerización multi-stage, PostgreSQL con healthcheck, pipeline en GitHub Actions y demo completa de punta a punta." }
+        ];
+
+        let activeProposalId = 1;
+        let currentRosterFilter = 'all';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            initTheme();
+            renderPhaseMaturityBars();
+            renderOverviewProposalsGrid();
+            renderRosterTable();
+            initRosterSearch();
+            renderProposalTabs();
+            renderProposalDetail(activeProposalId);
+            renderMatrix();
+            initMatrixSearch();
+            renderChecklist();
+        });
+
+        // Theme Toggle
+        function initTheme() {
+            const themeBtn = document.getElementById('theme-toggle-btn');
+            const isDark = localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            applyTheme(isDark);
+
+            themeBtn.addEventListener('click', () => {
+                const nowDark = !document.documentElement.classList.contains('dark');
+                applyTheme(nowDark);
+                localStorage.setItem('theme', nowDark ? 'dark' : 'light');
+            });
+        }
+
+        function applyTheme(isDark) {
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            const unetLogoImg = document.getElementById('unet-logo-img');
+
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                unetLogoImg.src = 'unet-logo-dark.png';
+                themeIcon.setAttribute('data-lucide', 'sun');
+                if (themeText) themeText.innerText = 'Modo Claro';
+            } else {
+                document.documentElement.classList.remove('dark');
+                unetLogoImg.src = 'unet-logo.png';
+                themeIcon.setAttribute('data-lucide', 'moon');
+                if (themeText) themeText.innerText = 'Modo Oscuro';
+            }
+            lucide.createIcons();
+        }
+
+        // View Navigation
+        function switchView(viewName) {
+            const views = ['overview', 'proposals', 'analyzer', 'matrix', 'rubric'];
+            views.forEach(v => {
+                const el = document.getElementById(`view-${v}`);
+                const nav = document.getElementById(`nav-${v}`);
+                const mNav = document.getElementById(`m-nav-${v}`);
+
+                if (v === viewName) {
+                    if (el) el.classList.remove('hidden');
+                    if (nav) {
+                        nav.classList.add('text-emerald-600', 'dark:text-emerald-400', 'bg-emerald-50', 'dark:bg-emerald-950/60');
+                        nav.classList.remove('hover:bg-slate-100', 'dark:hover:bg-slate-800/50');
+                    }
+                    if (mNav) {
+                        mNav.classList.add('text-emerald-600', 'dark:text-emerald-400', 'bg-emerald-100/60', 'dark:bg-emerald-950/70');
+                    }
+                } else {
+                    if (el) el.classList.add('hidden');
+                    if (nav) {
+                        nav.classList.remove('text-emerald-600', 'dark:text-emerald-400', 'bg-emerald-50', 'dark:bg-emerald-950/60');
+                        nav.classList.add('hover:bg-slate-100', 'dark:hover:bg-slate-800/50');
+                    }
+                    if (mNav) {
+                        mNav.classList.remove('text-emerald-600', 'dark:text-emerald-400', 'bg-emerald-100/60', 'dark:bg-emerald-950/70');
+                    }
+                }
+            });
+            lucide.createIcons();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goToProposal(id) {
+            activeProposalId = id;
+            renderProposalTabs();
+            renderProposalDetail(id);
+            switchView('proposals');
+        }
+
+        // Render Phase Maturity Bars (Overview)
+        function renderPhaseMaturityBars() {
+            const avg = key => Math.round(proposalsData.reduce((acc, p) => acc + p.scores[key], 0) / proposalsData.length);
+            const phases = [
+                { label: "Fase 1: Dominio Onion, Validación Stock & RFC 7807", val: avg('f1'), color: "bg-blue-500" },
+                { label: "Fase 2: EF Core 10, Fluent API, Restrict & Soft Delete", val: avg('f2'), color: "bg-teal-500" },
+                { label: "Fase 3: Seguridad JWT, Matriz RBAC (403) & Validación", val: avg('f3'), color: "bg-indigo-500" },
+                { label: "Fase 4: React 18 SPA, KPIs Accionables & xUnit/Moq", val: avg('f4'), color: "bg-emerald-500" },
+                { label: "Fase 5: Docker Compose, CI/CD & Flujo E2E", val: avg('f5'), color: "bg-purple-500" }
+            ];
+
+            document.getElementById('phase-maturity-bars').innerHTML = phases.map(ph => `
+                <div class="space-y-1.5">
+                    <div class="flex justify-between text-xs font-semibold">
+                        <span class="text-slate-700 dark:text-slate-300">${ph.label}</span>
+                        <span class="font-mono font-bold text-slate-900 dark:text-white">${ph.val}%</span>
+                    </div>
+                    <div class="w-full h-2.5 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+                        <div class="${ph.color} h-full rounded-full transition-all duration-500" style="width: ${ph.val}%"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render Overview Cards
+        function renderOverviewProposalsGrid() {
+            const container = document.getElementById('overview-proposals-grid');
+            container.innerHTML = proposalsData.map(p => `
+                <div class="rounded-3xl glass-card p-5 border border-slate-200/80 dark:border-slate-800 space-y-3.5 flex flex-col justify-between hover:border-emerald-500/50 transition">
+                    <div class="space-y-2.5">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="px-2.5 py-0.5 rounded-lg text-[11px] font-extrabold bg-gradient-to-r ${p.badgeColor} text-white uppercase">${p.shortName}</span>
+                            <span class="text-xs font-mono font-black ${p.totalScore >= 75 ? 'text-emerald-600 dark:text-emerald-400' : p.totalScore >= 50 ? 'text-amber-600 dark:text-amber-400' : 'text-rose-600 dark:text-rose-400'}">${p.totalScore}/100</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-sm leading-snug">${p.title}</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 line-clamp-2">${p.summary}</p>
+                        <div class="flex flex-wrap gap-1 pt-0.5">
+                            <span class="px-2 py-0.5 rounded-md text-[10px] font-bold ${p.statusTagClass}">${p.statusTag}</span>
+                            <span class="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">${p.rosterStatus}</span>
+                        </div>
+                    </div>
+                    <button onclick="goToProposal(${p.id})" class="w-full py-2 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-500 transition text-slate-700 dark:text-slate-200 flex items-center justify-center space-x-1.5">
+                        <span>Ver Observaciones Fases 1–5</span>
+                        <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // Roster Table & Filter
+        function filterRoster(filter) {
+            currentRosterFilter = filter;
+            ['all', 'delivered', 'pending', 'external'].forEach(f => {
+                const btn = document.getElementById(`roster-filter-${f}`);
+                if (!btn) return;
+                btn.className = f === filter
+                    ? 'px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm font-bold whitespace-nowrap'
+                    : 'px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white whitespace-nowrap';
+            });
+            renderRosterTable();
+        }
+
+        function initRosterSearch() {
+            document.getElementById('roster-search').addEventListener('input', () => renderRosterTable());
+        }
+
+        function renderRosterTable() {
+            const query = (document.getElementById('roster-search')?.value || '').toLowerCase();
+            const tbody = document.getElementById('roster-table-body');
+
+            const filtered = studentRoster.filter(s => {
+                const matchesFilter = currentRosterFilter === 'all' || s.status === currentRosterFilter;
+                const matchesQuery = !query || s.name.toLowerCase().includes(query) || s.cedula.toLowerCase().includes(query) || s.proposalName.toLowerCase().includes(query);
+                return matchesFilter && matchesQuery;
+            });
+
+            tbody.innerHTML = filtered.map(s => {
+                const statusBadge = s.status === 'delivered'
+                    ? `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700">Entregó</span>`
+                    : s.status === 'pending'
+                        ? `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-100 text-rose-800 dark:bg-rose-950/80 dark:text-rose-300 border border-rose-300 dark:border-rose-700">Sin Reportar</span>`
+                        : `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-sky-100 text-sky-800 dark:bg-sky-950/80 dark:text-sky-300 border border-sky-300 dark:border-sky-700">Fuera de Lista</span>`;
+
+                return `
+                    <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-900/50 transition">
+                        <td class="p-3.5 text-center font-mono font-bold text-slate-500">${s.num}</td>
+                        <td class="p-3.5 font-mono text-slate-700 dark:text-slate-300">${s.cedula}</td>
+                        <td class="p-3.5 font-bold text-slate-900 dark:text-white">${s.name}</td>
+                        <td class="p-3.5">${statusBadge}</td>
+                        <td class="p-3.5 text-slate-600 dark:text-slate-400 font-medium">${s.modality}</td>
+                        <td class="p-3.5 text-slate-700 dark:text-slate-300">${s.proposalName}</td>
+                        <td class="p-3.5 text-right no-print">
+                            ${s.proposalId
+                                ? `<button onclick="goToProposal(${s.proposalId})" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white text-[11px] font-bold transition">Ver Análisis</button>`
+                                : `<span class="text-[11px] text-slate-400 italic">Requiere reporte</span>`
+                            }
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Proposal Tabs & Detail View
+        function renderProposalTabs() {
+            const container = document.getElementById('proposal-tabs');
+            container.innerHTML = proposalsData.map(p => `
+                <button onclick="selectProposal(${p.id})" class="px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 whitespace-nowrap flex items-center space-x-2 shrink-0 ${p.id === activeProposalId ? 'bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 shadow-md' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800'}">
+                    <i data-lucide="${p.icon}" class="w-4 h-4"></i>
+                    <span>${p.shortName}: ${p.title.split('(')[0].trim().slice(0, 22)}</span>
+                </button>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function selectProposal(id) {
+            activeProposalId = id;
+            renderProposalTabs();
+            renderProposalDetail(id);
+        }
+
+        function renderProposalDetail(id) {
+            const p = proposalsData.find(item => item.id === id);
+            const container = document.getElementById('proposal-detail-area');
+
+            const phaseBoxes = [
+                { label: "Fase 1: Onion & Stock", score: p.scores.f1, bar: "bg-blue-500" },
+                { label: "Fase 2: Fluent & Soft Delete", score: p.scores.f2, bar: "bg-teal-500" },
+                { label: "Fase 3: JWT & RBAC (403)", score: p.scores.f3, bar: "bg-indigo-500" },
+                { label: "Fase 4: React, KPIs & QA", score: p.scores.f4, bar: "bg-emerald-500" },
+                { label: "Fase 5: Docker & CI/CD", score: p.scores.f5, bar: "bg-purple-500" }
+            ];
+
+            container.innerHTML = `
+                <div class="space-y-6">
+                    <!-- Header Card -->
+                    <div class="rounded-3xl glass-card p-6 sm:p-8 shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-5">
+                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                            <div class="space-y-2.5">
+                                <div class="flex items-center flex-wrap gap-2">
+                                    <span class="px-3 py-1 rounded-lg text-xs font-extrabold uppercase tracking-wider bg-gradient-to-r ${p.badgeColor} text-white shadow-sm">${p.shortName}</span>
+                                    <span class="px-3 py-1 rounded-lg text-xs font-bold ${p.statusTagClass}">${p.statusTag}</span>
+                                    <span class="px-3 py-1 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">${p.rosterStatus}</span>
+                                </div>
+                                <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">${p.title}</h2>
+                                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-medium">${p.subtitle}</p>
+                                <div class="flex flex-wrap items-center gap-2 pt-1 text-xs">
+                                    <span class="font-bold text-slate-700 dark:text-slate-300 flex items-center space-x-1">
+                                        <i data-lucide="users" class="w-3.5 h-3.5"></i>
+                                        <span>Autores:</span>
+                                    </span>
+                                    ${p.authors.map(a => `<span class="px-2.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold">${a}</span>`).join('')}
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-4 shrink-0">
+                                <div class="text-center p-4 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                                    <span class="text-[10px] uppercase font-bold text-slate-500 block">Madurez F1–F5</span>
+                                    <span class="text-3xl font-black font-mono ${p.totalScore >= 75 ? 'text-emerald-600 dark:text-emerald-400' : p.totalScore >= 50 ? 'text-amber-600 dark:text-amber-400' : 'text-rose-600 dark:text-rose-400'}">${p.totalScore}%</span>
+                                </div>
+                                <button onclick="copyProposalFeedback(${p.id})" class="no-print px-4 py-3 rounded-2xl bg-slate-900 dark:bg-emerald-500 text-white dark:text-slate-950 font-bold text-xs flex items-center space-x-1.5 hover:opacity-90 transition">
+                                    <i data-lucide="copy" class="w-4 h-4"></i>
+                                    <span id="copy-prop-btn-${p.id}">Copiar Observaciones</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed pt-4 border-t border-slate-200/80 dark:border-slate-800">
+                            <strong class="text-emerald-600 dark:text-emerald-400">Síntesis Evaluada:</strong> ${p.summary}
+                        </p>
+
+                        <!-- 5 Phase Scores -->
+                        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-2">
+                            ${phaseBoxes.map(pb => `
+                                <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 space-y-1.5">
+                                    <div class="flex justify-between text-[11px] font-bold">
+                                        <span class="text-slate-600 dark:text-slate-400">${pb.label}</span>
+                                        <span class="font-mono text-slate-900 dark:text-white">${pb.score}%</span>
+                                    </div>
+                                    <div class="w-full h-1.5 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+                                        <div class="${pb.bar} h-full rounded-full" style="width: ${pb.score}%"></div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- 3-Column Constructive Technical Observations -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Col 1: Fortalezas -->
+                        <div class="rounded-3xl glass-card p-6 border border-slate-200/80 dark:border-slate-800 space-y-4">
+                            <div class="flex items-center space-x-2 text-emerald-600 dark:text-emerald-400">
+                                <i data-lucide="thumbs-up" class="w-5 h-5"></i>
+                                <h3 class="font-bold text-base text-slate-900 dark:text-white">1. Aciertos &amp; Fortalezas</h3>
+                            </div>
+                            <div class="space-y-3">
+                                ${p.strengths.map(s => `
+                                    <div class="p-3.5 rounded-2xl bg-emerald-50/60 dark:bg-emerald-950/25 border border-emerald-200/60 dark:border-emerald-800/50 flex items-start space-x-2.5">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i>
+                                        <span class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">${s}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Col 2: Fases 1 y 2 -->
+                        <div class="rounded-3xl glass-card p-6 border border-slate-200/80 dark:border-slate-800 space-y-4">
+                            <div class="flex items-center space-x-2 text-blue-600 dark:text-blue-400">
+                                <i data-lucide="database" class="w-5 h-5"></i>
+                                <h3 class="font-bold text-base text-slate-900 dark:text-white">2. Observaciones Fases 1 &amp; 2</h3>
+                            </div>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400">Arquitectura Onion, validación de stock, RFC 7807, Fluent API y borrado lógico:</p>
+                            <div class="space-y-3">
+                                ${p.obsPhase12.map(o => `
+                                    <div class="p-3.5 rounded-2xl bg-slate-100/80 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 space-y-1">
+                                        <h4 class="text-xs font-bold text-slate-900 dark:text-white flex items-center space-x-1.5">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                            <span>${o.title}</span>
+                                        </h4>
+                                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">${o.desc}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Col 3: Fases 3, 4 y 5 -->
+                        <div class="rounded-3xl glass-card p-6 border border-slate-200/80 dark:border-slate-800 space-y-4">
+                            <div class="flex items-center space-x-2 text-purple-600 dark:text-purple-400">
+                                <i data-lucide="shield-check" class="w-5 h-5"></i>
+                                <h3 class="font-bold text-base text-slate-900 dark:text-white">3. Hoja de Ruta Fases 3, 4 &amp; 5</h3>
+                            </div>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400">Seguridad JWT/RBAC, KPIs accionables, xUnit/Moq y Docker/CI-CD:</p>
+                            <div class="space-y-3">
+                                ${p.obsPhase345.map(o => `
+                                    <div class="p-3.5 rounded-2xl bg-slate-100/80 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 space-y-1">
+                                        <h4 class="text-xs font-bold text-slate-900 dark:text-white flex items-center space-x-1.5">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+                                            <span>${o.title}</span>
+                                        </h4>
+                                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">${o.desc}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function copyProposalFeedback(id) {
+            const p = proposalsData.find(item => item.id === id);
+            const text = [
+                `📋 RETROALIMENTACIÓN TÉCNICA — ${p.title.toUpperCase()}`,
+                `Autores: ${p.authors.join(', ')}`,
+                `Madurez de Propuesta (Fases 1–5): ${p.totalScore}/100 (${p.statusTag})`,
+                ``,
+                `✅ FORTALEZAS:`,
+                ...p.strengths.map(s => `• ${s}`),
+                ``,
+                `🏗️ OBSERVACIONES FASES 1 Y 2 (Dominio, Stock, Fluent API & Borrado Lógico):`,
+                ...p.obsPhase12.map(o => `• ${o.title}: ${o.desc}`),
+                ``,
+                `🚀 HOJA DE RUTA FASES 3, 4 Y 5 (RBAC, KPIs, Testing & Docker):`,
+                ...p.obsPhase345.map(o => `• ${o.title}: ${o.desc}`)
+            ].join('\n');
+
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.getElementById(`copy-prop-btn-${id}`);
+                if (btn) {
+                    btn.innerText = '¡Copiado!';
+                    setTimeout(() => { btn.innerText = 'Copiar Observaciones'; }, 2200);
+                }
+            });
+        }
+
+        function copySummaryAnnouncement() {
+            const text = `📢 RESULTADOS DEL ANÁLISIS DE PROPUESTAS — PROGRAMA INTEGRADOR (REAP-PI)
+Universidad Nacional Experimental del Táchira (UNET)
+Desarrollo de Aplicaciones Web (0423807T)
+
+📊 Resumen de Cobertura (Listado 20/11/2026):
+• Total estudiantes en listado: 16
+• Con propuesta entregada: 10 (62.5% — 8 en equipo, 2 individuales)
+• Aún sin reportar grupo/propuesta: 6 (37.5%) — ¡Urgente conformar equipo y reportar!
+• Alertas administrativas: 1 propuesta sin autores declarados (Cero Stock / Librería) y 1 propuesta fuera de listado (AQUABI - Jhon Rico).
+
+Por favor revisen las observaciones técnicas constructivas por fases (F1–F5) asignadas a su proyecto en la plataforma REAP-PI:
+👉 https://gramirezsunet.github.io/desarrolloAplicacionesWeb/REAP-PI/`;
+            navigator.clipboard.writeText(text).then(() => {
+                const el = document.getElementById('copy-summary-text');
+                el.innerText = '¡Comunicado Copiado!';
+                setTimeout(() => { el.innerText = 'Copiar Comunicado de Resultados'; }, 2400);
+            });
+        }
+
+        // Interactive Proposal Analyzer
+        const sampleTexts = {
+            6: `Propuesta: Sistema Integral de Gestión de Inventario, Reparación y Venta de Transformadores (Transformadores Wilfredo Pérez).
+Autores: Omaña Colmenares Luis Alfonso, Becerra Salamanca Moises David, Perez Lobo Lahian Wilfredo.
+Problema: El cobre, el aceite dieléctrico y las láminas se compran y gastan sin asignarse a una orden de reparación, desconociendo el costo real.
+Arquitectura: .NET 10, Onion Architecture, PostgreSQL 15, EF Core 10, React 18, xUnit y Moq.
+Entidades: Proveedor (RIF único), Material (SKU único, decimal USD), Transformador (Serie única), OrdenReparación, MovimientoStock.
+Reglas: Nunca se permite stock negativo. Los materiales y órdenes no se eliminan físicamente, solo se desactivan o anulan (borrado lógico). HTTP 409 en duplicados y RFC 7807.
+Roles RBAC: Administrador, Almacenista, Técnico (HTTP 403 en operaciones no autorizadas).
+KPIs: Semáforo de stock (meta <= 10% en rojo -> genera sugerencia de compra), Días promedio de entrega (meta <= 10 días), Desviación costo real vs estimado (meta <= 10%), Rotación (meta >= 0.5).`,
+            2: `Sistema para empresa de servicio - William Contreras.
+Lo principal es que los técnicos puedan visualizar sus tickets asignados, ver el avance (asignado, en progreso, en espera, cerrado), adjuntar soportes y comunicarse con el cliente.
+Realizar presupuestos (borrador, validado, aceptado o rechazado).
+KPIs: promedio de tickets atendidos por técnico, cantidad por tipo de ticket, promedio de presupuestos aprobados y rechazados, promedio de ingreso.`
+        };
+
+        function loadSampleIntoAnalyzer(id) {
+            document.getElementById('analyzer-title').value = id === 6 ? "Transformadores Wilfredo Pérez" : "Sistema para Empresa de Servicio";
+            document.getElementById('analyzer-text').value = sampleTexts[id] || "";
+            runLiveAnalyzer();
+        }
+
+        function clearAnalyzer() {
+            document.getElementById('analyzer-title').value = "";
+            document.getElementById('analyzer-text').value = "";
+        }
+
+        function runLiveAnalyzer() {
+            const title = document.getElementById('analyzer-title').value.trim() || "Propuesta Sin Título";
+            const raw = document.getElementById('analyzer-text').value.trim();
+            const text = raw.toLowerCase();
+
+            if (raw.length < 30) {
+                alert("Por favor ingresa al menos 30 caracteres con la descripción de la propuesta para analizarla.");
+                return;
+            }
+
+            const checks = [
+                { phase: "F1", weight: 10, ok: /problema|dolor|justificaci|objetivo|necesidad|desperdicio|p[eé]rdida/.test(text), label: "Planteamiento del problema de negocio", tip: "Explicitar qué problema operativo o financiero real resuelve (más allá de 'hacer un CRUD')." },
+                { phase: "F1", weight: 10, ok: /onion|capas|core\.domain|core\.application|\.net\s*10|rfc\s*7807|exceptionmiddleware|problem\+json/.test(text), label: "Arquitectura Onion (.NET 10) & RFC 7807", tip: "Especificar las 4 capas desacopladas (.NET 10) y el manejo centralizado de errores RFC 7807." },
+                { phase: "F1", weight: 10, ok: /stock|existencia|inventario|cupo|capacidad|negativo|insuficiente|disponib/.test(text), label: "Validación de stock / capacidad en backend", tip: "Incluir la regla estricta de validación de stock/disponibilidad en backend (prohibido stock negativo)." },
+                { phase: "F2", weight: 10, ok: /ef\s*core|entity\s*framework|postgresql|fluent\s*api|ientitytypeconfiguration|decimal|18,2|[ií]ndice\s*[uú]nico|sku|rif/.test(text), label: "EF Core 10, PostgreSQL 15, Fluent API & Claves Únicas", tip: "Definir mapeo con Fluent API en Infrastructure, precisión decimal(18,2) e índices únicos (SKU/RIF/Guía)." },
+                { phase: "F2", weight: 10, ok: /borrado\s*l[oó]gico|soft\s*delete|isdeleted|desactiv|anula|no\s*se\s*eliminan|restrict|hasqueryfilter/.test(text), label: "Borrado lógico (Soft Delete) & DeleteBehavior.Restrict", tip: "Exigir borrado lógico (IsDeleted + HasQueryFilter) y DeleteBehavior.Restrict para proteger historial y KPIs." },
+                { phase: "F2", weight: 5, ok: /seeding|siembra|datos\s*iniciales|asnotracking/.test(text), label: "Data Seeding representativo & .AsNoTracking()", tip: "Planificar datos semilla realistas y consultas de lectura con .AsNoTracking()." },
+                { phase: "F3", weight: 15, ok: /rbac|rol|roles|jwt|403|forbidden|fluentvalidation|permiso|admin/.test(text), label: "Seguridad JWT, Matriz RBAC (HTTP 403) & Validación", tip: "Definir mínimo 2–3 roles con matriz de restricciones 403 Forbidden, JWT y FluentValidation." },
+                { phase: "F4", weight: 15, ok: /(kpi|indicador).*(meta|umbral|>|<|%|d[ií]as|alerta|decisi[oó]n|sem[aá]foro)|(meta|umbral).*(kpi|indicador)/.test(text) || (/kpi|indicador/.test(text) && /meta|umbral|alerta|decisi[oó]n/.test(text)), label: "KPIs accionables (Métrica + Umbral + Decisión)", tip: "Evitar KPIs vagos ('promedio de...'); cada KPI debe tener meta/umbral y decisión gerencial que dispara." },
+                { phase: "F4", weight: 8, ok: /react|vite|tailwind|xunit|moq|prueba/.test(text), label: "Frontend React 18 + Pruebas Unitarias (xUnit & Moq)", tip: "Contemplar SPA en React 18 + Tailwind CSS y suite de pruebas deterministas en xUnit y Moq." },
+                { phase: "F5", weight: 7, ok: /docker|compose|ci\/cd|github\s*actions|nginx/.test(text), label: "Contenerización Docker Compose & CI/CD", tip: "Incluir empaquetado con Docker Multi-stage, docker-compose.yml y pipeline en GitHub Actions." }
+            ];
+
+            const score = checks.reduce((sum, c) => sum + (c.ok ? c.weight : 0), 0);
+            const passed = checks.filter(c => c.ok);
+            const missing = checks.filter(c => !c.ok);
+
+            const phaseMax = { F1: 30, F2: 25, F3: 15, F4: 23, F5: 7 };
+            const phaseScore = ph => {
+                const earned = checks.filter(c => c.phase === ph && c.ok).reduce((s, c) => s + c.weight, 0);
+                return Math.round((earned / phaseMax[ph]) * 100);
+            };
+
+            const badge = score >= 80
+                ? { text: "Aprobada / Muy Sólida", cls: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300" }
+                : score >= 55
+                    ? { text: "Aprobada con Observaciones", cls: "bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300" }
+                    : { text: "Requiere Reformulación", cls: "bg-rose-100 text-rose-800 dark:bg-rose-950/80 dark:text-rose-300" };
+
+            document.getElementById('analyzer-result').innerHTML = `
+                <div class="space-y-5">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200 dark:border-slate-700">
+                        <div>
+                            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold ${badge.cls}">${badge.text}</span>
+                            <h3 class="text-lg font-black text-slate-900 dark:text-white mt-1">${title}</h3>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[10px] uppercase font-bold text-slate-500 block">Puntaje de Preparación</span>
+                            <span class="text-3xl font-black font-mono text-emerald-600 dark:text-emerald-400">${score}%</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-5 gap-2 text-center text-[11px]">
+                        ${['F1','F2','F3','F4','F5'].map(ph => `
+                            <div class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                                <div class="font-bold text-slate-500">${ph}</div>
+                                <div class="font-mono font-black text-sm text-slate-900 dark:text-white">${phaseScore(ph)}%</div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div class="space-y-2">
+                            <h4 class="font-bold text-emerald-700 dark:text-emerald-400 flex items-center space-x-1.5">
+                                <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                                <span>Elementos Detectados (${passed.length})</span>
+                            </h4>
+                            <ul class="space-y-1.5">
+                                ${passed.length ? passed.map(c => `<li class="p-2 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/30 text-slate-700 dark:text-slate-300"><strong>[${c.phase}]</strong> ${c.label}</li>`).join('') : '<li class="text-slate-400 italic">Ninguno detectado aún.</li>'}
+                            </ul>
+                        </div>
+                        <div class="space-y-2">
+                            <h4 class="font-bold text-rose-700 dark:text-rose-400 flex items-center space-x-1.5">
+                                <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                                <span>Brechas &amp; Recomendaciones (${missing.length})</span>
+                            </h4>
+                            <ul class="space-y-1.5">
+                                ${missing.length ? missing.map(c => `<li class="p-2 rounded-xl bg-rose-50/70 dark:bg-rose-950/30 text-slate-700 dark:text-slate-300"><strong>[${c.phase}]</strong> ${c.tip}</li>`).join('') : '<li class="p-2 rounded-xl bg-emerald-50 text-emerald-700 font-bold">¡Cobertura completa de los 10 criterios base!</li>'}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        // Comparative Matrix
+        function renderMatrix() {
+            const tbody = document.getElementById('matrix-body');
+            tbody.innerHTML = proposalsData.map(p => `
+                <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-900/50 transition">
+                    <td class="p-4 font-bold text-slate-900 dark:text-white">
+                        <button onclick="goToProposal(${p.id})" class="text-left hover:text-emerald-600 dark:hover:text-emerald-400 transition">
+                            <span class="block text-[10px] uppercase font-mono text-slate-400">${p.shortName}</span>
+                            <span>${p.title}</span>
+                        </button>
+                    </td>
+                    <td class="p-4">
+                        <div class="font-medium text-slate-700 dark:text-slate-300">${p.authors.join('<br>')}</div>
+                        <span class="text-[10px] font-bold text-slate-500">${p.rosterStatus}</span>
+                    </td>
+                    <td class="p-4 text-center font-mono font-black text-base ${p.totalScore >= 75 ? 'text-emerald-600 dark:text-emerald-400' : p.totalScore >= 50 ? 'text-amber-600 dark:text-amber-400' : 'text-rose-600 dark:text-rose-400'}">${p.totalScore}%</td>
+                    <td class="p-4 text-slate-600 dark:text-slate-400">${p.matrixF1}</td>
+                    <td class="p-4 text-slate-600 dark:text-slate-400">${p.matrixF2}</td>
+                    <td class="p-4 text-slate-600 dark:text-slate-400">${p.matrixF3}</td>
+                    <td class="p-4 text-slate-600 dark:text-slate-400">${p.matrixF4F5}</td>
+                </tr>
+            `).join('');
+        }
+
+        function initMatrixSearch() {
+            document.getElementById('matrix-search').addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                document.querySelectorAll('#matrix-body tr').forEach(row => {
+                    row.style.display = row.innerText.toLowerCase().includes(query) ? '' : 'none';
+                });
+            });
+        }
+
+        // Checklist Logic
+        function renderChecklist() {
+            const container = document.getElementById('checklist-container');
+            const savedState = JSON.parse(localStorage.getItem('reap_pi_checklist') || '{}');
+
+            container.innerHTML = checklistItems.map(item => {
+                const isChecked = !!savedState[item.id];
+                return `
+                    <label class="p-4 rounded-2xl glass-card flex items-start space-x-3.5 cursor-pointer hover:border-emerald-500/50 transition-all group ${isChecked ? 'ring-1 ring-emerald-500/40 bg-emerald-50/20 dark:bg-emerald-950/20' : ''}">
+                        <input type="checkbox" onchange="toggleChecklistItem(${item.id})" ${isChecked ? 'checked' : ''} class="mt-1 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                        <div class="space-y-1">
+                            <span class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition block">${item.title}</span>
+                            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">${item.desc}</p>
+                        </div>
+                    </label>
+                `;
+            }).join('');
+
+            updateChecklistProgress();
+        }
+
+        function toggleChecklistItem(id) {
+            const savedState = JSON.parse(localStorage.getItem('reap_pi_checklist') || '{}');
+            savedState[id] = !savedState[id];
+            localStorage.setItem('reap_pi_checklist', JSON.stringify(savedState));
+            renderChecklist();
+        }
+
+        function resetChecklist() {
+            localStorage.removeItem('reap_pi_checklist');
+            renderChecklist();
+        }
+
+        function updateChecklistProgress() {
+            const savedState = JSON.parse(localStorage.getItem('reap_pi_checklist') || '{}');
+            const completed = Object.values(savedState).filter(Boolean).length;
+            const total = checklistItems.length;
+            const pct = Math.round((completed / total) * 100);
+
+            document.getElementById('checklist-progress-text').innerText = `${completed}/${total} Completados (${pct}%)`;
+            document.getElementById('checklist-progress-bar').style.width = `${pct}%`;
+        }
+    </script>
+</body>
+</html>
