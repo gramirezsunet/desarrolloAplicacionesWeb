@@ -15,10 +15,10 @@ Este directorio contiene la plataforma web interactiva para analizar las propues
 
 ## 🚀 **Funcionalidades de la Plataforma (`index.html`)**
 
-1. **Indicadores Estadísticos y Control de Listado (20/11/2026):**
-   * Seguimiento de los **16 estudiantes** del listado oficial: **11 entregaron (68.8%)** (8 en 3 equipos y 3 individuales) vs. **5 sin reportarse (31.3%)**.
-   * Alertas administrativas destacadas: **Propuesta 5 (Cero Stock — Alejandra Patiño)** entregada sin portada ni identificación en el PDF (indispensable corregir), y **Propuesta 4 (AQUABI — Jhon Alfredo Rico García)** fuera del listado de asistencia del 20/11/2026.
-   * Filtros interactivos (*Todos*, *Entregaron*, *Sin Reportar*, *Fuera de Lista*) y buscador por nombre o cédula.
+1. **Indicadores Estadísticos y Control de Listado Oficial (23/11/2026):**
+   * Seguimiento de los **19 estudiantes** oficialmente inscritos: **12 entregaron (63.2%)** (8 en 3 equipos y 4 individuales) vs. **7 sin reportarse (36.8%)**.
+   * Todas las **7 propuestas** pertenecen a alumnos del listado oficial (incluyendo **Jhon A. Rico G.** en #14). Se destaca como observación formal que la **Propuesta 5 (Cero Stock — Alejandra Patiño)** fue entregada sin portada ni identificación en el PDF (indispensable corregir).
+   * Filtros interactivos (*Todos*, *Entregaron*, *Individuales*, *Sin Reportar*) y buscador por nombre o cédula.
 
 2. **Observaciones Técnicas Constructivas por Propuesta (Fases 1–5):**
    * Diagnóstico detallado de las **7 propuestas** con aciertos, brechas en **Fase 1 y Fase 2** (stock/capacidad, RFC 7807, Fluent API, `DeleteBehavior.Restrict` y borrado lógico) y hoja de ruta para **Fases 3, 4 y 5**, más botón de copiado rápido para Google Classroom.
