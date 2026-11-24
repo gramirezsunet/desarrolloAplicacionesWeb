@@ -413,8 +413,8 @@
                         <span>7 Propuestas Analizadas (Selecciona una para ver su diagnóstico Fases 1–5)</span>
                     </span>
                 </div>
-                <div class="flex flex-wrap items-center gap-2 w-full" id="proposal-tabs">
-                    <!-- Dynamic tabs (all 7 visible without clipping) -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 w-full" id="proposal-tabs">
+                    <!-- Dynamic tabs (all 7 visible in 1 row on desktop) -->
                 </div>
             </div>
 
@@ -1044,12 +1044,28 @@
         }
 
         // Proposal Tabs & Detail View
+        const shortTabTitles = {
+            1: "Sistema de Taxis",
+            2: "Empresa Servicio",
+            3: "SIGMO-UNET",
+            4: "AQUABI",
+            5: "Cero Stock",
+            6: "Transformadores",
+            7: "NexoHogar"
+        };
+
         function renderProposalTabs() {
             const container = document.getElementById('proposal-tabs');
             container.innerHTML = proposalsData.map(p => `
-                <button onclick="selectProposal(${p.id})" class="px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 whitespace-nowrap flex items-center space-x-2 shrink-0 ${p.id === activeProposalId ? 'bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 shadow-md' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800'}">
-                    <i data-lucide="${p.icon}" class="w-4 h-4"></i>
-                    <span>${p.shortName}: ${p.title.split('(')[0].trim().slice(0, 22)}</span>
+                <button onclick="selectProposal(${p.id})" class="px-3 py-2.5 rounded-2xl text-left transition-all duration-200 border flex flex-col justify-between gap-1 ${p.id === activeProposalId ? 'bg-slate-900 text-white border-slate-900 dark:bg-emerald-500 dark:text-slate-950 dark:border-emerald-400 shadow-md' : 'bg-white/70 dark:bg-slate-900/60 text-slate-700 dark:text-slate-300 border-slate-200/80 dark:border-slate-800 hover:border-emerald-500/60'}">
+                    <div class="flex items-center justify-between w-full text-[10px] font-extrabold uppercase tracking-wider opacity-85">
+                        <span class="flex items-center space-x-1">
+                            <i data-lucide="${p.icon}" class="w-3.5 h-3.5"></i>
+                            <span>P${p.id}</span>
+                        </span>
+                        <span class="font-mono">${p.totalScore}%</span>
+                    </div>
+                    <span class="text-xs font-bold leading-tight truncate w-full">${shortTabTitles[p.id] || p.shortName}</span>
                 </button>
             `).join('');
             lucide.createIcons();
