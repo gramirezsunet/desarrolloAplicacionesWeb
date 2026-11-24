@@ -15,19 +15,19 @@ Este directorio contiene la plataforma web interactiva para analizar las propues
 
 ## 🚀 **Funcionalidades de la Plataforma (`index.html`)**
 
-1. **Indicadores Estadísticos y Control de Listado Oficial (23/11/2026):**
-   * Seguimiento de los **19 estudiantes** oficialmente inscritos: **12 entregaron (63.2%)** (8 en 3 equipos y 4 individuales) vs. **7 sin reportarse (36.8%)**.
-   * Todas las **7 propuestas** pertenecen a alumnos del listado oficial (ordenadas iniciando con **Equipo 1: Sistema de Taxis**, luego **Equipos 2–3** según el listado oficial y posteriormente las entregas individuales por orden de presentación). Se destaca como observación formal que la **Propuesta 7 (Cero Stock — Alejandra Patiño)** fue entregada sin portada ni identificación en el PDF (indispensable corregir).
+1. **Indicadores Estadísticos y Control de Listado Oficial (23–24/11/2026):**
+   * Seguimiento de los **19 estudiantes** oficialmente inscritos: **14 entregaron (73.7%)** (10 en 4 equipos y 4 individuales) vs. **5 sin reportarse (26.3%)**.
+   * Todas las **8 propuestas** pertenecen a alumnos del listado oficial (ordenadas iniciando con **Equipo 1: Sistema de Taxis**, luego **Equipos 2–4** según el listado oficial: *Transformadores*, *NexoHogar*, *SITP San Cristóbal*, y posteriormente las 4 entregas individuales por orden de presentación). Se destaca como observación formal que la **Propuesta 8 (Cero Stock — Alejandra Patiño)** fue entregada sin portada ni identificación en el PDF (indispensable corregir).
    * Filtros interactivos (*Todos*, *Entregaron*, *Individuales*, *Sin Reportar*) y buscador por nombre o cédula.
 
 2. **Observaciones Técnicas Constructivas por Propuesta (Fases 1–5):**
-   * Diagnóstico detallado de las **7 propuestas** con aciertos, brechas en **Fase 1 y Fase 2** (stock/capacidad, RFC 7807, Fluent API, `DeleteBehavior.Restrict` y borrado lógico) y hoja de ruta para **Fases 3, 4 y 5**, más botón de copiado rápido para Google Classroom.
+   * Diagnóstico detallado de las **8 propuestas** con aciertos, brechas en **Fase 1 y Fase 2** (stock/capacidad, RFC 7807, Fluent API, `DeleteBehavior.Restrict` y borrado lógico) y hoja de ruta para **Fases 3, 4 y 5**, más botón de copiado rápido para Google Classroom.
 
 3. **Analizador Interactivo en Vivo:**
    * Motor heurístico en navegador para evaluar borradores o nuevas propuestas frente a los 10 criterios críticos de las Fases 1–5, devolviendo puntaje de madurez, desglose por fase y recomendaciones constructivas.
 
 4. **Matriz Comparativa y Checklist Fases 1–5:**
-   * Tabla comparativa filtrable entre las 7 propuestas y checklist interactivo de 12 puntos persistido en `localStorage`.
+   * Tabla comparativa filtrable entre las 8 propuestas y checklist interactivo de 12 puntos persistido en `localStorage`.
 
 5. **Identidad Visual Institucional UNET:**
    * Mantiene la estética, paleta, modo Claro/Oscuro (`unet-logo.png` / `unet-logo-dark.png`) y banner oficial (`Banner_Google_Classroom_GR.jpeg`) de `REAF-F4`.
