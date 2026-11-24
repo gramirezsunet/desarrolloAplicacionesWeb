@@ -17,7 +17,7 @@ Este directorio contiene la plataforma web interactiva para analizar las propues
 
 1. **Indicadores Estadísticos y Control de Listado Oficial (23/11/2026):**
    * Seguimiento de los **19 estudiantes** oficialmente inscritos: **12 entregaron (63.2%)** (8 en 3 equipos y 4 individuales) vs. **7 sin reportarse (36.8%)**.
-   * Todas las **7 propuestas** pertenecen a alumnos del listado oficial (incluyendo **Jhon A. Rico G.** en #14). Se destaca como observación formal que la **Propuesta 5 (Cero Stock — Alejandra Patiño)** fue entregada sin portada ni identificación en el PDF (indispensable corregir).
+   * Todas las **7 propuestas** pertenecen a alumnos del listado oficial (ordenadas iniciando con **Equipo 1: Sistema de Taxis**, luego **Equipos 2–3** según el listado oficial y posteriormente las entregas individuales por orden de presentación). Se destaca como observación formal que la **Propuesta 7 (Cero Stock — Alejandra Patiño)** fue entregada sin portada ni identificación en el PDF (indispensable corregir).
    * Filtros interactivos (*Todos*, *Entregaron*, *Individuales*, *Sin Reportar*) y buscador por nombre o cédula.
 
 2. **Observaciones Técnicas Constructivas por Propuesta (Fases 1–5):**

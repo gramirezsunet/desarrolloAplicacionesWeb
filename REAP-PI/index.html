@@ -257,7 +257,7 @@
                     <div class="space-y-1 text-xs">
                         <h3 class="font-extrabold text-amber-900 dark:text-amber-200 text-sm">Alerta 1: Entrega Sin Portada Formal ("Cero Stock" — Alejandra Patiño)</h3>
                         <p class="text-amber-800 dark:text-amber-300/90 leading-relaxed">
-                            La <strong>Propuesta 5 (Sistema Bajo Pedido / Cero Stock)</strong> corresponde a <strong>Patiño Blanco Alejandra Antonela (V-31.098.348)</strong>, pero fue entregada <strong>sin portada ni datos de identificación dentro del documento</strong>. Es indispensable incorporar una portada formal con nombre, cédula y datos de la asignatura, además de personalizar los ejemplos técnicos.
+                            La <strong>Propuesta 7 (Sistema Bajo Pedido / Cero Stock)</strong> corresponde a <strong>Patiño Blanco Alejandra Antonela (V-31.098.348)</strong>, pero fue entregada <strong>sin portada ni datos de identificación dentro del documento</strong>. Es indispensable incorporar una portada formal con nombre, cédula y datos de la asignatura, además de personalizar los ejemplos técnicos.
                         </p>
                     </div>
                 </div>
@@ -323,7 +323,7 @@
                             <span class="font-mono font-bold text-blue-600 dark:text-blue-400">4 estudiantes (1 c/u)</span>
                         </div>
                         <div class="flex items-center justify-between p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200/60 dark:border-amber-800/50">
-                            <span class="font-semibold text-amber-900 dark:text-amber-200">Observación Formal: Propuesta 5 (Cero Stock) sin portada</span>
+                            <span class="font-semibold text-amber-900 dark:text-amber-200">Observación Formal: Propuesta 7 (Cero Stock) sin portada</span>
                             <span class="font-mono font-bold text-amber-700 dark:text-amber-300">Indispensable corregir</span>
                         </div>
                     </div>
@@ -438,8 +438,8 @@
                         </p>
                     </div>
                     <div class="flex flex-wrap gap-2">
-                        <button onclick="loadSampleIntoAnalyzer(6)" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white transition">Cargar Ejemplo: Transformadores</button>
-                        <button onclick="loadSampleIntoAnalyzer(2)" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white transition">Cargar Ejemplo: Servicio</button>
+                        <button onclick="loadSampleIntoAnalyzer(2)" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white transition">Cargar Ejemplo: Transformadores</button>
+                        <button onclick="loadSampleIntoAnalyzer(4)" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white transition">Cargar Ejemplo: Servicio</button>
                         <button onclick="clearAnalyzer()" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-300 hover:bg-rose-100 transition">Limpiar</button>
                     </div>
                 </div>
@@ -561,28 +561,28 @@
     <script>
         // 1. Official Enrolled Roster (Control de Estudios UNET 23/11/2026 - 19 students)
         const studentRoster = [
-            { num: 1, cedula: "V31123065", name: "Aliendres Moreno Douglas Alejandro", status: "delivered", modality: "Individual", proposalId: 3, proposalName: "SIGMO-UNET (Ordeño en Fincas)", inOfficialList: true },
+            { num: 1, cedula: "V31123065", name: "Aliendres Moreno Douglas Alejandro", status: "delivered", modality: "Individual", proposalId: 5, proposalName: "SIGMO-UNET (Ordeño en Fincas)", inOfficialList: true },
             { num: 2, cedula: "V25168390", name: "Amaya Pino Maria Gabriela Alejandra", status: "pending", modality: "Sin Reportar", proposalId: null, proposalName: "Pendiente de grupo/propuesta", inOfficialList: true },
-            { num: 3, cedula: "V27114065", name: "Arenales Zambrano Yeyner Jesus", status: "delivered", modality: "Equipo (3)", proposalId: 1, proposalName: "Sistema de Taxis (Líneas Frontera / RUTA)", inOfficialList: true },
-            { num: 4, cedula: "V30965748", name: "Becerra Salamanca Moisés David", status: "delivered", modality: "Equipo (3)", proposalId: 6, proposalName: "Transformadores Wilfredo Pérez", inOfficialList: true },
-            { num: 5, cedula: "V26702690", name: "Benitez Maestre Reinaldo Antonio", status: "delivered", modality: "Equipo (2)", proposalId: 7, proposalName: "NexoHogar (Servicios Técnicos)", inOfficialList: true },
+            { num: 3, cedula: "V27114065", name: "Arenales Zambrano Yeyner Jesus", status: "delivered", modality: "Equipo 1 (3)", proposalId: 1, proposalName: "Sistema de Taxis (Líneas Frontera / RUTA)", inOfficialList: true },
+            { num: 4, cedula: "V30965748", name: "Becerra Salamanca Moisés David", status: "delivered", modality: "Equipo 2 (3)", proposalId: 2, proposalName: "Transformadores Wilfredo Pérez", inOfficialList: true },
+            { num: 5, cedula: "V26702690", name: "Benitez Maestre Reinaldo Antonio", status: "delivered", modality: "Equipo 3 (2)", proposalId: 3, proposalName: "NexoHogar (Servicios Técnicos)", inOfficialList: true },
             { num: 6, cedula: "V31019515", name: "Carrillo Ortiz Kelwuin Esloyner", status: "pending", modality: "Sin Reportar", proposalId: null, proposalName: "Pendiente de grupo/propuesta", inOfficialList: true },
             { num: 7, cedula: "V30360964", name: "Chacón Moncada Jesús Antonio", status: "pending", modality: "Sin Reportar", proposalId: null, proposalName: "Pendiente de grupo/propuesta", inOfficialList: true },
-            { num: 8, cedula: "V15858775", name: "Contreras Olivar, William Eduardo", status: "delivered", modality: "Individual", proposalId: 2, proposalName: "Sistema para Empresa de Servicio", inOfficialList: true },
+            { num: 8, cedula: "V15858775", name: "Contreras Olivar, William Eduardo", status: "delivered", modality: "Individual", proposalId: 4, proposalName: "Sistema para Empresa de Servicio", inOfficialList: true },
             { num: 9, cedula: "V24743880", name: "Garrido Ruiz Jesus Francisco", status: "pending", modality: "Sin Reportar", proposalId: null, proposalName: "Pendiente de grupo/propuesta", inOfficialList: true },
             { num: 10, cedula: "V30651157", name: "Ocariz Lara Carlos Alejandro", status: "pending", modality: "Sin Reportar", proposalId: null, proposalName: "Pendiente de grupo/propuesta", inOfficialList: true },
-            { num: 11, cedula: "V31180408", name: "Omaña Colmenares Luis Alfonso", status: "delivered", modality: "Equipo (3)", proposalId: 6, proposalName: "Transformadores Wilfredo Pérez", inOfficialList: true },
-            { num: 12, cedula: "V31098348", name: "Patiño Blanco Alejandra Antonela", status: "delivered", modality: "Individual (Sin Portada)", proposalId: 5, proposalName: "Sistema Bajo Pedido (Cero Stock) — Librería", inOfficialList: true },
-            { num: 13, cedula: "V31217796", name: "Perez Lobo Lahian Wilfredo", status: "delivered", modality: "Equipo (3)", proposalId: 6, proposalName: "Transformadores Wilfredo Pérez", inOfficialList: true },
-            { num: 14, cedula: "V18564692", name: "Rico G, Jhon A", status: "delivered", modality: "Individual", proposalId: 4, proposalName: "AQUABI (Productos del Mar)", inOfficialList: true },
+            { num: 11, cedula: "V31180408", name: "Omaña Colmenares Luis Alfonso", status: "delivered", modality: "Equipo 2 (3)", proposalId: 2, proposalName: "Transformadores Wilfredo Pérez", inOfficialList: true },
+            { num: 12, cedula: "V31098348", name: "Patiño Blanco Alejandra Antonela", status: "delivered", modality: "Individual (Sin Portada)", proposalId: 7, proposalName: "Sistema Bajo Pedido (Cero Stock) — Librería", inOfficialList: true },
+            { num: 13, cedula: "V31217796", name: "Perez Lobo Lahian Wilfredo", status: "delivered", modality: "Equipo 2 (3)", proposalId: 2, proposalName: "Transformadores Wilfredo Pérez", inOfficialList: true },
+            { num: 14, cedula: "V18564692", name: "Rico G, Jhon A", status: "delivered", modality: "Individual", proposalId: 6, proposalName: "AQUABI (Productos del Mar)", inOfficialList: true },
             { num: 15, cedula: "V28131712", name: "Sanchez Contreras Angel Gabriel", status: "pending", modality: "Sin Reportar", proposalId: null, proposalName: "Pendiente de grupo/propuesta", inOfficialList: true },
             { num: 16, cedula: "V24745014", name: "Sánchez Cotamo Manuel Alejandro", status: "pending", modality: "Sin Reportar", proposalId: null, proposalName: "Pendiente de grupo/propuesta", inOfficialList: true },
-            { num: 17, cedula: "V31386357", name: "Urbina Rangel Miguel Alexander", status: "delivered", modality: "Equipo (3)", proposalId: 1, proposalName: "Sistema de Taxis (Líneas Frontera / RUTA)", inOfficialList: true },
-            { num: 18, cedula: "V27893732", name: "Villasmil Silva Francisco Javier", status: "delivered", modality: "Equipo (2)", proposalId: 7, proposalName: "NexoHogar (Servicios Técnicos)", inOfficialList: true },
-            { num: 19, cedula: "V29976865", name: "Vizcaya Gonzalez Juan Alejandro", status: "delivered", modality: "Equipo (3)", proposalId: 1, proposalName: "Sistema de Taxis (Líneas Frontera / RUTA)", inOfficialList: true }
+            { num: 17, cedula: "V31386357", name: "Urbina Rangel Miguel Alexander", status: "delivered", modality: "Equipo 1 (3)", proposalId: 1, proposalName: "Sistema de Taxis (Líneas Frontera / RUTA)", inOfficialList: true },
+            { num: 18, cedula: "V27893732", name: "Villasmil Silva Francisco Javier", status: "delivered", modality: "Equipo 3 (2)", proposalId: 3, proposalName: "NexoHogar (Servicios Técnicos)", inOfficialList: true },
+            { num: 19, cedula: "V29976865", name: "Vizcaya Gonzalez Juan Alejandro", status: "delivered", modality: "Equipo 1 (3)", proposalId: 1, proposalName: "Sistema de Taxis (Líneas Frontera / RUTA)", inOfficialList: true }
         ];
 
-        // 2. Proposals Technical Analysis Data (Aligned with Phases 1-5)
+        // 2. Proposals Technical Analysis Data (Teams ordered by official roster, then individuals by submission order)
         const proposalsData = [
             {
                 id: 1,
@@ -594,7 +594,7 @@
                     "Miguel Alexander Urbina Rangel (V-31.386.357)",
                     "Yeyner Jesus Arenales Zambrano (V-27.114.065)"
                 ],
-                rosterStatus: "Equipo de 3 en Listado Oficial",
+                rosterStatus: "Equipo 1 (3) en Listado Oficial",
                 badgeColor: "from-rose-700 to-amber-700",
                 statusTag: "Buen Dominio — Falta Stack & Umbrales",
                 statusTagClass: "bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-300 dark:border-amber-700",
@@ -625,6 +625,81 @@
             {
                 id: 2,
                 shortName: "Propuesta 2",
+                title: "Transformadores Wilfredo Pérez",
+                subtitle: "Sistema integral de inventario (kardex), órdenes de reparación con asignación de costos y venta",
+                authors: [
+                    "Omaña Colmenares Luis Alfonso (V-31.180.408)",
+                    "Becerra Salamanca Moisés David (V-30.965.746)",
+                    "Perez Lobo Lahian Wilfredo (V-31.217.796)"
+                ],
+                rosterStatus: "Equipo 2 (3) en Listado Oficial",
+                badgeColor: "from-sky-700 to-cyan-600",
+                statusTag: "Propuesta Modelo — Lista para Construir",
+                statusTagClass: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700",
+                icon: "zap",
+                scores: { f1: 92, f2: 90, f3: 85, f4: 82, f5: 40 },
+                totalScore: 81,
+                summary: "Propuesta sobresaliente para una empresa real de reparación y venta de transformadores. Separa entidades maestras y transaccionales, define una matriz RBAC exacta con HTTP 403, prohíbe stock negativo y borrado físico, y formula 4 KPIs accionables con metas, umbrales y decisiones claras.",
+                matrixF1: "Excelente: stock >= 0, orden única activa, HTTP 409",
+                matrixF2: "Claves únicas (RIF/SKU/Serie), no borrado físico, kardex",
+                matrixF3: "Matriz RBAC completa con 403; reforzar anti-IDOR Técnico",
+                matrixF4F5: "KPIs ejemplares; falta detallar xUnit/Moq y Docker",
+                strengths: [
+                    "Planteamiento del problema financiero impecable: conecta el consumo real de cobre, aceite dieléctrico y láminas con el costo real de cada orden para calcular rentabilidad.",
+                    "Reglas de bloqueo de negocio ejemplares: stock nunca negativo, duplicados con HTTP 409, movimientos de kardex inmutables (solo corregibles mediante Ajuste del Admin), órdenes anulables pero nunca eliminables y restricción de una sola orden activa por transformador.",
+                    "Matriz RBAC completa y 4 KPIs con metas cuantitativas claras (semáforo de stock, Lead Time <= 10d, desviación de costo <= 10%, rotación >= 0.5)."
+                ],
+                obsPhase12: [
+                    { title: "Concurrencia Optimista en Consumo de Materiales (Fase 1–2)", desc: "Al tener un Almacenista y varios Técnicos descontando materiales en paralelo (ventas + órdenes de reparación), agregar control de concurrencia optimista (RowVersion / xmin en PostgreSQL) en la entidad Material para evitar condiciones de carrera que lleven el stock por debajo de cero." },
+                    { title: "Precisión Decimal Diferenciada y Máquinas de Estado (Fase 2)", desc: "En Fluent API, usar HasPrecision(18,2) para costos/precios USD, pero considerar HasPrecision(18,3) para MovimientoStock.Cantidad (cobre por kg/metros, aceite por litros). Documentar explícitamente las transiciones permitidas en OrdenReparación y aplicar HasQueryFilter(!IsDeleted) + DeleteBehavior.Restrict en todas las relaciones 1:N." },
+                    { title: "Mapeo de Excepciones RFC 7807 (Fase 1)", desc: "Ya definieron muy bien HTTP 409 para duplicados y bloqueo de stock negativo; asegurar que ExceptionMiddleware mapee explícitamente KeyNotFoundException (404), InvalidOperationException (400) y ConflictException (409) bajo application/problem+json." }
+                ],
+                obsPhase345: [
+                    { title: "Prevención de IDOR/BOLA en el Rol Técnico (Fase 3)", desc: "Su matriz indica acertadamente que el Técnico registra consumo 'Solo en órdenes asignadas'. Asegurarse de validar esto en Core.Application comparando el UserId del JWT contra TechnicianId de la Orden (devolviendo 403 Forbidden si intenta consumir en una orden ajena)." },
+                    { title: "Priorización de Exportables y Cobertura xUnit/Moq (Fase 4)", desc: "Mencionan exportación mensual a PDF/Excel y cotizaciones. Priorizar primero el flujo completo E2E (Kardex + Orden + Dashboard KPI) y cubrir con xUnit + Moq los cálculos de desviación de costo real vs. estimado y la regla de orden activa única por transformador." },
+                    { title: "Plan DevOps y Data Seeding de Demostración (Fase 5)", desc: "El documento no incluye aún la sección de despliegue (Docker Multi-stage, Docker Compose, GitHub Actions). Planificar un Data Seeding con transformadores en reparación, materiales en rojo y materiales con rotación < 0.2 para lucir los KPIs en la defensa." }
+                ]
+            },
+            {
+                id: 3,
+                shortName: "Propuesta 3",
+                title: "NexoHogar (Soluciones Técnicas Residenciales)",
+                subtitle: "Coordinación de clientes, contratos, cuadrillas técnicas, inventario de recursos y órdenes de servicio",
+                authors: [
+                    "Reinaldo Antonio Benitez Maestre (V-26.702.690)",
+                    "Francisco Javier Villasmil Silva (V-27.893.732)"
+                ],
+                rosterStatus: "Equipo 3 (2) en Listado Oficial",
+                badgeColor: "from-teal-600 to-emerald-700",
+                statusTag: "Excelente Alineación 5 Fases",
+                statusTagClass: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700",
+                icon: "home",
+                scores: { f1: 86, f2: 84, f3: 85, f4: 84, f5: 80 },
+                totalScore: 84,
+                summary: "Propuesta muy completa y estructurada exactamente bajo las 5 fases de la asignatura (incluyendo tabla de entregables F1–F5, Docker y CI/CD). Modela contratos, cuadrillas, flujo de estados de órdenes, 4 KPIs cuantitativos y branding institucional propio.",
+                matrixF1: "Falta modelar entidades de Inventario/Cuadrilla M:N",
+                matrixF2: "Contempla Fluent API, Soft Delete y Seeding; falta presupuesto en BD",
+                matrixF3: "3 roles + 403 claros; validar cruce de horarios y cuadrilla",
+                matrixF4F5: "Plan completo hasta Docker/CI-CD; cubrir reglas con xUnit",
+                strengths: [
+                    "Alineación total con el cronograma de la materia: desglosa entregables técnicos reales para las Fases 1, 2, 3, 4 y 5 (incluyendo Nginx y GitHub Actions).",
+                    "Reglas de negocio de alto valor corporativo: vigencia de contrato obligatoria, compatibilidad de especialidades por cuadrilla, detección de solapamiento de horarios de técnicos y prohibición de eliminación física con relaciones activas.",
+                    "Excelente acotamiento del MVP (posponiendo geolocalización para versiones futuras) y 4 KPIs con umbrales precisos (<30 días contratos, >85% ocupación, <90% cumplimiento)."
+                ],
+                obsPhase12: [
+                    { title: "Completar el Modelado de Entidades de Inventario y M:N (Fase 1)", desc: "En la sección 'Modelado de entidades Núcleo' listan 5 entidades (Cliente, Contrato, Técnico, Cuadrilla, Orden de Servicio), pero omiten las entidades de Inventario/Recursos (Material, Equipo/Herramienta, ConsumoOrden) y la relación CuadrillaTecnico. Deben incorporarlas en Core.Domain desde Fase 1 para sostener la regla de disponibilidad y el KPI 9.3." },
+                    { title: "Campos Financieros y Fluent API para KPIs (Fase 2)", desc: "El KPI 9.3 evalúa cuando el costo de materiales supera 'el presupuesto establecido'. Asegurar que OrdenServicio (o Contrato) incluya el campo BudgetAmount mapeado con HasPrecision(18,2) en Fluent API, junto con HasQueryFilter(!IsDeleted) y DeleteBehavior.Restrict." },
+                    { title: "Validación Atómica de Stock y Horarios (Fase 1–2)", desc: "Al cerrar o ejecutar una orden de servicio, validar en Core.Application que el consumo de materiales no genere stock negativo y que las herramientas asignadas cambien de estado ('Disponible' -> 'En Uso') de forma transaccional." }
+                ],
+                obsPhase345: [
+                    { title: "Regla de Choque de Horarios y Autorización por Cuadrilla (Fase 3)", desc: "Implementar con FluentValidation + servicio de dominio la detección matemática de solapamiento horario (FechaInicio < FinExistente && FechaFin > InicioExistente) y restringir a nivel de servicio que el rol Técnico solo reporte avances en órdenes de su cuadrilla asignada (403 en otras)." },
+                    { title: "Pruebas Unitarias de Reglas Críticas (Fase 4)", desc: "Priorizar pruebas en xUnit + Moq para las 3 validaciones clave: (1) rechazo de orden si el contrato está vencido, (2) rechazo de asignación por especialidad incompatible o choque de horario, y (3) alerta de exceso de presupuesto en materiales." },
+                    { title: "Data Seeding Estratégico para el Dashboard (Fase 5)", desc: "Aprovechando que ya incluyeron Docker Compose y CI/CD en su plan, preparar un Data Seeding con al menos un contrato a < 30 días de vencer y cuadrillas por encima/debajo del 85% para demostrar las alertas visuales en vivo." }
+                ]
+            },
+            {
+                id: 4,
+                shortName: "Propuesta 4",
                 title: "Sistema para Empresa de Servicio",
                 subtitle: "Gestión de tickets técnicos asignados, soportes en campo y ciclo de presupuestos",
                 authors: ["William Eduardo Contreras Olivar (V-15.858.775)"],
@@ -657,8 +732,8 @@
                 ]
             },
             {
-                id: 3,
-                shortName: "Propuesta 3",
+                id: 5,
+                shortName: "Propuesta 5",
                 title: "SIGMO-UNET (Gestión y Mantenimiento del Ordeño)",
                 subtitle: "Plataforma Multi-Tenant de producción láctea, potreros, insumos críticos y mantenimiento en fincas",
                 authors: ["Douglas Alejandro Aliendres Moreno (V-31.123.065)"],
@@ -691,8 +766,8 @@
                 ]
             },
             {
-                id: 4,
-                shortName: "Propuesta 4",
+                id: 6,
+                shortName: "Propuesta 6",
                 title: "AQUABI (Productos del Mar Congelados)",
                 subtitle: "Control de inventario por kilogramos y lotes, trazabilidad FEFO, demanda no atendida y prevención de mermas",
                 authors: ["Jhon Alfredo Rico García (V-18.564.692)"],
@@ -725,8 +800,8 @@
                 ]
             },
             {
-                id: 5,
-                shortName: "Propuesta 5",
+                id: 7,
+                shortName: "Propuesta 7",
                 title: "Sistema Bajo Pedido (Cero Stock) — Librería",
                 subtitle: "Gestión Make-to-Order y Cross-Docking con abonos 50/50, lotes de importación y contingencias",
                 authors: ["Alejandra Antonela Patiño Blanco (V-31.098.348) ⚠️ Sin portada"],
@@ -756,81 +831,6 @@
                     { title: "Concretar Matriz RBAC y Reglas FluentValidation (Fase 3)", desc: "Tiene 5 roles (Propietario, Administrativo, Operacional, Marketing, Cliente), lo cual es ambicioso para un desarrollo individual. Detallar qué operaciones devuelven 403 Forbidden entre Operacional, Marketing y Administrativo, y validar que el Cliente solo vea sus propias órdenes (anti-IDOR)." },
                     { title: "Reemplazar KPIs Genéricos por KPIs del Negocio Cero Stock (Fase 4)", desc: "Su tabla de KPIs ('Ventas, Alcance, Costos, Ganancias' por día/semana/mes/año) no refleja el modelo bajo pedido. Sustituir por KPIs accionables reales: '% Ocupación de bodega de tránsito', 'Lead Time promedio de importación', 'Tasa de devoluciones a 3 semanas' y 'Saldo pendiente por liquidar (50% restante)'. Retirar la mención a 'integración MCP' si no forma parte del MVP." },
                     { title: "Incorporar Testing xUnit/Moq y Despliegue Docker (Fases 4 y 5)", desc: "Falta por completo el plan de pruebas unitarias (ej. cálculo de reembolsos y validación de saldo) y la sección de Docker Compose / CI-CD. Evaluar sumar compañeros sin grupo si desea mantener los 5 roles." }
-                ]
-            },
-            {
-                id: 6,
-                shortName: "Propuesta 6",
-                title: "Transformadores Wilfredo Pérez",
-                subtitle: "Sistema integral de inventario (kardex), órdenes de reparación con asignación de costos y venta",
-                authors: [
-                    "Omaña Colmenares Luis Alfonso (V-31.180.408)",
-                    "Becerra Salamanca Moisés David (V-30.965.746)",
-                    "Perez Lobo Lahian Wilfredo (V-31.217.796)"
-                ],
-                rosterStatus: "Equipo de 3 en Listado Oficial",
-                badgeColor: "from-sky-700 to-cyan-600",
-                statusTag: "Propuesta Modelo — Lista para Construir",
-                statusTagClass: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700",
-                icon: "zap",
-                scores: { f1: 92, f2: 90, f3: 85, f4: 82, f5: 40 },
-                totalScore: 81,
-                summary: "Propuesta sobresaliente para una empresa real de reparación y venta de transformadores. Separa entidades maestras y transaccionales, define una matriz RBAC exacta con HTTP 403, prohíbe stock negativo y borrado físico, y formula 4 KPIs accionables con metas, umbrales y decisiones claras.",
-                matrixF1: "Excelente: stock >= 0, orden única activa, HTTP 409",
-                matrixF2: "Claves únicas (RIF/SKU/Serie), no borrado físico, kardex",
-                matrixF3: "Matriz RBAC completa con 403; reforzar anti-IDOR Técnico",
-                matrixF4F5: "KPIs ejemplares; falta detallar xUnit/Moq y Docker",
-                strengths: [
-                    "Planteamiento del problema financiero impecable: conecta el consumo real de cobre, aceite dieléctrico y láminas con el costo real de cada orden para calcular rentabilidad.",
-                    "Reglas de bloqueo de negocio ejemplares: stock nunca negativo, duplicados con HTTP 409, movimientos de kardex inmutables (solo corregibles mediante Ajuste del Admin), órdenes anulables pero nunca eliminables y restricción de una sola orden activa por transformador.",
-                    "Matriz RBAC completa y 4 KPIs con metas cuantitativas claras (semáforo de stock, Lead Time <= 10d, desviación de costo <= 10%, rotación >= 0.5)."
-                ],
-                obsPhase12: [
-                    { title: "Concurrencia Optimista en Consumo de Materiales (Fase 1–2)", desc: "Al tener un Almacenista y varios Técnicos descontando materiales en paralelo (ventas + órdenes de reparación), agregar control de concurrencia optimista (RowVersion / xmin en PostgreSQL) en la entidad Material para evitar condiciones de carrera que lleven el stock por debajo de cero." },
-                    { title: "Precisión Decimal Diferenciada y Máquinas de Estado (Fase 2)", desc: "En Fluent API, usar HasPrecision(18,2) para costos/precios USD, pero considerar HasPrecision(18,3) para MovimientoStock.Cantidad (cobre por kg/metros, aceite por litros). Documentar explícitamente las transiciones permitidas en OrdenReparación y aplicar HasQueryFilter(!IsDeleted) + DeleteBehavior.Restrict en todas las relaciones 1:N." },
-                    { title: "Mapeo de Excepciones RFC 7807 (Fase 1)", desc: "Ya definieron muy bien HTTP 409 para duplicados y bloqueo de stock negativo; asegurar que ExceptionMiddleware mapee explícitamente KeyNotFoundException (404), InvalidOperationException (400) y ConflictException (409) bajo application/problem+json." }
-                ],
-                obsPhase345: [
-                    { title: "Prevención de IDOR/BOLA en el Rol Técnico (Fase 3)", desc: "Su matriz indica acertadamente que el Técnico registra consumo 'Solo en órdenes asignadas'. Asegurarse de validar esto en Core.Application comparando el UserId del JWT contra TechnicianId de la Orden (devolviendo 403 Forbidden si intenta consumir en una orden ajena)." },
-                    { title: "Priorización de Exportables y Cobertura xUnit/Moq (Fase 4)", desc: "Mencionan exportación mensual a PDF/Excel y cotizaciones. Priorizar primero el flujo completo E2E (Kardex + Orden + Dashboard KPI) y cubrir con xUnit + Moq los cálculos de desviación de costo real vs. estimado y la regla de orden activa única por transformador." },
-                    { title: "Plan DevOps y Data Seeding de Demostración (Fase 5)", desc: "El documento no incluye aún la sección de despliegue (Docker Multi-stage, Docker Compose, GitHub Actions). Planificar un Data Seeding con transformadores en reparación, materiales en rojo y materiales con rotación < 0.2 para lucir los KPIs en la defensa." }
-                ]
-            },
-            {
-                id: 7,
-                shortName: "Propuesta 7",
-                title: "NexoHogar (Soluciones Técnicas Residenciales)",
-                subtitle: "Coordinación de clientes, contratos, cuadrillas técnicas, inventario de recursos y órdenes de servicio",
-                authors: [
-                    "Reinaldo Antonio Benitez Maestre (V-26.702.690)",
-                    "Francisco Javier Villasmil Silva (V-27.893.732)"
-                ],
-                rosterStatus: "Equipo de 2 en Listado Oficial",
-                badgeColor: "from-teal-600 to-emerald-700",
-                statusTag: "Excelente Alineación 5 Fases",
-                statusTagClass: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700",
-                icon: "home",
-                scores: { f1: 86, f2: 84, f3: 85, f4: 84, f5: 80 },
-                totalScore: 84,
-                summary: "Propuesta muy completa y estructurada exactamente bajo las 5 fases de la asignatura (incluyendo tabla de entregables F1–F5, Docker y CI/CD). Modela contratos, cuadrillas, flujo de estados de órdenes, 4 KPIs cuantitativos y branding institucional propio.",
-                matrixF1: "Falta modelar entidades de Inventario/Cuadrilla M:N",
-                matrixF2: "Contempla Fluent API, Soft Delete y Seeding; falta presupuesto en BD",
-                matrixF3: "3 roles + 403 claros; validar cruce de horarios y cuadrilla",
-                matrixF4F5: "Plan completo hasta Docker/CI-CD; cubrir reglas con xUnit",
-                strengths: [
-                    "Alineación total con el cronograma de la materia: desglosa entregables técnicos reales para las Fases 1, 2, 3, 4 y 5 (incluyendo Nginx y GitHub Actions).",
-                    "Reglas de negocio de alto valor corporativo: vigencia de contrato obligatoria, compatibilidad de especialidades por cuadrilla, detección de solapamiento de horarios de técnicos y prohibición de eliminación física con relaciones activas.",
-                    "Excelente acotamiento del MVP (posponiendo geolocalización para versiones futuras) y 4 KPIs con umbrales precisos (<30 días contratos, >85% ocupación, <90% cumplimiento)."
-                ],
-                obsPhase12: [
-                    { title: "Completar el Modelado de Entidades de Inventario y M:N (Fase 1)", desc: "En la sección 'Modelado de entidades Núcleo' listan 5 entidades (Cliente, Contrato, Técnico, Cuadrilla, Orden de Servicio), pero omiten las entidades de Inventario/Recursos (Material, Equipo/Herramienta, ConsumoOrden) y la relación CuadrillaTecnico. Deben incorporarlas en Core.Domain desde Fase 1 para sostener la regla de disponibilidad y el KPI 9.3." },
-                    { title: "Campos Financieros y Fluent API para KPIs (Fase 2)", desc: "El KPI 9.3 evalúa cuando el costo de materiales supera 'el presupuesto establecido'. Asegurar que OrdenServicio (o Contrato) incluya el campo BudgetAmount mapeado con HasPrecision(18,2) en Fluent API, junto con HasQueryFilter(!IsDeleted) y DeleteBehavior.Restrict." },
-                    { title: "Validación Atómica de Stock y Horarios (Fase 1–2)", desc: "Al cerrar o ejecutar una orden de servicio, validar en Core.Application que el consumo de materiales no genere stock negativo y que las herramientas asignadas cambien de estado ('Disponible' -> 'En Uso') de forma transaccional." }
-                ],
-                obsPhase345: [
-                    { title: "Regla de Choque de Horarios y Autorización por Cuadrilla (Fase 3)", desc: "Implementar con FluentValidation + servicio de dominio la detección matemática de solapamiento horario (FechaInicio < FinExistente && FechaFin > InicioExistente) y restringir a nivel de servicio que el rol Técnico solo reporte avances en órdenes de su cuadrilla asignada (403 en otras)." },
-                    { title: "Pruebas Unitarias de Reglas Críticas (Fase 4)", desc: "Priorizar pruebas en xUnit + Moq para las 3 validaciones clave: (1) rechazo de orden si el contrato está vencido, (2) rechazo de asignación por especialidad incompatible o choque de horario, y (3) alerta de exceso de presupuesto en materiales." },
-                    { title: "Data Seeding Estratégico para el Dashboard (Fase 5)", desc: "Aprovechando que ya incluyeron Docker Compose y CI/CD en su plan, preparar un Data Seeding con al menos un contrato a < 30 días de vencer y cuadrillas por encima/debajo del 85% para demostrar las alertas visuales en vivo." }
                 ]
             }
         ];
@@ -1046,12 +1046,12 @@
         // Proposal Tabs & Detail View
         const shortTabTitles = {
             1: "Sistema de Taxis",
-            2: "Empresa Servicio",
-            3: "SIGMO-UNET",
-            4: "AQUABI",
-            5: "Cero Stock",
-            6: "Transformadores",
-            7: "NexoHogar"
+            2: "Transformadores",
+            3: "NexoHogar",
+            4: "Empresa Servicio",
+            5: "SIGMO-UNET",
+            6: "AQUABI",
+            7: "Cero Stock"
         };
 
         function renderProposalTabs() {
@@ -1241,7 +1241,8 @@ Desarrollo de Aplicaciones Web (0423807T)
 • Total estudiantes inscritos: 19
 • Con propuesta entregada: 12 (63.2% — 8 en equipo, 4 individuales)
 • Aún sin reportar grupo/propuesta: 7 (36.8%) — ¡Urgente conformar equipo y reportar!
-• Nota formal: Propuesta 5 (Cero Stock — Alejandra Patiño) entregada sin portada ni identificación formal (indispensable corregir). Todas las 7 propuestas corresponden a estudiantes del listado oficial.
+• Nota formal: Propuesta 7 (Cero Stock — Alejandra Patiño) entregada sin portada ni identificación formal (indispensable corregir). Todas las 7 propuestas corresponden a estudiantes del listado oficial.
+• Orden oficial: Equipos 1–3 según listado (1. Taxis, 2. Transformadores, 3. NexoHogar) seguidos por entregas individuales (4. Servicio, 5. SIGMO-UNET, 6. AQUABI, 7. Cero Stock).
 
 Por favor revisen las observaciones técnicas constructivas por fases (F1–F5) asignadas a su proyecto en la plataforma REAP-PI:
 👉 https://gramirezsunet.github.io/desarrolloAplicacionesWeb/REAP-PI/`;
@@ -1254,7 +1255,7 @@ Por favor revisen las observaciones técnicas constructivas por fases (F1–F5) 
 
         // Interactive Proposal Analyzer
         const sampleTexts = {
-            6: `Propuesta: Sistema Integral de Gestión de Inventario, Reparación y Venta de Transformadores (Transformadores Wilfredo Pérez).
+            2: `Propuesta: Sistema Integral de Gestión de Inventario, Reparación y Venta de Transformadores (Transformadores Wilfredo Pérez).
 Autores: Omaña Colmenares Luis Alfonso, Becerra Salamanca Moises David, Perez Lobo Lahian Wilfredo.
 Problema: El cobre, el aceite dieléctrico y las láminas se compran y gastan sin asignarse a una orden de reparación, desconociendo el costo real.
 Arquitectura: .NET 10, Onion Architecture, PostgreSQL 15, EF Core 10, React 18, xUnit y Moq.
@@ -1262,14 +1263,14 @@ Entidades: Proveedor (RIF único), Material (SKU único, decimal USD), Transform
 Reglas: Nunca se permite stock negativo. Los materiales y órdenes no se eliminan físicamente, solo se desactivan o anulan (borrado lógico). HTTP 409 en duplicados y RFC 7807.
 Roles RBAC: Administrador, Almacenista, Técnico (HTTP 403 en operaciones no autorizadas).
 KPIs: Semáforo de stock (meta <= 10% en rojo -> genera sugerencia de compra), Días promedio de entrega (meta <= 10 días), Desviación costo real vs estimado (meta <= 10%), Rotación (meta >= 0.5).`,
-            2: `Sistema para empresa de servicio - William Contreras.
+            4: `Sistema para empresa de servicio - William Contreras.
 Lo principal es que los técnicos puedan visualizar sus tickets asignados, ver el avance (asignado, en progreso, en espera, cerrado), adjuntar soportes y comunicarse con el cliente.
 Realizar presupuestos (borrador, validado, aceptado o rechazado).
 KPIs: promedio de tickets atendidos por técnico, cantidad por tipo de ticket, promedio de presupuestos aprobados y rechazados, promedio de ingreso.`
         };
 
         function loadSampleIntoAnalyzer(id) {
-            document.getElementById('analyzer-title').value = id === 6 ? "Transformadores Wilfredo Pérez" : "Sistema para Empresa de Servicio";
+            document.getElementById('analyzer-title').value = id === 2 ? "Transformadores Wilfredo Pérez" : "Sistema para Empresa de Servicio";
             document.getElementById('analyzer-text').value = sampleTexts[id] || "";
             runLiveAnalyzer();
         }
