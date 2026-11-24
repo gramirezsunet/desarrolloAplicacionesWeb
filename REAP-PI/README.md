@@ -16,8 +16,8 @@ Este directorio contiene la plataforma web interactiva para analizar las propues
 ## 🚀 **Funcionalidades de la Plataforma (`index.html`)**
 
 1. **Indicadores Estadísticos y Control de Listado (20/11/2026):**
-   * Seguimiento de los **16 estudiantes** del listado oficial: **10 entregaron (62.5%)** (8 en 3 equipos y 2 individuales) vs. **6 sin reportarse (37.5%)**.
-   * Alertas administrativas automáticas: **Propuesta Cero Stock (Librería)** sin portada ni autores declarados, y **AQUABI** (Jhon Alfredo Rico García) fuera del listado de asistencia del 20/11/2026.
+   * Seguimiento de los **16 estudiantes** del listado oficial: **11 entregaron (68.8%)** (8 en 3 equipos y 3 individuales) vs. **5 sin reportarse (31.3%)**.
+   * Alertas administrativas destacadas: **Propuesta 5 (Cero Stock — Alejandra Patiño)** entregada sin portada ni identificación en el PDF (indispensable corregir), y **Propuesta 4 (AQUABI — Jhon Alfredo Rico García)** fuera del listado de asistencia del 20/11/2026.
    * Filtros interactivos (*Todos*, *Entregaron*, *Sin Reportar*, *Fuera de Lista*) y buscador por nombre o cédula.
 
 2. **Observaciones Técnicas Constructivas por Propuesta (Fases 1–5):**
